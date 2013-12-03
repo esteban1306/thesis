@@ -14,7 +14,8 @@ from django.db import models
 class Countries(models.Model):
     country_id = models.CharField(primary_key=True, max_length=2)
     country_name = models.CharField(max_length=40, blank=True)
-    region_id = models.DecimalField(max_digits=0, decimal_places=-127, blank=True, null=True)
+    region_id = models.ForeignKey('Regions', blank=True, null=True)
+    
     class Meta:
         managed = False
         db_table = 'countries'
@@ -75,7 +76,7 @@ class Locations(models.Model):
         db_table = 'locations'
 
 class Regions(models.Model):
-    region_id = models.DecimalField(primary_key=True, max_digits=0, decimal_places=-127)
+    region_id = models.IntegerField(primary_key=True)
     region_name = models.CharField(max_length=25, blank=True)
     class Meta:
         managed = False
