@@ -1,3 +1,4 @@
+from models import Employees, Jobs
 from django.contrib import admin
-
-# Register your models here.
+admin.site.register(Employees)
+admin.site.register(Jobs)
