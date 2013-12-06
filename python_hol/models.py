@@ -25,6 +25,8 @@ class Departments(models.Model):
     department_name = models.CharField(max_length=30)
     manager = models.ForeignKey('Employees', blank=True, null=True)
     location = models.ForeignKey('Locations', blank=True, null=True)
+    def __unicode__(self):
+        return self.department_name
     class Meta:
         managed = False
         db_table = 'departments'
@@ -41,9 +43,12 @@ class Employees(models.Model):
     commission_pct = models.DecimalField(max_digits=2, decimal_places=2, blank=True, null=True)
     manager = models.ForeignKey('self', blank=True, null=True)
     department = models.ForeignKey(Departments, blank=True, null=True)
+    def __unicode__(self):
+      return self.first_name +' '+self.last_name
     class Meta:
         managed = False
         db_table = 'employees'
+
 
 class JobHistory(models.Model):
     employee = models.ForeignKey(Employees)
