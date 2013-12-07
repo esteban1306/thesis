@@ -172,7 +172,7 @@ class Historicocriteriospropuestas(models.Model):
     fecha = models.DateField()
     link = models.CharField(max_length=20, blank=True)
     proptg_revtproptg = models.ForeignKey('PropuestatgRevisorest')
-    proptg_revt_revtec = models.ForeignKey('PropuestatgRevisorest')
+    proptg_revt_revtec = models.ForeignKey('PropuestatgRevisorest', related_name="proptg_revt_revtec")
     class Meta:
         managed = False
         db_table = 'historicocriteriospropuestas'
@@ -182,7 +182,7 @@ class InformefinalCriterios(models.Model):
     informesfinales = models.ForeignKey('Informesfinales')
     criteriosjurado = models.ForeignKey(Criteriosjurado)
     jurados_trabajosgrado_codigo = models.ForeignKey('Jurados', db_column='jurados_trabajosgrado_codigo')
-    jurados_docentes_dni = models.ForeignKey('Jurados', db_column='jurados_docentes_dni')
+    jurados_docentes_dni = models.ForeignKey('Jurados', db_column='jurados_docentes_dni', related_name="jurados_docentes_dni")
     link = models.CharField(max_length=20, blank=True)
     class Meta:
         managed = False
