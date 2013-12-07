@@ -151,7 +151,7 @@ class Empresaspasantes(models.Model):
 class Estudiantes(models.Model):
     dni = models.BigIntegerField(primary_key=True)
     nombre = models.CharField(max_length=30)
-    apellidos = models.CharField(max_length=30, blank=True)
+    apellidos = models.CharField(max_length=30)
     trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo')
     class Meta:
         managed = False
