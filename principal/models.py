@@ -7,8 +7,8 @@
 #
 # Also note: You'll have to insert the output of 'django-admin.py sqlcustom [appname]'
 # into your database.
+#encoding:utf-8
 from __future__ import unicode_literals
-
 from django.db import models
 
 class Asesores(models.Model):
@@ -305,8 +305,12 @@ class Sustentaciones(models.Model):
         db_table = 'sustentaciones'
 
 class Tipodocente(models.Model):
-    id = models.BigIntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     descripcion = models.CharField(max_length=30)
+
+    def __unicode__(self):
+        return self.descripcion
+
     class Meta:
         managed = False
         db_table = 'tipodocente'

@@ -7,6 +7,10 @@ https://docs.djangoproject.com/en/1.6/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
+#encoding:utf-8
+# Identificando la ruta del proyecto
+import os
+RUTA_PROYECTO = os.path.dirname(os.path.realpath(__file__))
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
@@ -86,3 +90,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+TEMPLATE_DIRS = (
+    os.path.join(RUTA_PROYECTO,'plantillas'),
+)

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang='es'>
+  <head>
+	<title>Lista de tipos de docentes de ejemplo</title>
+	<meta charset='utf-8'>
+  </head>
+  <body>
+    <h1>Listado Estudiantes</h1>
+	{% for elemento in lista %}
+	<ul>
+	  <li><strong>{{elemento.id}}</strong></li>
+	  <li>{{elemento.descripcion}}</li>
+	</ul>
+	{% endfor %}
+  </body>
+</html>
