@@ -36,7 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'python_hol',
+    'principal',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -61,8 +61,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.oracle',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'NAME': 'xe',
-        'USER': 'pythonhol',
-        'PASSWORD': 'welcome',
+        'USER': 'superadmin',
+        'PASSWORD': '12345',
         'HOST': '',
         'PORT': '',
     }
