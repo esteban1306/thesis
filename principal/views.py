@@ -8,6 +8,21 @@ from forms import LoginForm, TipodocenteForm, DocentesForm, CaracterForm, Evalua
 from django.contrib.auth import login, logout, authenticate
 
 # Create your views here.
+def home(request):
+	loginForm = LoginForm()
+	if request.method == 'POST':
+		loginForm = LoginForm(request.POST)
+        if loginForm.is_valid():
+            username  = loginForm.cleaned_data['username']
+            password  = loginForm.cleaned_data['password']
+            user = authenticate(username=username, password=password)
+            if user is not None and user.is_active:
+                login(request, user)
+                return HttpResponseRedirect('/')
+  	loginForm = LoginForm()
+	ctx = {'loginForm':loginForm}
+	return render_to_response('home.html', ctx, context_instance=RequestContext(request))
+	
 def login_view(request):
 	mensaje = ""
 	if request.user.is_authenticated():
