@@ -43,7 +43,7 @@ def pruebaForm(request):
 
 def nuevo_Tipodocente(request):
 	if request.method=='POST':
-		formulario = TipodocenteForm(request.POST, request.FILES)
+		formulario = TipodocenteForm(request.POST or None, request.FILES)
 		if formulario.is_valid():
 			formulario.save()
 			return HttpResponseRedirect('/Tipodocente')

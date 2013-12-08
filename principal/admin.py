@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import Estudiantes, Tipodocente, Docentes, Caracter, Evaluacionestrabajogrado
+from models import *
 
 # Register your models here.
 class TipodocenteAdmin(admin.ModelAdmin):
@@ -22,3 +22,4 @@ admin.site.register(Tipodocente, TipodocenteAdmin)
 admin.site.register(Docentes, DocentesAdmin)
 admin.site.register(Caracter, CaracterAdmin)
 admin.site.register(Evaluacionestrabajogrado, EvaluacionesTrabajoGradoAdmin)
+admin.site.register(Trabajosgrado)
