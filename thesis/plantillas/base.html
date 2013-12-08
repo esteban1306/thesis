@@ -1,11 +1,28 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title{>{% block title %}Thesis | Proyecto BD}{% endblock %}</title>
+		<meta charset="utf-8">
+		<title{>{% block title %}| Thesis}{% endblock %}</title>
+		<link rel="stylesheet" href="{{MEDIA_URL}}bootstrap/css/bootstrap.css">
+		<link rel="stylesheet" href="{{MEDIA_URL}}bootstrap/css/bootstrap-theme.css">
+		<script src="{{MEDIA_URL}}js/jquery.js"></script>
+		<script src="{{MEDIA_URL}}bootstrap/js/bootstrap.js"></script>
 	</head>
 	<body>
+		<div class='navbar navbar-inverse navbar-fixed-top'>
+			<div class='navbar-inner'>
+				<a class='brand' href="{% url 'principal.views.nuevo_Tipodocente' %}">Proyecto</a>
+				{% if user.is_authenticated %}
+					<p class='navbar-text pull-right'>
+						Usuario {{user.username}}
+					</p>
+				{% endif %}
+			</div><!-- /inner -->
+		</div><!--/navbar -->
+
 		{% block body %}{% endblock %}
 		<header>
+			<img src="{{MEDIA_URL}}/images/compuclinica.png"/>
 			<nav>
 				<a href="#">Home</a>
 				{% if user.is_authenticated %}
