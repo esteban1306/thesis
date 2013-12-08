@@ -1,0 +1,171 @@
+.clearfix-2:before,
+.clearfix-2:after {
+  content: "";
+  display: table;
+}
+.clearfix-2:after {
+  clear: both;
+}
+.clearfix-2 {
+  *zoom: 1;
+}
+.responsive-img img {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+}
+.responsive-img-extra img {
+  width: 100%;
+  height: auto \ 9;
+}
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  padding-top: 30px;
+  height: 0;
+  overflow: hidden;
+}
+.video-container iframe,
+.video-container object,
+.video-container embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.transparente {
+  opacity: 0.7;
+}
+.azul {
+  color: #5bc0de;
+}
+.fuxia {
+  color: #e0134f;
+}
+.naranja {
+  color: #ee7836;
+}
+.center {
+  text-align: center;
+}
+body {
+  padding-top: 70px;
+}
+select {
+  font-family: FontAwesome, Helvetica !important;
+}
+.increible {
+  font-family: FontAwesome;
+}
+.icon.en-cola {
+  color: #d9534f;
+}
+.icon.reparado {
+  color: #5cb85c;
+}
+.icon.en-revision {
+  color: #f0ad4e;
+}
+.icon.entregado {
+  color: #5bc0de;
+}
+.form-login .form-group {
+  width: 250px;
+}
+.item-servicio .left {
+  text-align: center;
+}
+.item-servicio .progreess-widget {
+  position: relative;
+  width: 80%;
+}
+.item-servicio .msg-estado {
+  font-size: 12px;
+}
+.item-servicio .progress {
+  height: 8px;
+  margin-bottom: 2px;
+  background-color: #fff;
+  border: solid 1px #999;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -ms-box-shadow: none;
+  -o-box-shadow: none;
+  box-shadow: none;
+}
+.item-servicio .progress .bar-gray {
+  background-color: #999;
+}
+.item-servicio .percent {
+  width: 20px;
+  font-size: 10px;
+}
+.item-servicio .fechas {
+  font-size: 10px;
+  font-weight: bold;
+}
+#servicio .logo {
+  text-align: center;
+}
+#servicio .logo .icon-servicio {
+  font-size: 100px;
+}
+#servicio .fecha {
+  margin: 0;
+}
+#servicio h1 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+#servicio .estado {
+  font-size: 15px;
+}
+#servicio .servicio-person {
+  text-align: center;
+}
+#servicio .servicio-person .icon-person {
+  font-size: 60px;
+}
+.progress-servicio {
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+.progress-servicio .percent {
+  width: 20px;
+  font-size: 10px;
+}
+.progress-servicio .progress {
+  height: 10px;
+  margin-bottom: 2px;
+  background-color: #fff;
+  border: solid 1px #999;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -ms-box-shadow: none;
+  -o-box-shadow: none;
+  box-shadow: none;
+}
+.progress-servicio .progress .bar-gray {
+  background-color: #999;
+}
+.progress-servicio .fechas {
+  font-size: 12px;
+  font-weight: bold;
+}
+#persona .foto {
+  text-align: center;
+}
+#persona .icon-persona {
+  font-size: 100px;
+}
+#persona .linea {
+  height: 1px;
+  background-color: #a39c9c;
+}
+@media only screen and (min-width: 480px) {
+}
+@media only screen and (min-width: 768px) {
+}
+@media only screen and (min-width: 1140px) {
+}
