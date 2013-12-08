@@ -1,0 +1,46 @@
+{% extends 'shell.html' %}
+
+{% block title %} Home {% endblock %}
+
+{% block sidebar_left %}
+
+<div class="panel panel-default">
+
+	<div class="panel-heading">SERVICIOS</div>
+
+
+	<div class="list-group nav-servicios">
+
+		<a href="{% url 'principal.views.home' %}" class="list-group-item">
+			<span class="badge">{{num_total}}</span> 
+			<i class="fa fa-calendar fw"></i> Opcion 1
+		</a>
+
+		<a href="{% url 'principal.views.home' %}" class="list-group-item ">
+			<span class="badge">{{num_cola}}</span>
+			<i class="fa fa-clock-o fw"></i>  Opcion 2
+		</a>
+
+		<a href="{% url 'principal.views.home' %}" class="list-group-item "> 
+			<span class="badge">{{num_revision}}</span>
+			<i class="fa fa-wrench fw"></i> Opcion 3
+		</a>
+
+		<a href="{% url 'principal.views.home'  %}" class="list-group-item ">
+			<span class="badge">{{num_reparado}}</span>
+			<i class="fa fa-check fw"></i> Opcion 4
+		</a>
+
+		<a href="{% url 'principal.views.home' %}" class="list-group-item ">
+			<span class="badge">{{num_entregado}}</span>
+			<i class="fa fa-smile-o fw"></i> Opcion 5
+		</a>	
+
+	</div>
+	
+
+</div> <!-- end panel -->
+
+
+
+{% endblock sidebar_left %}
