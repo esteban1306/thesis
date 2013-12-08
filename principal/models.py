@@ -166,7 +166,7 @@ class Estudiantes(models.Model):
 class Evaluacionestrabajogrado(models.Model):
     id = models.BigIntegerField(primary_key=True)
     fecha = models.DateField()
-    nota_final_aspectos = models.DecimalField(max_digits=2, decimal_places=2, blank=True, null=True)
+    nota_final_aspectos = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     caracter = models.ForeignKey(Caracter)
     class Meta:
         managed = False

@@ -99,6 +99,7 @@ STATIC_URL = '/static/'
 
 TEMPLATE_DIRS = (
     os.path.join(RUTA_PROYECTO,'plantillas'),
+    os.path.join(RUTA_PROYECTO,'plantillas/admin/base_site.html'),
 )
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
