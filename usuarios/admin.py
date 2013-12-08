@@ -19,7 +19,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = Usuario
-        fields = ('email', 'dni',)
+        fields = ('dni',)
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -61,14 +61,15 @@ class UserChangeForm(forms.ModelForm):
 
 
 class UsuarioAdmin(UserAdmin):
+
     form = UserChangeForm
     add_form = UserCreationForm
 
-    list_display = ('email', 'tipo', 'dni', 'is_admin', 'is_active',)
+    list_display = ('tipo', 'dni', 'is_admin', 'is_active',)
     list_filter = ('is_admin', 'is_active',)
 
     fieldsets = (
-        ('Datos del Usuario', {'fields': ( ('nombre', 'dni',), ('apellidos', 'email',), 'telefono',)}),
+        ('Datos del Usuario', {'fields': ( ('dni',), )}),
         ('Ambito del Usuario', {'fields': ('tipo',  ('is_active', 'is_admin'), 'groups', )}), #'user_permissions')}),                                     
         ('Datos de Login y cambio de contraseña', {'fields': ('last_login', 'password')}),
     )
@@ -78,12 +79,13 @@ class UsuarioAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'dni', 'password1', 'password2')}
+            'fields': ('dni', 'password1', 'password2', 'tipo',)}
         ),
     )
-    search_fields = ('email',)
-    ordering = ('email',)
+    search_fields = ('dni',)
+    ordering = ('dni',)
 
+    """
     def queryset(self, request):
         qs = super(UsuarioAdmin, self).queryset(request)
         if request.user.is_superuser:
@@ -99,6 +101,7 @@ class UsuarioAdmin(UserAdmin):
             g = Group.objects.get(name=tipo)
             obj.groups.clear()
             obj.groups.add(g)
+    """
 
 
 admin.site.register(Usuario, UsuarioAdmin)

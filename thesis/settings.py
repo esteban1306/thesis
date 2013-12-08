@@ -16,6 +16,7 @@ RUTA_PROYECTO = os.path.dirname(os.path.realpath(__file__))
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+AUTH_USER_MODEL = 'usuarios.Usuario'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -41,7 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'principal',
-    #'usuarios',
+    'usuarios',
 )
 
 MIDDLEWARE_CLASSES = (
