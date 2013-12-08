@@ -3,6 +3,10 @@ from django.forms import ModelForm
 from django import forms
 from models import Tipodocente, Docentes, Caracter, Evaluacionestrabajogrado
 
+class LoginForm(forms.Form):
+	username = forms.CharField(widget=forms.TextInput())
+	password = forms.CharField(widget=forms.PasswordInput(render_value=False))	
+
 class TipodocenteForm(ModelForm):
 	class Meta:
 		model = Tipodocente

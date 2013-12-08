@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-{% block contenido %}
+{% block title %} Crear un Nuevo Tipo de Docente {% endblock %}
+{% block body %}
 	<form id='formulario' method='post' action=''>{% csrf_token %}
 		{{formulario.as_p}}
 		<p><input type='submit' value='Confirmar'/><p>
