@@ -31,6 +31,9 @@ class Aspectos(models.Model):
 class Caracter(models.Model):
     id = models.BigIntegerField(primary_key=True)
     descripcion = models.CharField(max_length=15, blank=True)
+
+    def __unicode__(self):
+        return self.descripcion
     class Meta:
         managed = False
         db_table = 'caracter'
@@ -116,6 +119,9 @@ class Docentes(models.Model):
     nombre = models.CharField(max_length=30)
     apellidos = models.CharField(max_length=30)
     tipodocente = models.ForeignKey('Tipodocente')
+
+    def __unicode__(self):
+        return self.nombre
     class Meta:
         managed = False
         db_table = 'docentes'
