@@ -103,5 +103,5 @@ class UsuarioAdmin(UserAdmin):
             obj.groups.add(g)
     """
 
-
+#Agregar el modelo Usuario dentro de la interfaz de usuario
 admin.site.register(Usuario, UsuarioAdmin)
