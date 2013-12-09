@@ -19,13 +19,14 @@ class UsuarioManager(BaseUserManager):
     def create_superuser(self, dni, password):
         return self._create_user(dni, password, True, True)
 
-    def create_userEstudiante(self, dni, tipo, password):
-        user = self.model(dni=dni, tipo=tipo, is_active=True, is_admin=False, is_superuser=False)
+    def create_userRol(self, dni, tipo, password):
+        if tipo == Usuario.ESTUDIANTE:
+            user = self.model(dni=dni, tipo=tipo, is_active=True, is_admin=False, is_superuser=False)
+        if tipo == Usuario.COORDINADOR:
+            user = self.model(dni=dni, tipo=tipo, is_active=True, is_admin=True, is_superuser=False)
         user.set_password(password)
         user.save(using=self._db)
-        print "Pase por aqui"
         return user
-
 
 def TIPO_USERS_FROM_GROUP():
     lista = Group.objects.only("name")
@@ -38,14 +39,14 @@ def TIPO_USERS_FROM_GROUP():
 
 class Usuario(AbstractBaseUser, PermissionsMixin):
 
-    ESTUDIANTE     = 'estudiante'#'0'
-    DIRECTOR   = 'director'#'1'
-    JURADO  = 'jurado'#'2'
+    ESTUDIANTE     = 'Estudiante'#'0'
+    DIRECTOR   = 'Director'#'1'
+    COORDINADOR  = 'Coordinador T.Grado'#'2'
     
     TIPO_USUARIO = (
-        (ESTUDIANTE, 'estudiante (s)'),
-        (DIRECTOR, 'director'),
-        (JURADO, 'jurado (s)'),
+        (ESTUDIANTE, 'Estudiante'),
+        (DIRECTOR, 'Director'),
+        (COORDINADOR, 'Coordinador T.Grado'),
     )
 
     dni       = models.IntegerField(unique=True)

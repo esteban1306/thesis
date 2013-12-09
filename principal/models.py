@@ -7,7 +7,7 @@
 #
 # Also note: You'll have to insert the output of 'django-admin.py sqlctom [appname]'
 # into your database.
-#encoding:utf-8
+# encoding:utf-8
 from __future__ import unicode_literals
 from django.db import models
 
@@ -110,7 +110,7 @@ class Coordinadorestg(models.Model):
     #Identificacion como docente, del coordinador 
     docentes_dni = models.ForeignKey('Docentes', db_column='docentes_dni')
     #ano en que llevara la coordinacion
-    a_o = models.BigIntegerField(db_column='a\xf1o') # Field renamed to remove unsuitable characters.
+    anio = models.BigIntegerField(db_column='a\xf1o') # Field renamed to remove unsuitable characters.
     #Semestre en el cual sera coordinador
     semestreacademico = models.CharField(max_length=1)
     class Meta:
@@ -172,7 +172,7 @@ class Cronogramas(models.Model):
 #Modelo de clase correspondiente a la tabla Docentes
 class Docentes(models.Model):
     #Idenficacion personal del docente
-    dni = models.BigIntegerField(primary_key=True)
+    dni = models.IntegerField(primary_key=True)
     #Nombre del docente
     nombre = models.CharField(max_length=30)
     #Apellidos del docente
@@ -254,6 +254,7 @@ class Evaluacionestrabajogrado(models.Model):
     nota_final_aspectos = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     #Referencia al caracter bajo el cual se realiza la evaluacion
     caracter = models.ForeignKey(Caracter)
+    trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='Trabajosgrado_codigo')
     class Meta:
         managed = False
         db_table = 'evaluacionestrabajogrado'
@@ -514,8 +515,6 @@ class Trabajosgrado(models.Model):
     nota_definitiva = models.DecimalField(max_digits=2, decimal_places=2, blank=True, null=True)
     #Referencia al docente que sera a su vez director del trabajo
     docentes_director = models.ForeignKey(Docentes, db_column='docentes_director')
-    #Foranea de las diferentes evaluaciones que tendra el trabajo de grado
-    evaluacionestrabajogrado = models.ForeignKey(Evaluacionestrabajogrado)
     class Meta:
         managed = False
         db_table = 'trabajosgrado'

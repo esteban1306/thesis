@@ -18,7 +18,7 @@ class JuradosAdmin(admin.ModelAdmin):
         obj.save()
             
         if not change:
-            Usuario.objects.create_userEstudiante(obj.dni, Usuario.JURADO, 'clave123')
+            Usuario.objects.create_userRol(obj.dni, Usuario.JURADO, 'clave123')
             """
             tipo = obj.tipo
             g = Group.objects.get(name=tipo)
@@ -38,7 +38,7 @@ class EstudiantesAdmin(admin.ModelAdmin):
         obj.save()
         
         if not change:
-            Usuario.objects.create_userEstudiante(obj.dni, Usuario.ESTUDIANTE, 'clave123')
+            Usuario.objects.create_userRol(obj.dni, Usuario.ESTUDIANTE, obj.dni)
             """
             est = Estudiantes.objects.create(dni=obj.dni, nombre=obj.nombre, apellidos=obj.apellidos, trabajosgrado_codigo=null )
             tipo = obj.tipo
@@ -46,6 +46,17 @@ class EstudiantesAdmin(admin.ModelAdmin):
             obj.groups.clear()
             obj.groups.add(g)   
             """
+
+class CoordinadorestgAdmin(admin.ModelAdmin):
+    
+    def save_model(self, request, obj, form, change):
+        obj.save()
+        d = Docentes.objects.get(pk=obj.docentes_dni)
+        if not change:
+            Usuario.objects.create_userRol(d.dni, Usuario.COORDINADOR, d.dni)
+            
+        
+        
 
 admin.site.register(Estudiantes, EstudiantesAdmin)
 admin.site.register(Tipodocente, TipodocenteAdmin)
@@ -55,3 +66,4 @@ admin.site.register(Evaluacionestrabajogrado, EvaluacionesTrabajoGradoAdmin)
 admin.site.register(Trabajosgrado)
 admin.site.register(Jurados, JuradosAdmin)
 admin.site.register(Modalidadespasantia)
+admin.site.register(Coordinadorestg, CoordinadorestgAdmin)
