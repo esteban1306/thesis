@@ -7,7 +7,7 @@
 #
 # Also note: You'll have to insert the output of 'django-admin.py sqlctom [appname]'
 # into your database.
-#encoding:utf-8
+# encoding:utf-8
 from __future__ import unicode_literals
 from django.db import models
 
@@ -21,6 +21,7 @@ class Asesores(models.Model):
     fecha = models.DateField(blank=True, null=True)
 
     class Meta:
+        verbose_name_plural = "Asesores"
         managed = False
         db_table = 'asesores'
 
@@ -35,6 +36,7 @@ class Aspectos(models.Model):
     #Referencia a la evaluacion de este aspecto
     evaluacionestrabajogrado = models.ForeignKey('Evaluacionestrabajogrado')
     class Meta:
+        verbose_name_plural = "Aspectos"
         managed = False
         db_table = 'aspectos'
 
@@ -49,6 +51,7 @@ class Caracter(models.Model):
     def __unicode__(self):
         return self.descripcion
     class Meta:
+        verbose_name_plural = "Caracter"
         managed = False
         db_table = 'caracter'
 
@@ -59,6 +62,7 @@ class Concejocurricular(models.Model):
     #La fecha en que se ha creado el concejo
     fechacreacion = models.DateField()
     class Meta:
+        verbose_name_plural = "Concejos Curriculares"
         managed = False
         db_table = 'concejocurricular'
 
@@ -69,6 +73,7 @@ class Conceptossolicitudes(models.Model):
     #Descripcion del concepto de la solicitud del trabajo
     descripcion = models.CharField(max_length=15)
     class Meta:
+        verbose_name_plural = "Conceptos Solicitudes"
         managed = False
         db_table = 'conceptossolicitudes'
 
@@ -84,6 +89,7 @@ class Conveniomarco(models.Model):
     #Nit de la empresa con que se ha hecho el convenio
     empresaspasantes_nit = models.ForeignKey('Empresaspasantes', db_column='empresaspasantes_nit')
     class Meta:
+        verbose_name_plural = "Convenios Marco"
         managed = False
         db_table = 'conveniomarco'
 
@@ -100,6 +106,7 @@ class Convocatorias(models.Model):
     #Referencia a la solicitud correspondiente de convocatoria
     solicitudespasantes = models.ForeignKey('Solicitudespasantes')
     class Meta:
+        verbose_name_plural = "Convocatorias"
         managed = False
         db_table = 'convocatorias'
 
@@ -110,10 +117,11 @@ class Coordinadorestg(models.Model):
     #Identificacion como docente, del coordinador 
     docentes_dni = models.ForeignKey('Docentes', db_column='docentes_dni')
     #ano en que llevara la coordinacion
-    a_o = models.BigIntegerField(db_column='a\xf1o') # Field renamed to remove unsuitable characters.
+    anio = models.BigIntegerField(db_column='a\xf1o') # Field renamed to remove unsuitable characters.
     #Semestre en el cual sera coordinador
     semestreacademico = models.CharField(max_length=1)
     class Meta:
+        verbose_name_plural = "Coordinadores Trabajos de Grado"
         managed = False
         db_table = 'coordinadorestg'
 
@@ -124,6 +132,7 @@ class Criterios(models.Model):
     #Descripcion del criterio del trabajo (viable, no viable o aplazado)
     descripcion = models.CharField(max_length=20)
     class Meta:
+        verbose_name_plural = "Criterios"
         managed = False
         db_table = 'criterios'
 
@@ -140,6 +149,7 @@ class Criteriosaspectos(models.Model):
     #Referencia a los aspectos de cada criterio
     aspectos = models.ForeignKey(Aspectos)
     class Meta:
+        verbose_name_plural = "Criterios Aspectos"
         managed = False
         db_table = 'criteriosaspectos'
 
@@ -150,6 +160,7 @@ class Criteriosjurado(models.Model):
     #Descripcion de los criterios del jurado
     descripcion = models.CharField(max_length=20)
     class Meta:
+        verbose_name_plural = "Criterios Jurados"
         managed = False
         db_table = 'criteriosjurado'
 
@@ -166,13 +177,14 @@ class Cronogramas(models.Model):
     #Trabajo de grado al que corresponde el cronograma
     trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo')
     class Meta:
+        verbose_name_plural = "Cronogramas"
         managed = False
         db_table = 'cronogramas'
 
 #Modelo de clase correspondiente a la tabla Docentes
 class Docentes(models.Model):
     #Idenficacion personal del docente
-    dni = models.BigIntegerField(primary_key=True)
+    dni = models.IntegerField(primary_key=True)
     #Nombre del docente
     nombre = models.CharField(max_length=30)
     #Apellidos del docente
@@ -183,6 +195,7 @@ class Docentes(models.Model):
     def __unicode__(self):
         return self.nombre
     class Meta:
+        verbose_name_plural = "Docentes"
         managed = False
         db_table = 'docentes'
 
@@ -193,6 +206,7 @@ class DocentesConsejocurricular(models.Model):
     #Referencia al docente a cargo de proyectos
     docentes_dni = models.ForeignKey(Docentes, db_column='docentes_dni')
     class Meta:
+        verbose_name_plural = "Docentes Concejos Curriculares"
         managed = False
         db_table = 'docentes_consejocurricular'
 
@@ -213,6 +227,7 @@ class Documentacion(models.Model):
     #Campo para referirse a otros documentos relacionados con el actual
     documentacion_alterna = models.ForeignKey('self', blank=True, null=True)
     class Meta:
+        verbose_name_plural = "Documentaciones"
         managed = False
         db_table = 'documentacion'
 
@@ -227,6 +242,7 @@ class Empresaspasantes(models.Model):
     #Referencia al tipo de empresa que solicita la pasantia
     tiposempresa = models.ForeignKey('Tiposempresa')
     class Meta:
+        verbose_name_plural = "Empresas Pasantes"
         managed = False
         db_table = 'empresaspasantes'
 
@@ -241,6 +257,7 @@ class Estudiantes(models.Model):
     #Referencia al trabajo de grado que desarrollara
     trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo')
     class Meta:
+        verbose_name_plural = "Estudiantes"
         managed = False
         db_table = 'estudiantes'
 
@@ -254,7 +271,9 @@ class Evaluacionestrabajogrado(models.Model):
     nota_final_aspectos = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     #Referencia al caracter bajo el cual se realiza la evaluacion
     caracter = models.ForeignKey(Caracter)
+    trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='Trabajosgrado_codigo')
     class Meta:
+        verbose_name_plural = "Evaluaciones Trabajos de Grado"
         managed = False
         db_table = 'evaluacionestrabajogrado'
 
@@ -273,6 +292,7 @@ class Historicocriteriospropuestas(models.Model):
     #Campo de referencia a los revisores tecnicos de la propuesta
     proptg_revt_revtec = models.ForeignKey('PropuestatgRevisorest', related_name="proptg_revt_revtec")
     class Meta:
+        verbose_name_plural = "Historicos Criterios Propuestas"
         managed = False
         db_table = 'historicocriteriospropuestas'
 
@@ -291,6 +311,7 @@ class InformefinalCriterios(models.Model):
     #Enlace web sobre el detalle de los criterios del informe final 
     link = models.CharField(max_length=20, blank=True)
     class Meta:
+        verbose_name_plural = "Informes Finales Criterios"
         managed = False
         db_table = 'informefinal_criterios'
 
@@ -311,6 +332,7 @@ class Informesfinales(models.Model):
     #Enlace web detallado de la descripcion del informe final
     link = models.CharField(max_length=20, blank=True)
     class Meta:
+        verbose_name_plural = "Informes Finales"
         managed = False
         db_table = 'informesfinales'
 
@@ -325,6 +347,7 @@ class Informesperiodicos(models.Model):
     #Referencia a la pasantia a que alude el informe
     pasantias_trabajosgrado_codigo = models.ForeignKey('Pasantias', db_column='pasantias_trabajosgrado_codigo')
     class Meta:
+        verbose_name_plural = "Informes Periodicos"
         managed = False
         db_table = 'informesperiodicos'
 
@@ -341,6 +364,7 @@ class Jurados(models.Model):
     #Fecha de asignacion de jurados
     fecha = models.DateField(blank=True, null=True)
     class Meta:
+        verbose_name_plural = "Jurados"
         managed = False
         db_table = 'jurados'
 
@@ -351,6 +375,7 @@ class Modalidadespasantia(models.Model):
     #Descripcion de la modalidad de pasantia (laboral, proyeccion social, internacional o investigacion)
     descripcion = models.CharField(max_length=20)
     class Meta:
+        verbose_name_plural = "Modalidades Pasantia"
         managed = False
         db_table = 'modalidadespasantia'
 
@@ -363,6 +388,7 @@ class Modalidadestg(models.Model):
     #Referencia al trabajo de grado especificado por la modalidad
     trabajogrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajogrado_codigo')
     class Meta:
+        verbose_name_plural = "Modalidades Trabajos de Grado"
         managed = False
         db_table = 'modalidadestg'
 
@@ -379,6 +405,7 @@ class Pasantias(models.Model):
     #Referencia de la previa propuesta de pasantia
     propuestaspasantias_id = models.BigIntegerField(unique=True)
     class Meta:
+        verbose_name_plural = "Pasantias"
         managed = False
         db_table = 'pasantias'
 
@@ -397,6 +424,7 @@ class Propuestatg(models.Model):
     #Referencia al trabajo de grado al que pertenece la propuesta
     trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo')
     class Meta:
+        verbose_name_plural = "Propuestas Trabajos de Grado"
         managed = False
         db_table = 'propuestatg'
 
@@ -407,6 +435,7 @@ class PropuestatgRevisorest(models.Model):
     #Campo de referencia a los revisores tecnicos encargados de evaluar la propuesta
     revisorestecnicos = models.ForeignKey('Revisorestecnicos')
     class Meta:
+        verbose_name_plural = "Propuestas_Trabajos de Grado_Revisores Tecnicos"
         managed = False
         db_table = 'propuestatg_revisorest'
 
@@ -419,6 +448,7 @@ class Revisorestecnicos(models.Model):
     #Identificacion del docente que realizara la revision tecnica
     docentes_dni = models.ForeignKey(Docentes, db_column='docentes_dni')
     class Meta:
+        verbose_name_plural = "Revisores Tecnicos"
         managed = False
         db_table = 'revisorestecnicos'
 
@@ -439,6 +469,7 @@ class Solicitudespasantes(models.Model):
     #Campo de llave foranea de los revisores encargados de la solicitud
     revisorestecnicos = models.ForeignKey(Revisorestecnicos, blank=True, null=True)
     class Meta:
+        verbose_name_plural = "Solicitudes Pasantes"
         managed = False
         db_table = 'solicitudespasantes'
 
@@ -455,6 +486,7 @@ class Supervisoresempresas(models.Model):
     #Foranea que indica la empresa a la cual pertenece el supervisor
     empresaspasantes_nit = models.ForeignKey(Empresaspasantes, db_column='empresaspasantes_nit')
     class Meta:
+        verbose_name_plural = "Supervisores Empresas"
         managed = False
         db_table = 'supervisoresempresas'
 
@@ -475,6 +507,7 @@ class Sustentaciones(models.Model):
     #Foranea del trabajo de grado sustentado
     trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo', unique=True)
     class Meta:
+        verbose_name_plural = "Sustentaciones"
         managed = False
         db_table = 'sustentaciones'
 
@@ -489,6 +522,7 @@ class Tipodocente(models.Model):
         return self.descripcion
 
     class Meta:
+        verbose_name_plural = "Tipos de Docente"
         managed = False
         db_table = 'tipodocente'
 
@@ -499,6 +533,7 @@ class Tiposempresa(models.Model):
     #Campo que indica si la empresa es publica o privada
     descripcion = models.CharField(max_length=20)
     class Meta:
+        verbose_name_plural = "Tipos de Empresa"
         managed = False
         db_table = 'tiposempresa'
 
@@ -514,9 +549,8 @@ class Trabajosgrado(models.Model):
     nota_definitiva = models.DecimalField(max_digits=2, decimal_places=2, blank=True, null=True)
     #Referencia al docente que sera a su vez director del trabajo
     docentes_director = models.ForeignKey(Docentes, db_column='docentes_director')
-    #Foranea de las diferentes evaluaciones que tendra el trabajo de grado
-    evaluacionestrabajogrado = models.ForeignKey(Evaluacionestrabajogrado)
     class Meta:
+        verbose_name_plural = "Trabajos de Grado"
         managed = False
         db_table = 'trabajosgrado'
 
@@ -533,5 +567,6 @@ class Visitas(models.Model):
     #Identificacion de la empresa pasante que envio personal para realizar la visita
     empresaspasantes_nit = models.ForeignKey(Empresaspasantes, db_column='empresaspasantes_nit')
     class Meta:
+        verbose_name_plural = "Visitas"
         managed = False
         db_table = 'visitas'

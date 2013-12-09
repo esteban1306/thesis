@@ -5,8 +5,8 @@ from models import Tipodocente, Docentes, Caracter, Evaluacionestrabajogrado
 
 #Crear modelo de formulario para el inicio de sesion
 class LoginForm(forms.Form):
-	username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'ingrese su usuario'}))
-	password = forms.CharField(widget=forms.PasswordInput(render_value=False))	
+	username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'ingrese su dni de usuario'}))
+	password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control','placeholder':'ingrese su password'}))
 
 #Crear modelo de formulario para el modelo de clase Tipodocente
 class TipodocenteForm(ModelForm):
