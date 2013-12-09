@@ -52,11 +52,9 @@ class EstudiantesAdmin(admin.ModelAdmin):
             obj.groups.add(g)   
             """
 
-<<<<<<< HEAD
 # Registro de los modelos
 
 #Agregar el modelo Estudiantes dentro de la interfaz administrativa
-=======
 class CoordinadorestgAdmin(admin.ModelAdmin):
     
     def save_model(self, request, obj, form, change):
@@ -66,7 +64,6 @@ class CoordinadorestgAdmin(admin.ModelAdmin):
             Usuario.objects.create_userRol(d.dni, Usuario.COORDINADOR, d.dni)
             
         
->>>>>>> 547c2c341e3754d0652c24a20e2a27b38d700790
 admin.site.register(Estudiantes, EstudiantesAdmin)
 #Agregar el modelo Tipodocente dentro de la interfaz administrativa
 admin.site.register(Tipodocente, TipodocenteAdmin)
@@ -80,10 +77,8 @@ admin.site.register(Evaluacionestrabajogrado, EvaluacionesTrabajoGradoAdmin)
 admin.site.register(Trabajosgrado)
 #Agregar el modelo Jurados dentro de la interfaz administrativa
 admin.site.register(Jurados, JuradosAdmin)
-<<<<<<< HEAD
 #Agregar el modelo Modalidadespasantia dentro de la interfaz administrativa
 admin.site.register(Modalidadespasantia)
-=======
 admin.site.register(Modalidadespasantia)
 admin.site.register(Concejocurricular)
 admin.site.register(Asesores)
@@ -113,4 +108,3 @@ admin.site.register(Supervisoresempresas)
 admin.site.register(Sustentaciones)
 admin.site.register(Tiposempresa)
 admin.site.register(Visitas)
->>>>>>> 547c2c341e3754d0652c24a20e2a27b38d700790
