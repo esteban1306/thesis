@@ -79,7 +79,6 @@ admin.site.register(Trabajosgrado)
 admin.site.register(Jurados, JuradosAdmin)
 #Agregar el modelo Modalidadespasantia dentro de la interfaz administrativa
 admin.site.register(Modalidadespasantia)
-admin.site.register(Modalidadespasantia)
 admin.site.register(Concejocurricular)
 admin.site.register(Asesores)
 admin.site.register(Aspectos)

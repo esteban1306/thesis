@@ -1,10 +1,18 @@
 {% extends 'base.html' %}
 {% block title %} Login {% endblock %}
-{% block content %}
-<form action="" method='POST'>
-	{% csrf_token %}
-	{{mensaje}}
-	{{form.as_p}}
-	<input type='submit' value='Login'/>
-</form>
+{% block body %}
+
+<center><div class="col-sm-3 col-md-3">
+<div class="panel panel-primary">
+	<div class="panel-heading">Iniciar Sesión | Thesis</div>
+	<div class="panel-body">
+    	<form lass="form-login navbar-form" action="{% url 'principal.views.login_view' %}" method='POST'>
+		{% csrf_token %}
+		
+		{{form.as_p}}
+		<input type="submit" value="Login" class="btn btn-block btn-success" >
+		</form>
+  	</div>
+</div>
+</div></center>
 {% endblock %}
