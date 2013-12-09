@@ -20,15 +20,17 @@ class Asesores(models.Model):
     #Fecha en que se ha asignado el asesor al trabajo de grado
     fecha = models.DateField(blank=True, null=True)
 
+    def __unicode__(self):
+        return self.trabajosgrado_codigo.codigo
+
     class Meta:
         verbose_name_plural = "Asesores"
-        managed = False
         db_table = 'asesores'
 
 #Modelo de clase correspondiente a la tabla Aspectos
 class Aspectos(models.Model):
     #Id del aspecto 
-    id = models.BigIntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     #Descripcion del aspectos de la calificacion del trabajo
     descripcion = models.CharField(max_length=20)
     #Porcentaje de nota que representa el aspecto
@@ -139,7 +141,7 @@ class Criterios(models.Model):
 #Modelo de clase correspondiente a la tabla Criteriosaspectos
 class Criteriosaspectos(models.Model):
     #Identificador de la tabla criteriosaspectos
-    id = models.BigIntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     #Descripcion de los criterios a tener en cuenta en los aspectos de evaluacion
     descripcion = models.CharField(max_length=30)
     #porcentaje que representa cada criterio del aspecto

@@ -21,9 +21,9 @@ class JuradosAdmin(admin.ModelAdmin):
     list_display = ('trabajosgrado_codigo','docentes_dni','presidente', 'fecha')
     def save_model(self, request, obj, form, change):
         obj.save()
-            
+        d = Docentes.objects.filter(pk=obj.docentes_dni)
         if not change:
-            Usuario.objects.create_userRol(obj.dni, Usuario.JURADO, 'clave123')
+            Usuario.objects.create_userRol(d.dni, Usuario.JURADO, d.dni)
             """
             tipo = obj.tipo
             g = Group.objects.get(name=tipo)
@@ -41,10 +41,12 @@ class EvaluacionesTrabajoGradoAdmin(admin.ModelAdmin):
 
 #Define un modelo de administracion para Estudiantes
 class EstudiantesAdmin(admin.ModelAdmin):
-    
+    list_display = ('dni','nombre','apellidos')
+    list_filter = ['apellidos']
+    search_fields = ['nombre'] 
     def save_model(self, request, obj, form, change):
         obj.save()
-        
+
         if not change:
             Usuario.objects.create_userRol(obj.dni, Usuario.ESTUDIANTE, obj.dni)
             """
