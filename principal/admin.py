@@ -12,6 +12,9 @@ class TipodocenteAdmin(admin.ModelAdmin):
 #Define un modelo de administracion para Docentes
 class DocentesAdmin(admin.ModelAdmin):
     list_display = ('dni','nombre','apellidos', 'tipodocente')
+    list_filter = ['nombre']
+    search_fields = ['nombre']    
+
 
 #Define un modelo de administracion para Jurados
 class JuradosAdmin(admin.ModelAdmin):
@@ -52,6 +55,80 @@ class EstudiantesAdmin(admin.ModelAdmin):
             obj.groups.add(g)   
             """
 
+class VisitasAdmin(admin.ModelAdmin):
+    list_display = ('id', 'fecha', 'hora' )
+    list_filter = ['id']
+    search_fields = ['id']
+
+class trabajosgradoAdmin(admin.ModelAdmin):
+    list_display = ('codigo', 'titulo', 'grupo_investigacion', 'nota_definitiva' )
+    list_filter = ['codigo']
+    search_fields = ['titulo']    
+
+class TiposempresaAdmin(admin.ModelAdmin):
+    list_display = ('id', 'descripcion')
+    list_filter = ['descripcion']
+    search_fields = ['descripcion']
+
+
+class SustentacionesAdmin(admin.ModelAdmin):
+    list_display = ('id', 'fechapublicacion', 'fecharealizacion', 'hora','lugar' , 'nota')
+    list_filter = ['id']
+    search_fields = ['id']  
+
+class SupervisoresempresasAdmin(admin.ModelAdmin):
+    list_display = ('dni', 'nombre', 'apellidos', 'cargo')
+    list_filter = ['nombre']
+    search_fields = ['nombre']      
+
+class SolicitudespasantesAdmin(admin.ModelAdmin):
+    list_display = ('id', 'fecha', 'link')
+    list_filter = ['id']
+    search_fields = ['id']      
+class RevisorestecnicosAdmin(admin.ModelAdmin):
+    list_display = ('id',)
+    list_filter = ['id']
+    search_fields = ['id']  
+
+class PropuestatgAdmin(admin.ModelAdmin):
+    list_display = ('id', 'titulo', 'fechapresentacion', 'link')
+    list_filter = ['id']
+    search_fields = ['id']    
+
+class PasantiasAdmin(admin.ModelAdmin):
+    list_display = ('codigo', 'propuestaspasantias_id')
+    list_filter = ['codigo']
+    search_fields = ['codigo'] 
+
+class ModalidadestgAdmin(admin.ModelAdmin):
+    list_display = ('id', 'descripcion')
+    list_filter = ['id']
+    search_fields = ['id'] 
+
+class ModalidadespasantiaAdmin(admin.ModelAdmin):
+    list_display = ('id', 'descripcion')
+    list_filter = ['id']
+    search_fields = ['id'] 
+
+class InformesperiodicosAdmin(admin.ModelAdmin):
+    list_display = ('id', 'link', 'fecha')
+    list_filter = ['id']
+    search_fields = ['id'] 
+
+class InformesfinalesAdmin(admin.ModelAdmin):
+    list_display = ('id', 'titulo', 'fecha', 'link')
+    list_filter = ['id']
+    search_fields = ['id'] 
+
+class InformefinalCriteriosAdmin(admin.ModelAdmin):
+    list_display = ('fecha', 'link')
+    list_filter = ['fecha']
+    search_fields = ['fecha'] 
+
+class HistoricocriteriospropuestasAdmin(admin.ModelAdmin):
+    list_display = ('fecha', 'link')
+    list_filter = ['fecha']
+    search_fields = ['link']                                  
 # Registro de los modelos
 
 #Agregar el modelo Estudiantes dentro de la interfaz administrativa
@@ -74,11 +151,12 @@ admin.site.register(Caracter, CaracterAdmin)
 #Agregar el modelo Evaluacionestrabajogrado dentro de la interfaz administrativa
 admin.site.register(Evaluacionestrabajogrado, EvaluacionesTrabajoGradoAdmin)
 #Agregar el modelo Trabajosgrado dentro de la interfaz administrativa
-admin.site.register(Trabajosgrado)
+admin.site.register(Trabajosgrado, trabajosgradoAdmin)
 #Agregar el modelo Jurados dentro de la interfaz administrativa
 admin.site.register(Jurados, JuradosAdmin)
 #Agregar el modelo Modalidadespasantia dentro de la interfaz administrativa
 admin.site.register(Modalidadespasantia)
+#Agregar el modelo Modalidadespasantia dentro de la interfaz administrativa
 admin.site.register(Concejocurricular)
 admin.site.register(Asesores)
 admin.site.register(Aspectos)
@@ -93,17 +171,16 @@ admin.site.register(Cronogramas)
 admin.site.register(DocentesConsejocurricular)
 admin.site.register(Documentacion)
 admin.site.register(Empresaspasantes)
-admin.site.register(Historicocriteriospropuestas)
-admin.site.register(InformefinalCriterios)
-admin.site.register(Informesfinales)
-admin.site.register(Informesperiodicos)
-admin.site.register(Modalidadestg)
-admin.site.register(Pasantias)
-admin.site.register(Propuestatg)
-admin.site.register(PropuestatgRevisorest)
-admin.site.register(Revisorestecnicos)
-admin.site.register(Solicitudespasantes)
-admin.site.register(Supervisoresempresas)
-admin.site.register(Sustentaciones)
-admin.site.register(Tiposempresa)
-admin.site.register(Visitas)
+admin.site.register(Historicocriteriospropuestas,HistoricocriteriospropuestasAdmin)
+admin.site.register(InformefinalCriterios,InformefinalCriteriosAdmin)
+admin.site.register(Informesfinales,InformesfinalesAdmin)
+admin.site.register(Informesperiodicos,InformesperiodicosAdmin)
+admin.site.register(Modalidadestg, ModalidadestgAdmin)
+admin.site.register(Pasantias, PasantiasAdmin)
+admin.site.register(Propuestatg, PropuestatgAdmin)
+admin.site.register(Revisorestecnicos, RevisorestecnicosAdmin)
+admin.site.register(Solicitudespasantes, SolicitudespasantesAdmin)
+admin.site.register(Supervisoresempresas, SupervisoresempresasAdmin)
+admin.site.register(Sustentaciones,SustentacionesAdmin)
+admin.site.register(Tiposempresa,TiposempresaAdmin)
+admin.site.register(Visitas, VisitasAdmin)
