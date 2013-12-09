@@ -26,6 +26,7 @@ class Asesores(models.Model):
 
     class Meta:
         unique_together = (("trabajosgrado_codigo", "docentes_dni"),)
+        #managed = False
         verbose_name_plural = "Asesores"
         db_table = 'asesores'
 

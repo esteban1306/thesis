@@ -17,7 +17,7 @@ class DocentesAdmin(admin.ModelAdmin):
 
 #Define un modelo de administracion para Asesores
 class AsesoresAdmin(admin.ModelAdmin):
-    
+    list_display = ('id','trabajosgrado_codigo','docentes_dni', 'fecha')
 
 #Define un modelo de administracion para Jurados
 class JuradosAdmin(admin.ModelAdmin):
@@ -163,7 +163,7 @@ admin.site.register(Jurados, JuradosAdmin)
 admin.site.register(Modalidadespasantia)
 #Agregar el modelo Modalidadespasantia dentro de la interfaz administrativa
 admin.site.register(Concejocurricular)
-admin.site.register(Asesores)
+admin.site.register(Asesores, AsesoresAdmin)
 admin.site.register(Aspectos)
 admin.site.register(Conceptossolicitudes)
 admin.site.register(Conveniomarco)
