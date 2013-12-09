@@ -13,7 +13,7 @@ class TipodocenteAdmin(admin.ModelAdmin):
 class DocentesAdmin(admin.ModelAdmin):
     list_display = ('dni','nombre','apellidos', 'tipodocente')
     list_filter = ['nombre']
-    search_fields = ['nombre']   
+    search_fields = ['nombre']
 
 #Define un modelo de administracion para Asesores
 class AsesoresAdmin(admin.ModelAdmin):
