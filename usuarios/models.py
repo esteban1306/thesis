@@ -40,7 +40,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
 
     ESTUDIANTE     = 'estudiante'#'0'
     DIRECTOR   = 'director'#'1'
-    JURADO  = 'jurado'
+    JURADO  = 'jurado'#'2'
     
     TIPO_USUARIO = (
         (ESTUDIANTE, 'estudiante (s)'),

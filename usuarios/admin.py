@@ -6,7 +6,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, AuthenticationForm
 from django.utils.translation import ugettext, ugettext_lazy as _
-
+from django.db import connection
 from usuarios.models import Usuario
 
 
