@@ -13,6 +13,7 @@ from django.db import models
 
 #Modelo de clase correspondiente a la tabla Asesores
 class Asesores(models.Model):
+    id = models.IntegerField(primary_key=True)
     #Codigo del trabajo de grado a cargo del asesor
     trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo')
     #Identificacion del asesor
@@ -21,9 +22,10 @@ class Asesores(models.Model):
     fecha = models.DateField(blank=True, null=True)
 
     def __unicode__(self):
-        return self.trabajosgrado_codigo.codigo
+        return "%s" % self.id
 
     class Meta:
+        unique_together = (("trabajosgrado_codigo", "docentes_dni"),)
         verbose_name_plural = "Asesores"
         db_table = 'asesores'
 
