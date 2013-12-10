@@ -2,6 +2,7 @@ from django.contrib import admin
 #Importar todo desde models
 from models import *
 from usuarios.models import Usuario
+from django.db.models import Q
 
 #Define un modelo de administracion para Tipodocente
 class TipodocenteAdmin(admin.ModelAdmin):
@@ -19,6 +20,21 @@ class DocentesAdmin(admin.ModelAdmin):
 class AsesoresAdmin(admin.ModelAdmin):
     list_display = ('id','trabajosgrado_codigo','docentes_dni', 'fecha')
 
+    def add_view(self, *args, **kwargs):
+        self.fields = ('trabajosgrado_codigo','docentes_dni','fecha')
+        return super(AsesoresAdmin, self).add_view(*args, **kwargs)
+    """
+    def change_view(self, *args, **kwargs):
+        self.fields = ('id','trabajosgrado_codigo','docentes_dni','fecha')
+        return super(AsesoresAdmin, self).change_view(*args, **kwargs)
+    """
+    def save_model(self, request, obj, form, change):
+        if not change:
+            #nombre = obj.__class__.__name__
+            obj.id = Asesores.objects.all().count() + 1
+            obj.save()
+        obj.save()
+    
 #Define un modelo de administracion para Jurados
 class JuradosAdmin(admin.ModelAdmin):
     list_display = ('trabajosgrado_codigo','docentes_dni','presidente', 'fecha')
