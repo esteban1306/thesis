@@ -17,9 +17,19 @@ class DocentesAdmin(admin.ModelAdmin):
 
 #Define un modelo de administracion para Asesores
 class AsesoresAdmin(admin.ModelAdmin):
+    list_display = ('id', 'trabajosgrado_codigo','docentes_dni', 'fecha')
+    readonly_fields = ('id',)
+    search_fields = ('id',)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.id = Asesores.objects.all().count() + 1
+            obj.save()
+        obj.save()
     
 
 #Define un modelo de administracion para Jurados
+
 class JuradosAdmin(admin.ModelAdmin):
     list_display = ('trabajosgrado_codigo','docentes_dni','presidente', 'fecha')
     def save_model(self, request, obj, form, change):
@@ -163,7 +173,7 @@ admin.site.register(Jurados, JuradosAdmin)
 admin.site.register(Modalidadespasantia)
 #Agregar el modelo Modalidadespasantia dentro de la interfaz administrativa
 admin.site.register(Concejocurricular)
-admin.site.register(Asesores)
+admin.site.register(Asesores, AsesoresAdmin)
 admin.site.register(Aspectos)
 admin.site.register(Conceptossolicitudes)
 admin.site.register(Conveniomarco)
