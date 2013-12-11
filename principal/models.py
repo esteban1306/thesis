@@ -38,7 +38,7 @@ class Aspectos(models.Model):
     #Descripcion del aspectos de la calificacion del trabajo
     descripcion = models.CharField(max_length=20)
     #Porcentaje de nota que representa el aspecto
-    porcentaje = models.DecimalField(max_digits=2, decimal_places=2)
+    porcentaje = models.DecimalField(max_digits=3, decimal_places=2)
     #Referencia a la evaluacion de este aspecto
     evaluacionestrabajogrado = models.ForeignKey('Evaluacionestrabajogrado')
     class Meta:
@@ -149,9 +149,9 @@ class Criteriosaspectos(models.Model):
     #Descripcion de los criterios a tener en cuenta en los aspectos de evaluacion
     descripcion = models.CharField(max_length=30)
     #porcentaje que representa cada criterio del aspecto
-    porcentaje = models.DecimalField(max_digits=2, decimal_places=2, blank=True, null=True)
+    porcentaje = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     #Calificacion que tiene cada criterio por aspecto
-    calificacion = models.DecimalField(max_digits=2, decimal_places=2, blank=True, null=True)
+    calificacion = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     #Referencia a los aspectos de cada criterio
     aspectos = models.ForeignKey(Aspectos)
     class Meta:
@@ -297,10 +297,8 @@ class Historicocriteriospropuestas(models.Model):
     fecha = models.DateField()
     #Enlace web donde esta el historial de criterios
     link = models.CharField(max_length=20, blank=True)
-    #Campo de referencia a la propuesta del trabajo
-    proptg_revtproptg = models.ForeignKey('PropuestatgRevisorest')
     #Campo de referencia a los revisores tecnicos de la propuesta
-    proptg_revt_revtec = models.ForeignKey('PropuestatgRevisorest', related_name="proptg_revt_revtec")
+    propuestatg_revisorest = models.ForeignKey('PropuestatgRevisorest')
     class Meta:
         verbose_name_plural = "Historicos Criterios Propuestas"
         
@@ -308,6 +306,7 @@ class Historicocriteriospropuestas(models.Model):
 
 #Modelo de clase correspondiente a la tabla InformefinalCriterios
 class InformefinalCriterios(models.Model):
+    id = models.BigIntegerField(primary_key=True)
     #Fecha en que se emite el informe final 
     fecha = models.DateField()
     #Campo de referencia al informe final 
@@ -315,11 +314,13 @@ class InformefinalCriterios(models.Model):
     #Campo donde se incluye los criterios que designa el jurado calificador
     criteriosjurado = models.ForeignKey(Criteriosjurado)
     #Referencia al jurado que emitio el informe
-    jurados_trabajosgrado_codigo = models.ForeignKey('Jurados', db_column='jurados_trabajosgrado_codigo')
+    #jurados_trabajosgrado_codigo = models.ForeignKey('Jurados', db_column='jurados_trabajosgrado_codigo')
     #Referencia al docente que actua como jurado
-    jurados_docentes_dni = models.ForeignKey('Jurados', db_column='jurados_docentes_dni', related_name="jurados_docentes_dni")
+    #jurados_docentes_dni = models.ForeignKey('Jurados', db_column='jurados_docentes_dni', related_name="jurados_docentes_dni")
     #Enlace web sobre el detalle de los criterios del informe final 
     link = models.CharField(max_length=20, blank=True)
+    jurados = models.ForeignKey('Jurados')
+    #jurados_id = models.ForeignKey('Jurados', db_column='jurados_id')
     class Meta:
         verbose_name_plural = "Informes Finales Criterios"
         
@@ -363,6 +364,8 @@ class Informesperiodicos(models.Model):
 
 #Modelo de clase correspondiente a la tabla Jurados
 class Jurados(models.Model):
+    #Identificador unico de los jurados de un trabajo de grado
+    id = models.IntegerField(primary_key=True)
     #Referencia al trabajo de grado que calificara el jurado
     trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo')
     #Campo referente a la identificacion del docente que servira de jurado
@@ -375,6 +378,7 @@ class Jurados(models.Model):
     fecha = models.DateField(blank=True, null=True)
     class Meta:
         verbose_name_plural = "Jurados"
+        unique_together = (("trabajosgrado_codigo", "docentes_dni"),)
         
         db_table = 'jurados'
 
@@ -516,7 +520,7 @@ class Sustentaciones(models.Model):
     #Campo que especifica el lugar donde se realizara la sustentacion
     lugar = models.CharField(max_length=30)
     #Calificacion obtenida debido a la sustentacion
-    nota = models.DecimalField(max_digits=2, decimal_places=2, blank=True, null=True)
+    nota = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     #Foranea del trabajo de grado sustentado
     trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo', unique=True)
     class Meta:
@@ -559,7 +563,7 @@ class Trabajosgrado(models.Model):
     #Campo para una letra indicando si el trabajo de grado pertenece a un grupo de investigacion o si es mediante otra modalidad
     grupo_investigacion = models.CharField(max_length=30, blank=True)
     #Campo con la calificacion cuantitativa final del trabajo de grado
-    nota_definitiva = models.DecimalField(max_digits=2, decimal_places=2, blank=True, null=True)
+    nota_definitiva = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     #Referencia al docente que sera a su vez director del trabajo
     docentes_director = models.ForeignKey(Docentes, db_column='docentes_director')
     class Meta:
