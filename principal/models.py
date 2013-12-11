@@ -15,7 +15,8 @@ from django.db import models
 
 #Modelo de clase correspondiente a la tabla Asesores
 class Asesores(models.Model):
-    id = models.IntegerField(primary_key=True)    #Codigo del trabajo de grado a cargo del asesor
+    #Codigo del trabajo de grado a cargo del asesor
+    id = models.IntegerField(primary_key=True)    
     trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo')
     #Identificacion del asesor
     docentes_dni = models.ForeignKey('Docentes', db_column='docentes_dni')
@@ -206,6 +207,8 @@ class Docentes(models.Model):
 
 #Modelo de clase correspondiente a la tabla DoncentesConsejocurricular
 class DocentesConsejocurricular(models.Model):
+    #Identificador unico
+    id = models.IntegerField(primary_key=True)
     #Referencia al concejo curricular como intermediaacion con los proyectos
     concejocurricular = models.ForeignKey(Concejocurricular)
     #Referencia al docente a cargo de proyectos
@@ -218,7 +221,7 @@ class DocentesConsejocurricular(models.Model):
 #Modelo de clase correspondiente a la tabla Documentacion
 class Documentacion(models.Model):
     #Identificador unico de la documentacion
-    id = models.BigIntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     #Fecha en que se produjo el documento
     fecha = models.DateField()
     #Asunto de que trata el documento
@@ -269,7 +272,7 @@ class Estudiantes(models.Model):
 #Modelo de clase correspondiente a la tabla Evaluacionestrabajogrado
 class Evaluacionestrabajogrado(models.Model):
     #Identificador unico de la evaluacion
-    id = models.BigIntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     #Campo que contiene la fecha de la evaluacion
     fecha = models.DateField()
     #Campo para la nota final de los aspectos de evaluacion
@@ -284,6 +287,8 @@ class Evaluacionestrabajogrado(models.Model):
 
 #Modelo de clase correspondiente a la tabla Historicocriteriospropuestas
 class Historicocriteriospropuestas(models.Model):
+    #Identificador unico
+    id = models.IntegerField(primary_key=True)
     #Campo de referencia a los criterios que ha tenido el trabajo
     criterios = models.ForeignKey(Criterios)
     #Campo de referencia al concejo curricular
@@ -435,12 +440,15 @@ class Propuestatg(models.Model):
 
 #Modelo de clase correspondiente a la tabla PropuestatgRevisorest
 class PropuestatgRevisorest(models.Model):
+    #Identificador de llave primaria
+    id = models.IntegerField(primary_key=True)
     #Campo que se refiere a la propuesta que sera revisada
     propuestatg = models.ForeignKey(Propuestatg)
     #Campo de referencia a los revisores tecnicos encargados de evaluar la propuesta
     revisorestecnicos = models.ForeignKey('Revisorestecnicos')
     class Meta:
         verbose_name_plural = "Propuestas_Trabajos de Grado_Revisores Tecnicos"
+        unique_together = (("propuestatg", "revisorestecnicos"),)
         
         db_table = 'propuestatg_revisorest'
 
