@@ -2,7 +2,7 @@ from django.contrib import admin
 #Importar todo desde models
 from models import *
 from usuarios.models import Usuario
-from django.db.models import Q
+from django.contrib.auth.models import Group
 
 #Define un modelo de administracion para Tipodocente
 class TipodocenteAdmin(admin.ModelAdmin):
@@ -156,10 +156,15 @@ class HistoricocriteriospropuestasAdmin(admin.ModelAdmin):
 class CoordinadorestgAdmin(admin.ModelAdmin):
     
     def save_model(self, request, obj, form, change):
-        obj.save()
-        d = Docentes.objects.get(pk=obj.docentes_dni)
-        if not change:
-            Usuario.objects.create_userRol(d.dni, Usuario.COORDINADOR, d.dni)
+        if change:
+            obj.save()
+        else:
+            obj.save()
+            dni = obj.docentes_dni.dni
+            user = Usuario.objects.create_userRol(dni, Usuario.COORDINADOR, dni)
+
+            grupo = Group.objects.get(name='coordinador')
+            user.groups.add(grupo)
             
         
 admin.site.register(Estudiantes, EstudiantesAdmin)
@@ -184,7 +189,7 @@ admin.site.register(Aspectos)
 admin.site.register(Conceptossolicitudes)
 admin.site.register(Conveniomarco)
 admin.site.register(Convocatorias)
-admin.site.register(Coordinadorestg)
+admin.site.register(Coordinadorestg, CoordinadorestgAdmin)
 admin.site.register(Criterios)
 admin.site.register(Criteriosaspectos)
 admin.site.register(Criteriosjurado)
