@@ -8,8 +8,10 @@
 # Also note: You'll have to insert the output of 'django-admin.py sqlctom [appname]'
 # into your database.
 # encoding:utf-8
+
 from __future__ import unicode_literals
 from django.db import models
+
 
 #Modelo de clase correspondiente a la tabla Asesores
 class Asesores(models.Model):
