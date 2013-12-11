@@ -12,6 +12,7 @@
 from __future__ import unicode_literals
 from django.db import models
 
+
 #Modelo de clase correspondiente a la tabla Asesores
 class Asesores(models.Model):
     id = models.IntegerField(primary_key=True)    #Codigo del trabajo de grado a cargo del asesor
