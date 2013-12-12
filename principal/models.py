@@ -41,6 +41,10 @@ class Aspectos(models.Model):
     porcentaje = models.DecimalField(max_digits=3, decimal_places=2)
     #Referencia a la evaluacion de este aspecto
     evaluacionestrabajogrado = models.ForeignKey('Evaluacionestrabajogrado')
+
+    def __unicode__(self):
+        return "%s" % self.descripcion
+
     class Meta:
         verbose_name_plural = "Aspectos"
         
@@ -56,6 +60,7 @@ class Caracter(models.Model):
     #El retorno a mostrar sera la descripcion del caracter
     def __unicode__(self):
         return self.descripcion
+
     class Meta:
         verbose_name_plural = "Caracter"
         
@@ -137,6 +142,11 @@ class Criterios(models.Model):
     id = models.BigIntegerField(primary_key=True)
     #Descripcion del criterio del trabajo (viable, no viable o aplazado)
     descripcion = models.CharField(max_length=20)
+
+    #El retorno a mostrar sera la descripcion del criterio
+    def __unicode__(self):
+        return self.descripcion
+
     class Meta:
         verbose_name_plural = "Criterios"
         
@@ -154,6 +164,11 @@ class Criteriosaspectos(models.Model):
     calificacion = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     #Referencia a los aspectos de cada criterio
     aspectos = models.ForeignKey(Aspectos)
+
+    #El retorno a mostrar sera la descripcion del criterio
+    def __unicode__(self):
+        return self.descripcion
+
     class Meta:
         verbose_name_plural = "Criterios Aspectos"
         
@@ -165,6 +180,11 @@ class Criteriosjurado(models.Model):
     id = models.BigIntegerField(primary_key=True)
     #Descripcion de los criterios del jurado
     descripcion = models.CharField(max_length=20)
+
+    #El retorno a mostrar sera la descripcion del criterio
+    def __unicode__(self):
+        return self.descripcion
+
     class Meta:
         verbose_name_plural = "Criterios Jurados"
         
@@ -249,6 +269,10 @@ class Empresaspasantes(models.Model):
     direccion = models.CharField(max_length=30)
     #Referencia al tipo de empresa que solicita la pasantia
     tiposempresa = models.ForeignKey('Tiposempresa')
+
+    def __unicode__(self):
+        return self.nombre
+
     class Meta:
         verbose_name_plural = "Empresas Pasantes"
         
@@ -549,6 +573,10 @@ class Tiposempresa(models.Model):
     id = models.BigIntegerField(primary_key=True)
     #Campo que indica si la empresa es publica o privada
     descripcion = models.CharField(max_length=20)
+
+    def __unicode__(self):
+        return self.descripcion
+
     class Meta:
         verbose_name_plural = "Tipos de Empresa"
         
@@ -566,6 +594,10 @@ class Trabajosgrado(models.Model):
     nota_definitiva = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     #Referencia al docente que sera a su vez director del trabajo
     docentes_director = models.ForeignKey(Docentes, db_column='docentes_director')
+
+    def __unicode__(self):
+        return self.titulo
+        
     class Meta:
         verbose_name_plural = "Trabajos de Grado"
         
