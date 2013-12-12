@@ -233,7 +233,7 @@ class Documentacion(models.Model):
     #Enlace web del documento
     link = models.CharField(max_length=20, blank=True)
     #Campo para referirse a otros documentos relacionados con el actual
-    documentacion_alterna = models.ForeignKey('self', blank=True, null=True)
+    documentacion = models.ForeignKey('self', blank=True, null=True, related_name="documentacion_alterna")
     class Meta:
         verbose_name_plural = "Documentaciones"
         
