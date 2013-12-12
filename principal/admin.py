@@ -81,138 +81,255 @@ class JuradosAdmin(admin.ModelAdmin):
             grupo = Group.objects.get(name='jurado')
             obj.groups.add(grupo)   
 
-#Define un modelo de administracion para Tipodocente
-class TipodocenteAdmin(admin.ModelAdmin):
-    list_display = ('id', 'descripcion')
-    list_filter = ['descripcion']
-    search_fields = ['descripcion']         
-    
+"""
+    Modelos de Administracion para el resto de entidades
+"""
+#Define un modelo de administracion para Aspectos
+class AspectosAdmin(admin.ModelAdmin):
+    list_display = ('id', 'descripcion', 'porcentaje')
+    search_fields = ['descripcion']
+
 #Define un modelo de administracion para Caracter
 class CaracterAdmin(admin.ModelAdmin):
     list_display = ('id', 'descripcion')
+    search_fields = ['descripcion']
+
+#Define un modelo de administracion para Concejo curricular
+class ConcejocurricularAdmin(admin.ModelAdmin):
+    list_display = ('id', 'fechacreacion')
+    search_fields = ['fechacreacion']
+
+#Define un modelo de administracion para Conceptos solicitudes
+class ConceptossolicitudesAdmin(admin.ModelAdmin):
+    list_display = ('id', 'descripcion')
+    search_fields = ['descripcion']
+
+#Define un modelo de administracion para Conveniosmarco
+class ConveniosmarcoAdmin(admin.ModelAdmin):
+    list_display = ('id', 'fecha', 'activo', 'empresaspasantes_nit')
+    search_fields = ['empresaspasantes_nit', 'fecha']
+
+#Define un modelo de administracion para Convocatorias
+class ConvocatoriasAdmin(admin.ModelAdmin):
+    list_display = ('id', 'descripcion', 'fechainicio', 'fechalimite')
+    search_fields = ['descripcion']
+
+#Define un modelo de administracion para Criterios
+class CriteriosAdmin(admin.ModelAdmin):
+    list_display = ('id', 'descripcion')
+    search_fields = ['descripcion']
+
+#Define un modelo de administracion para CriteriosAspectos
+class CriteriosaspectosAdmin(admin.ModelAdmin):
+    list_display = ('id', 'descripcion', 'porcentaje', 'calificacion')
+    search_fields = ['descripcion']
+
+#Define un modelo de administracion para Criteriosjurados
+class CriteriosjuradosAdmin(admin.ModelAdmin):
+    list_display = ('id', 'descripcion')
+    search_fields = ['descripcion']
+
+#Define un modelo de administracion para Cronogramas
+class CronogramasAdmin(admin.ModelAdmin):
+    list_display = ('id', 'descripcion', 'fechainicio', 'fechafin', 'trabajosgrado_codigo')
+    search_fields = ['descripcion']
+
+#Define un modelo de administracion para Docentesconcejorcurricular
+class DocentesconcejocurricularAdmin(admin.ModelAdmin):
+    list_display = ('concejocurricular', 'docentes_dni')
+    list_filter = ['docentes_dni']
+    search_fields = ['docentes_dni']
+
+#Define un modelo de administracion para DocumentacionAdmin
+class DocumentacionAdmin(admin.ModelAdmin):
+    list_display =('id', 'fecha', 'asunto', 'descripcion', 'trabajosgrado_codigo', 'link')
+    search_fields = ['asunto']
+
+#Define un modelo de administracion para Empreaspasantes
+class EmpresaspasantesAdmin(admin.ModelAdmin):
+    list_display = ('nit', 'nombre', 'direccion', 'tiposempresa')
+    search_fields = ['nombre']
+    list_filter = ['nombre']
 
 #Define un modelo de administracion para EvaluacionesTrabajogrado
 class EvaluacionesTrabajoGradoAdmin(admin.ModelAdmin):
     list_display = ('id','fecha','nota_final_aspectos','caracter')
+    search_fields = ['caracter']
 
-class VisitasAdmin(admin.ModelAdmin):
-    list_display = ('id', 'fecha', 'hora' )
+#Define un modelo de administracion para Historicocriteriospropuestas
+class HistoricocriteriospropuestasAdmin(admin.ModelAdmin):
+    list_display = ('fecha', 'link')
+    list_filter = ['fecha']
+    search_fields = ['link']
+
+#Define un modelo de administracion para Informesfinales
+class InformesfinalesAdmin(admin.ModelAdmin):
+    list_display = ('id', 'titulo', 'fecha', 'link')
     list_filter = ['id']
     search_fields = ['id']
 
-class trabajosgradoAdmin(admin.ModelAdmin):
-    list_display = ('codigo', 'titulo', 'grupo_investigacion', 'nota_definitiva' )
-    list_filter = ['codigo']
-    search_fields = ['titulo']    
+#Define un modelo de administracion para Informefinalcriterios
+class InformefinalCriteriosAdmin(admin.ModelAdmin):
+    list_display = ('fecha', 'link')
+    list_filter = ['fecha']
+    search_fields = ['fecha']
 
-class TiposempresaAdmin(admin.ModelAdmin):
+#Define un modelo de administracion para Informesperiodicos
+class InformesperiodicosAdmin(admin.ModelAdmin):
+    list_display = ('id', 'link', 'fecha')
+    list_filter = ['id']
+    search_fields = ['id']
+
+#Define un modelo de administracion para Modalidadespasantia
+class ModalidadespasantiaAdmin(admin.ModelAdmin):
     list_display = ('id', 'descripcion')
-    list_filter = ['descripcion']
-    search_fields = ['descripcion']
-
-
-class SustentacionesAdmin(admin.ModelAdmin):
-    list_display = ('id', 'fechapublicacion', 'fecharealizacion', 'hora','lugar' , 'nota')
     list_filter = ['id']
-    search_fields = ['id']  
+    search_fields = ['id']
 
-class SupervisoresempresasAdmin(admin.ModelAdmin):
-    list_display = ('dni', 'nombre', 'apellidos', 'cargo')
-    list_filter = ['nombre']
-    search_fields = ['nombre']      
-
-class SolicitudespasantesAdmin(admin.ModelAdmin):
-    list_display = ('id', 'fecha', 'link')
-    list_filter = ['id']
-    search_fields = ['id']      
-class RevisorestecnicosAdmin(admin.ModelAdmin):
-    list_display = ('id',)
-    list_filter = ['id']
-    search_fields = ['id']  
-
-class PropuestatgAdmin(admin.ModelAdmin):
-    list_display = ('id', 'titulo', 'fechapresentacion', 'link')
-    list_filter = ['id']
-    search_fields = ['id']    
-
-class PasantiasAdmin(admin.ModelAdmin):
-    list_display = ('codigo', 'propuestaspasantias_id')
-    list_filter = ['codigo']
-    search_fields = ['codigo'] 
-
+#Define un modelo de administracion para Modalidades de trabajo de grado
 class ModalidadestgAdmin(admin.ModelAdmin):
     list_display = ('id', 'descripcion')
     list_filter = ['id']
     search_fields = ['id'] 
 
-class ModalidadespasantiaAdmin(admin.ModelAdmin):
+#Define un modelo de administracion para Pasantias
+class PasantiasAdmin(admin.ModelAdmin):
+    list_display = ('codigo', 'propuestaspasantias_id')
+    list_filter = ['codigo']
+    search_fields = ['codigo']
+
+#Define un modelo de administracion para Propuestas de trabajo de grado
+class PropuestatgAdmin(admin.ModelAdmin):
+    list_display = ('id', 'titulo', 'fechapresentacion', 'link')
+    list_filter = ['id']
+    search_fields = ['id']
+
+#Define un modelo de administracion para Propuestas de trabajo de grado
+class PropuestatgRevisorestAdmin(admin.ModelAdmin):
+    list_display = ('id', 'propuestatg', 'revisorestecnicos')
+    list_filter = ['id']
+    search_fields = ['id']
+
+#Define un modelo de administracion para Revisores Tecnicos
+class RevisorestecnicosAdmin(admin.ModelAdmin):
+    list_display = ('id', 'concepto', 'docentes_dni')
+    list_filter = ['id']
+    search_fields = ['id']
+
+#Define un modelo de administracion para Solicitudes pasantes
+class SolicitudespasantesAdmin(admin.ModelAdmin):
+    list_display = ('id', 'fecha', 'empresaspasantes', 'concejocurricular', 'conceptossolicitudes', 'link', 'revisorestecnicos')
+    list_filter = ['id']
+    search_fields = ['id']
+
+#Define un modelo de administracion para Supervisores empresas
+class SupervisoresempresasAdmin(admin.ModelAdmin):
+    list_display = ('dni', 'nombre', 'apellidos', 'cargo', 'empresaspasantes_nit')
+    list_filter = ['nombre']
+    search_fields = ['nombre']
+
+#Define un modelo de administracion para Sustentaciones
+class SustentacionesAdmin(admin.ModelAdmin):
+    list_display = ('id', 'fechapublicacion', 'fecharealizacion', 'hora','lugar' , 'nota', 'trabajosgrado_codigo')
+    list_filter = ['id']
+    search_fields = ['id']
+
+#Define un modelo de administracion para Tipodocente
+class TipodocenteAdmin(admin.ModelAdmin):
     list_display = ('id', 'descripcion')
+    list_filter = ['descripcion']
+    search_fields = ['descripcion']
+
+#Define un modelo de administracion para Tiposempresa
+class TiposempresaAdmin(admin.ModelAdmin):
+    list_display = ('id', 'descripcion')
+    list_filter = ['descripcion']
+    search_fields = ['descripcion']    
+
+#Define un modelo de administracion para Trabajosgrado
+class TrabajosgradoAdmin(admin.ModelAdmin):
+    list_display = ('codigo', 'titulo', 'grupo_investigacion', 'nota_definitiva', 'docentes_director' )
+    list_filter = ['codigo']
+    search_fields = ['titulo']    
+
+#Define un modelo de administracion para Visistas
+class VisitasAdmin(admin.ModelAdmin):
+    list_display = ('id', 'fecha', 'hora', 'coordinadorestg', 'empresaspasantes_nit' )
     list_filter = ['id']
-    search_fields = ['id'] 
+    search_fields = ['id']
 
-class InformesperiodicosAdmin(admin.ModelAdmin):
-    list_display = ('id', 'link', 'fecha')
-    list_filter = ['id']
-    search_fields = ['id'] 
-
-class InformesfinalesAdmin(admin.ModelAdmin):
-    list_display = ('id', 'titulo', 'fecha', 'link')
-    list_filter = ['id']
-    search_fields = ['id'] 
-
-class InformefinalCriteriosAdmin(admin.ModelAdmin):
-    list_display = ('fecha', 'link')
-    list_filter = ['fecha']
-    search_fields = ['fecha'] 
-
-class HistoricocriteriospropuestasAdmin(admin.ModelAdmin):
-    list_display = ('fecha', 'link')
-    list_filter = ['fecha']
-    search_fields = ['link']                        
-
-# Registro de los modelos en el panel administrativo          
-        
-admin.site.register(Estudiantes, EstudiantesAdmin)
-#Agregar el modelo Tipodocente dentro de la interfaz administrativa
-admin.site.register(Tipodocente, TipodocenteAdmin)
-#Agregar el modelo Docentes dentro de la interfaz administrativa
-admin.site.register(Docentes, DocentesAdmin)
+"""
+    Registro de los modelos en el panel administrativo
+"""     
+#Agregar el modelo Asesores dentro de la interfaz administrativa
+admin.site.register(Asesores, AsesoresAdmin)
+#Agregar el modelo Aspectos dentro de la interfaz administrativa
+admin.site.register(Aspectos, AspectosAdmin)
 #Agregar el modelo Caracter dentro de la interfaz administrativa
 admin.site.register(Caracter, CaracterAdmin)
+#Agregar el modelo Concejocurricular dentro de la interfaz administrativa
+admin.site.register(Concejocurricular, ConcejocurricularAdmin)
+#Agregar el modelo Conceptossolicitudes dentro de la interfaz administrativa
+admin.site.register(Conceptossolicitudes, ConceptossolicitudesAdmin)
+#Agregar el modelo Conveniosmarco dentro de la interfaz administrativa
+admin.site.register(Conveniomarco, ConveniosmarcoAdmin)
+#Agregar el modelo Convocatorias dentro de la interfaz administrativa
+admin.site.register(Convocatorias, ConvocatoriasAdmin)
+#Agregar el modelo Coordinadorestg dentro de la interfaz administrativa
+admin.site.register(Coordinadorestg, CoordinadorestgAdmin)
+#Agregar el modelo Criterios dentro de la interfaz administrativa
+admin.site.register(Criterios, CriteriosAdmin)
+#Agregar el modelo Criteriosaspectos dentro de la interfaz administrativa
+admin.site.register(Criteriosaspectos, CriteriosaspectosAdmin)
+#Agregar el modelo Criteriosjurados dentro de la interfaz administrativa
+admin.site.register(Criteriosjurado, CriteriosjuradosAdmin)
+#Agregar el modelo Cronogramas dentro de la interfaz administrativa
+admin.site.register(Cronogramas, CronogramasAdmin)
+#Agregar el modelo Docentes dentro de la interfaz administrativa
+admin.site.register(Docentes, DocentesAdmin)
+#Agregar el modelo Docentesconcejocurricular dentro de la interfaz administrativa
+admin.site.register(DocentesConsejocurricular, DocentesconcejocurricularAdmin)
+#Agregar el modelo Documentacion dentro de la interfaz administrativa
+admin.site.register(Documentacion, DocumentacionAdmin)
+#Agregar el modelo Empresaspasantes dentro de la interfaz administrativa
+admin.site.register(Empresaspasantes, EmpresaspasantesAdmin)
+#Agregar el modelo Estudiantes dentro de la interfaz administrativa
+admin.site.register(Estudiantes, EstudiantesAdmin)
 #Agregar el modelo Evaluacionestrabajogrado dentro de la interfaz administrativa
 admin.site.register(Evaluacionestrabajogrado, EvaluacionesTrabajoGradoAdmin)
-#Agregar el modelo Trabajosgrado dentro de la interfaz administrativa
-admin.site.register(Trabajosgrado, trabajosgradoAdmin)
+#Agregar el modelo Historicocriteriospropuestas dentro de la interfaz administrativa
+admin.site.register(Historicocriteriospropuestas,HistoricocriteriospropuestasAdmin)
+#Agregar el modelo Informesfinales dentro de la interfaz administrativa
+admin.site.register(Informesfinales,InformesfinalesAdmin)
+#Agregar el modelo Informefinalcriterios dentro de la interfaz administrativa
+admin.site.register(InformefinalCriterios,InformefinalCriteriosAdmin)
+#Agregar el modelo Informesperiodicos dentro de la interfaz administrativa
+admin.site.register(Informesperiodicos,InformesperiodicosAdmin)
 #Agregar el modelo Jurados dentro de la interfaz administrativa
 admin.site.register(Jurados, JuradosAdmin)
 #Agregar el modelo Modalidadespasantia dentro de la interfaz administrativa
-admin.site.register(Modalidadespasantia)
-#Agregar el modelo Modalidadespasantia dentro de la interfaz administrativa
-admin.site.register(Concejocurricular)
-admin.site.register(Asesores, AsesoresAdmin)
-admin.site.register(Aspectos)
-admin.site.register(Conceptossolicitudes)
-admin.site.register(Conveniomarco)
-admin.site.register(Convocatorias)
-admin.site.register(Coordinadorestg, CoordinadorestgAdmin)
-admin.site.register(Criterios)
-admin.site.register(Criteriosaspectos)
-admin.site.register(Criteriosjurado)
-admin.site.register(Cronogramas)
-admin.site.register(DocentesConsejocurricular)
-admin.site.register(Documentacion)
-admin.site.register(Empresaspasantes)
-admin.site.register(Historicocriteriospropuestas,HistoricocriteriospropuestasAdmin)
-admin.site.register(InformefinalCriterios,InformefinalCriteriosAdmin)
-admin.site.register(Informesfinales,InformesfinalesAdmin)
-admin.site.register(Informesperiodicos,InformesperiodicosAdmin)
+admin.site.register(Modalidadespasantia, ModalidadespasantiaAdmin)
+#Agregar el modelo Modalidadestg dentro de la interfaz administrativa
 admin.site.register(Modalidadestg, ModalidadestgAdmin)
+#Agregar el modelo Pasantias dentro de la interfaz administrativa
 admin.site.register(Pasantias, PasantiasAdmin)
+#Agregar el modelo Propuestastg dentro de la interfaz administrativa
 admin.site.register(Propuestatg, PropuestatgAdmin)
+#Agregar el modelo RevisoresTecnicos dentro de la interfaz administrativa
 admin.site.register(Revisorestecnicos, RevisorestecnicosAdmin)
+#Agregar el modelo Propuestas_Trabajos de Grado_Revisores Tecnicos dentro de la interfaz administrativa
+admin.site.register(PropuestatgRevisorest, PropuestatgRevisorestAdmin)
+#Agregar el modelo Solicitudespasantes dentro de la interfaz administrativa
 admin.site.register(Solicitudespasantes, SolicitudespasantesAdmin)
+#Agregar el modelo Supervisoresempresas dentro de la interfaz administrativa
 admin.site.register(Supervisoresempresas, SupervisoresempresasAdmin)
+#Agregar el modelo Sustentaciones dentro de la interfaz administrativa
 admin.site.register(Sustentaciones,SustentacionesAdmin)
+#Agregar el modelo Tipodocente dentro de la interfaz administrativa
+admin.site.register(Tipodocente, TipodocenteAdmin)
+#Agregar el modelo Tiposempresa dentro de la interfaz administrativa
 admin.site.register(Tiposempresa,TiposempresaAdmin)
+#Agregar el modelo Trabajosgrado dentro de la interfaz administrativa
+admin.site.register(Trabajosgrado, TrabajosgradoAdmin)
+#Agregar el modelo Vistas dentro de la interfaz administrativa
 admin.site.register(Visitas, VisitasAdmin)
-admin.site.register(PropuestatgRevisorest)
