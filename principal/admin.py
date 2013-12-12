@@ -65,7 +65,7 @@ class AsesoresAdmin(admin.ModelAdmin):
             
             grupo = Group.objects.get(name='asesor')
             obj.groups.add(grupo) 
-            
+
 #Define un modelo de administracion para Jurados
 class JuradosAdmin(admin.ModelAdmin):
     list_display = ('trabajosgrado_codigo','docentes_dni','presidente', 'fecha')
