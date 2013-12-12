@@ -4,65 +4,14 @@ from models import *
 from usuarios.models import Usuario
 from django.contrib.auth.models import Group
 
-#Define un modelo de administracion para Tipodocente
-class TipodocenteAdmin(admin.ModelAdmin):
-    list_display = ('id', 'descripcion')
-    list_filter = ['descripcion']
-    search_fields = ['descripcion']
-
-#Define un modelo de administracion para Docentes
-class DocentesAdmin(admin.ModelAdmin):
-    list_display = ('dni','nombre','apellidos', 'tipodocente')
-    list_filter = ['nombre']
-    search_fields = ['nombre']
-
-#Define un modelo de administracion para Asesores
-class AsesoresAdmin(admin.ModelAdmin):
-    list_display = ('id','trabajosgrado_codigo','docentes_dni', 'fecha')
-
-    def add_view(self, *args, **kwargs):
-        self.fields = ('trabajosgrado_codigo','docentes_dni','fecha')
-        return super(AsesoresAdmin, self).add_view(*args, **kwargs)
-    """
-    def change_view(self, *args, **kwargs):
-        self.fields = ('id','trabajosgrado_codigo','docentes_dni','fecha')
-        return super(AsesoresAdmin, self).change_view(*args, **kwargs)
-    """
-    def save_model(self, request, obj, form, change):
-        if not change:
-            #nombre = obj.__class__.__name__
-            obj.id = Asesores.objects.all().count() + 1
-            obj.save()
-        obj.save()
-    
-#Define un modelo de administracion para Jurados
-class JuradosAdmin(admin.ModelAdmin):
-    list_display = ('trabajosgrado_codigo','docentes_dni','presidente', 'fecha')
-    def save_model(self, request, obj, form, change):
-        obj.save()
-        d = Docentes.objects.filter(pk=obj.docentes_dni)
-        if not change:
-            Usuario.objects.create_userRol(d.dni, Usuario.JURADO, d.dni)
-            """
-            tipo = obj.tipo
-            g = Group.objects.get(name=tipo)
-            obj.groups.clear()
-            obj.groups.add(g)   
-            """
-
-#Define un modelo de administracion para Caracter
-class CaracterAdmin(admin.ModelAdmin):
-    list_display = ('id', 'descripcion')
-
-#Define un modelo de administracion para EvaluacionesTrabajogrado
-class EvaluacionesTrabajoGradoAdmin(admin.ModelAdmin):
-    list_display = ('id','fecha','nota_final_aspectos','caracter')
+#-------Modelos de Administracion para los Roles-------------------#
 
 #Define un modelo de administracion para Estudiantes
 class EstudiantesAdmin(admin.ModelAdmin):
     list_display = ('dni','nombre','apellidos')
     list_filter = ['apellidos']
-    search_fields = ['nombre'] 
+    search_fields = ['nombre']
+
     def save_model(self, request, obj, form, change):
         obj.save()
 
@@ -75,6 +24,76 @@ class EstudiantesAdmin(admin.ModelAdmin):
             obj.groups.clear()
             obj.groups.add(g)   
             """
+
+#Define un modelo de administracion para Docentes
+class DocentesAdmin(admin.ModelAdmin):
+    list_display = ('dni','nombre','apellidos', 'tipodocente')
+    list_filter = ['nombre']
+    search_fields = ['nombre']
+
+#Agregar el modelo Estudiantes dentro de la interfaz administrativa
+class CoordinadorestgAdmin(admin.ModelAdmin):
+    
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.save()
+        else:
+            obj.save()
+            dni = obj.docentes_dni.dni
+            user = Usuario.objects.create_userRol(dni, Usuario.COORDINADOR, dni)
+
+            grupo = Group.objects.get(name='coordinador')
+            user.groups.add(grupo)
+
+#Define un modelo de administracion para Asesores
+class AsesoresAdmin(admin.ModelAdmin):
+    list_display = ('id','trabajosgrado_codigo','docentes_dni', 'fecha')
+    
+    def add_view(self, *args, **kwargs):
+        self.fields = ('trabajosgrado_codigo','docentes_dni','fecha')
+        return super(AsesoresAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.save()
+        else:
+            #nombre = obj.__class__.__name__
+            obj.id = Asesores.objects.all().count() + 1
+            obj.save()
+            dni = obj.docentes_dni.dni
+            user = Usuario.objects.create_userRol(dni, Usuario.ASESOR, dni)
+            
+            grupo = Group.objects.get(name='asesor')
+            obj.groups.add(grupo) 
+            
+#Define un modelo de administracion para Jurados
+class JuradosAdmin(admin.ModelAdmin):
+    list_display = ('trabajosgrado_codigo','docentes_dni','presidente', 'fecha')
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.save()
+        else:
+            obj.save()
+            dni = obj.docentes_dni.dni
+            user = Usuario.objects.create_userRol(dni, Usuario.JURADO, dni)
+            
+            grupo = Group.objects.get(name='jurado')
+            obj.groups.add(grupo)   
+
+#Define un modelo de administracion para Tipodocente
+class TipodocenteAdmin(admin.ModelAdmin):
+    list_display = ('id', 'descripcion')
+    list_filter = ['descripcion']
+    search_fields = ['descripcion']         
+    
+#Define un modelo de administracion para Caracter
+class CaracterAdmin(admin.ModelAdmin):
+    list_display = ('id', 'descripcion')
+
+#Define un modelo de administracion para EvaluacionesTrabajogrado
+class EvaluacionesTrabajoGradoAdmin(admin.ModelAdmin):
+    list_display = ('id','fecha','nota_final_aspectos','caracter')
 
 class VisitasAdmin(admin.ModelAdmin):
     list_display = ('id', 'fecha', 'hora' )
@@ -149,23 +168,9 @@ class InformefinalCriteriosAdmin(admin.ModelAdmin):
 class HistoricocriteriospropuestasAdmin(admin.ModelAdmin):
     list_display = ('fecha', 'link')
     list_filter = ['fecha']
-    search_fields = ['link']                                  
-# Registro de los modelos
+    search_fields = ['link']                        
 
-#Agregar el modelo Estudiantes dentro de la interfaz administrativa
-class CoordinadorestgAdmin(admin.ModelAdmin):
-    
-    def save_model(self, request, obj, form, change):
-        if change:
-            obj.save()
-        else:
-            obj.save()
-            dni = obj.docentes_dni.dni
-            user = Usuario.objects.create_userRol(dni, Usuario.COORDINADOR, dni)
-
-            grupo = Group.objects.get(name='coordinador')
-            user.groups.add(grupo)
-            
+# Registro de los modelos en el panel administrativo          
         
 admin.site.register(Estudiantes, EstudiantesAdmin)
 #Agregar el modelo Tipodocente dentro de la interfaz administrativa
