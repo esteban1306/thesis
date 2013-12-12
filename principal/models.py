@@ -8,13 +8,16 @@
 # Also note: You'll have to insert the output of 'django-admin.py sqlctom [appname]'
 # into your database.
 # encoding:utf-8
+
 from __future__ import unicode_literals
 from django.db import models
 
+
 #Modelo de clase correspondiente a la tabla Asesores
 class Asesores(models.Model):
-    id = models.IntegerField(primary_key=True, help_text='Este campo es asignado automaticamente')
+
     #Codigo del trabajo de grado a cargo del asesor
+    id = models.IntegerField(primary_key=True)    
     trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo')
     #Identificacion del asesor
     docentes_dni = models.ForeignKey('Docentes', db_column='docentes_dni')
@@ -36,11 +39,17 @@ class Aspectos(models.Model):
     #Descripcion del aspectos de la calificacion del trabajo
     descripcion = models.CharField(max_length=20)
     #Porcentaje de nota que representa el aspecto
-    porcentaje = models.DecimalField(max_digits=2, decimal_places=2)
+    porcentaje = models.DecimalField(max_digits=3, decimal_places=2)
     #Referencia a la evaluacion de este aspecto
     evaluacionestrabajogrado = models.ForeignKey('Evaluacionestrabajogrado')
+
+    def __unicode__(self):
+        return "%s" % self.descripcion
+
     class Meta:
         verbose_name_plural = "Aspectos"
+
+        
         db_table = 'aspectos'
 
 #Modelo de clase correspondiente a la tabla Caracter
@@ -53,6 +62,7 @@ class Caracter(models.Model):
     #El retorno a mostrar sera la descripcion del caracter
     def __unicode__(self):
         return self.descripcion
+
     class Meta:
         verbose_name_plural = "Caracter"
         
@@ -134,6 +144,11 @@ class Criterios(models.Model):
     id = models.BigIntegerField(primary_key=True)
     #Descripcion del criterio del trabajo (viable, no viable o aplazado)
     descripcion = models.CharField(max_length=20)
+
+    #El retorno a mostrar sera la descripcion del criterio
+    def __unicode__(self):
+        return self.descripcion
+
     class Meta:
         verbose_name_plural = "Criterios"
         
@@ -146,11 +161,16 @@ class Criteriosaspectos(models.Model):
     #Descripcion de los criterios a tener en cuenta en los aspectos de evaluacion
     descripcion = models.CharField(max_length=30)
     #porcentaje que representa cada criterio del aspecto
-    porcentaje = models.DecimalField(max_digits=2, decimal_places=2, blank=True, null=True)
+    porcentaje = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     #Calificacion que tiene cada criterio por aspecto
-    calificacion = models.DecimalField(max_digits=2, decimal_places=2, blank=True, null=True)
+    calificacion = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     #Referencia a los aspectos de cada criterio
     aspectos = models.ForeignKey(Aspectos)
+
+    #El retorno a mostrar sera la descripcion del criterio
+    def __unicode__(self):
+        return self.descripcion
+
     class Meta:
         verbose_name_plural = "Criterios Aspectos"
         
@@ -162,6 +182,11 @@ class Criteriosjurado(models.Model):
     id = models.BigIntegerField(primary_key=True)
     #Descripcion de los criterios del jurado
     descripcion = models.CharField(max_length=20)
+
+    #El retorno a mostrar sera la descripcion del criterio
+    def __unicode__(self):
+        return self.descripcion
+
     class Meta:
         verbose_name_plural = "Criterios Jurados"
         
@@ -204,6 +229,8 @@ class Docentes(models.Model):
 
 #Modelo de clase correspondiente a la tabla DoncentesConsejocurricular
 class DocentesConsejocurricular(models.Model):
+    #Identificador unico
+    id = models.IntegerField(primary_key=True)
     #Referencia al concejo curricular como intermediaacion con los proyectos
     concejocurricular = models.ForeignKey(Concejocurricular)
     #Referencia al docente a cargo de proyectos
@@ -216,7 +243,7 @@ class DocentesConsejocurricular(models.Model):
 #Modelo de clase correspondiente a la tabla Documentacion
 class Documentacion(models.Model):
     #Identificador unico de la documentacion
-    id = models.BigIntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     #Fecha en que se produjo el documento
     fecha = models.DateField()
     #Asunto de que trata el documento
@@ -228,7 +255,7 @@ class Documentacion(models.Model):
     #Enlace web del documento
     link = models.CharField(max_length=20, blank=True)
     #Campo para referirse a otros documentos relacionados con el actual
-    documentacion_alterna = models.ForeignKey('self', blank=True, null=True)
+    documentacion = models.ForeignKey('self', blank=True, null=True, related_name="documentacion_alterna")
     class Meta:
         verbose_name_plural = "Documentaciones"
         
@@ -244,6 +271,10 @@ class Empresaspasantes(models.Model):
     direccion = models.CharField(max_length=30)
     #Referencia al tipo de empresa que solicita la pasantia
     tiposempresa = models.ForeignKey('Tiposempresa')
+
+    def __unicode__(self):
+        return self.nombre
+
     class Meta:
         verbose_name_plural = "Empresas Pasantes"
         
@@ -267,7 +298,7 @@ class Estudiantes(models.Model):
 #Modelo de clase correspondiente a la tabla Evaluacionestrabajogrado
 class Evaluacionestrabajogrado(models.Model):
     #Identificador unico de la evaluacion
-    id = models.BigIntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     #Campo que contiene la fecha de la evaluacion
     fecha = models.DateField()
     #Campo para la nota final de los aspectos de evaluacion
@@ -282,6 +313,8 @@ class Evaluacionestrabajogrado(models.Model):
 
 #Modelo de clase correspondiente a la tabla Historicocriteriospropuestas
 class Historicocriteriospropuestas(models.Model):
+    #Identificador unico
+    id = models.IntegerField(primary_key=True)
     #Campo de referencia a los criterios que ha tenido el trabajo
     criterios = models.ForeignKey(Criterios)
     #Campo de referencia al concejo curricular
@@ -290,10 +323,8 @@ class Historicocriteriospropuestas(models.Model):
     fecha = models.DateField()
     #Enlace web donde esta el historial de criterios
     link = models.CharField(max_length=20, blank=True)
-    #Campo de referencia a la propuesta del trabajo
-    proptg_revtproptg = models.ForeignKey('PropuestatgRevisorest')
     #Campo de referencia a los revisores tecnicos de la propuesta
-    proptg_revt_revtec = models.ForeignKey('PropuestatgRevisorest', related_name="proptg_revt_revtec")
+    propuestatg_revisorest = models.ForeignKey('PropuestatgRevisorest')
     class Meta:
         verbose_name_plural = "Historicos Criterios Propuestas"
         
@@ -301,6 +332,7 @@ class Historicocriteriospropuestas(models.Model):
 
 #Modelo de clase correspondiente a la tabla InformefinalCriterios
 class InformefinalCriterios(models.Model):
+    id = models.BigIntegerField(primary_key=True)
     #Fecha en que se emite el informe final 
     fecha = models.DateField()
     #Campo de referencia al informe final 
@@ -308,11 +340,13 @@ class InformefinalCriterios(models.Model):
     #Campo donde se incluye los criterios que designa el jurado calificador
     criteriosjurado = models.ForeignKey(Criteriosjurado)
     #Referencia al jurado que emitio el informe
-    jurados_trabajosgrado_codigo = models.ForeignKey('Jurados', db_column='jurados_trabajosgrado_codigo')
+    #jurados_trabajosgrado_codigo = models.ForeignKey('Jurados', db_column='jurados_trabajosgrado_codigo')
     #Referencia al docente que actua como jurado
-    jurados_docentes_dni = models.ForeignKey('Jurados', db_column='jurados_docentes_dni', related_name="jurados_docentes_dni")
+    #jurados_docentes_dni = models.ForeignKey('Jurados', db_column='jurados_docentes_dni', related_name="jurados_docentes_dni")
     #Enlace web sobre el detalle de los criterios del informe final 
     link = models.CharField(max_length=20, blank=True)
+    jurados = models.ForeignKey('Jurados')
+    #jurados_id = models.ForeignKey('Jurados', db_column='jurados_id')
     class Meta:
         verbose_name_plural = "Informes Finales Criterios"
         
@@ -356,10 +390,12 @@ class Informesperiodicos(models.Model):
 
 #Modelo de clase correspondiente a la tabla Jurados
 class Jurados(models.Model):
+    #Identificador unico de los jurados de un trabajo de grado
+    id = models.IntegerField(primary_key=True)
     #Referencia al trabajo de grado que calificara el jurado
     trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo')
     #Campo referente a la identificacion del docente que servira de jurado
-    docentes_dni = models.ForeignKey(Docentes, db_column='docentes_dni')
+    docentes_dni = models.ForeignKey('Docentes', db_column='docentes_dni')
     #Persona que sera el presidente de la terna del jurado calificador
     presidente = models.CharField(max_length=1, blank=True)
     #Campo de referencia al concejo curricular
@@ -368,6 +404,7 @@ class Jurados(models.Model):
     fecha = models.DateField(blank=True, null=True)
     class Meta:
         verbose_name_plural = "Jurados"
+        unique_together = (("trabajosgrado_codigo", "docentes_dni"),)
         
         db_table = 'jurados'
 
@@ -433,12 +470,17 @@ class Propuestatg(models.Model):
 
 #Modelo de clase correspondiente a la tabla PropuestatgRevisorest
 class PropuestatgRevisorest(models.Model):
+    #Identificador de llave primaria
+    id = models.IntegerField(primary_key=True)
     #Campo que se refiere a la propuesta que sera revisada
     propuestatg = models.ForeignKey(Propuestatg)
     #Campo de referencia a los revisores tecnicos encargados de evaluar la propuesta
     revisorestecnicos = models.ForeignKey('Revisorestecnicos')
     class Meta:
         verbose_name_plural = "Propuestas_Trabajos de Grado_Revisores Tecnicos"
+
+        unique_together = (("propuestatg", "revisorestecnicos"),)
+
         
         db_table = 'propuestatg_revisorest'
 
@@ -506,7 +548,7 @@ class Sustentaciones(models.Model):
     #Campo que especifica el lugar donde se realizara la sustentacion
     lugar = models.CharField(max_length=30)
     #Calificacion obtenida debido a la sustentacion
-    nota = models.DecimalField(max_digits=2, decimal_places=2, blank=True, null=True)
+    nota = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     #Foranea del trabajo de grado sustentado
     trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo', unique=True)
     class Meta:
@@ -535,6 +577,10 @@ class Tiposempresa(models.Model):
     id = models.BigIntegerField(primary_key=True)
     #Campo que indica si la empresa es publica o privada
     descripcion = models.CharField(max_length=20)
+
+    def __unicode__(self):
+        return self.descripcion
+
     class Meta:
         verbose_name_plural = "Tipos de Empresa"
         
@@ -549,13 +595,13 @@ class Trabajosgrado(models.Model):
     #Campo para una letra indicando si el trabajo de grado pertenece a un grupo de investigacion o si es mediante otra modalidad
     grupo_investigacion = models.CharField(max_length=30, blank=True)
     #Campo con la calificacion cuantitativa final del trabajo de grado
-    nota_definitiva = models.DecimalField(max_digits=2, decimal_places=2, blank=True, null=True)
+    nota_definitiva = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     #Referencia al docente que sera a su vez director del trabajo
     docentes_director = models.ForeignKey(Docentes, db_column='docentes_director')
 
     def __unicode__(self):
         return self.titulo
-
+        
     class Meta:
         verbose_name_plural = "Trabajos de Grado"
         

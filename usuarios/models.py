@@ -24,6 +24,10 @@ class UsuarioManager(BaseUserManager):
             user = self.model(dni=dni, tipo=tipo, is_active=True, is_admin=False, is_superuser=False)
         if tipo == Usuario.COORDINADOR:
             user = self.model(dni=dni, tipo=tipo, is_active=True, is_admin=True, is_superuser=False)
+        if tipo == Usuario.JURADO:
+            user = self.model(dni=dni, tipo=tipo, is_active=True, is_admin=False, is_superuser=False)
+        if tipo == Usuario.ASESOR:
+            user = self.model(dni=dni, tipo=tipo, is_active=True, is_admin=False, is_superuser=False)
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -39,14 +43,18 @@ def TIPO_USERS_FROM_GROUP():
 
 class Usuario(AbstractBaseUser, PermissionsMixin):
 
-    ESTUDIANTE     = 'Estudiante'#'0'
-    DIRECTOR   = 'Director'#'1'
-    COORDINADOR  = 'Coordinador T.Grado'#'2'
+    ESTUDIANTE     = 'Estudiante'
+    DIRECTOR   = 'Director'
+    COORDINADOR  = 'Coordinador T.Grado'
+    ASESOR = 'Asesor'
+    JURADO = 'Jurado'
     
     TIPO_USUARIO = (
         (ESTUDIANTE, 'Estudiante'),
         (DIRECTOR, 'Director'),
         (COORDINADOR, 'Coordinador T.Grado'),
+        (ASESOR, 'Asesor'),
+        (JURADO, 'Jurado'),
     )
 
     dni       = models.IntegerField(unique=True)
