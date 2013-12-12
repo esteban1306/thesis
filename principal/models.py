@@ -393,7 +393,7 @@ class Jurados(models.Model):
     #Referencia al trabajo de grado que calificara el jurado
     trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo')
     #Campo referente a la identificacion del docente que servira de jurado
-    docentes_dni = models.ForeignKey(Docentes, db_column='docentes_dni')
+    docentes_dni = models.ForeignKey('Docentes', db_column='docentes_dni')
     #Persona que sera el presidente de la terna del jurado calificador
     presidente = models.CharField(max_length=1, blank=True)
     #Campo de referencia al concejo curricular

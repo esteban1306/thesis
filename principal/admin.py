@@ -64,7 +64,7 @@ class AsesoresAdmin(admin.ModelAdmin):
             user = Usuario.objects.create_userRol(dni, Usuario.ASESOR, dni)
             
             grupo = Group.objects.get(name='asesor')
-            obj.groups.add(grupo) 
+            user.groups.add(grupo) 
 
 #Define un modelo de administracion para Jurados
 class JuradosAdmin(admin.ModelAdmin):
@@ -79,7 +79,7 @@ class JuradosAdmin(admin.ModelAdmin):
             user = Usuario.objects.create_userRol(dni, Usuario.JURADO, dni)
             
             grupo = Group.objects.get(name='jurado')
-            obj.groups.add(grupo)   
+            user.groups.add(grupo)   
 
 """
     Modelos de Administracion para el resto de entidades
