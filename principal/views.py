@@ -61,7 +61,7 @@ def login_view(request):
 				#Si no se autentica el usuario
 				else:
 					#Mostrar un mensaje indicando los fallos
-					mensaje = "usuario y/o password incorrecto"
+					mensaje = "Usuario y/o password incorrecto"
 		form = LoginForm()
 		#Envio final del formulario con datos
 		ctx = {'form':form, 'mensaje':mensaje}

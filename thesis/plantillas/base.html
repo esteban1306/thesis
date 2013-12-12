@@ -13,6 +13,8 @@
 	<script src="{{MEDIA_URL}}js/jquery.js"></script>
 	<script src="{{MEDIA_URL}}bootstrap/js/bootstrap.js"></script>
 
+	{% block css %} {% endblock %}
+
 	<title>{% block title %} {% endblock %}| Thesis</title>
 </head>
 <body>
@@ -21,6 +23,8 @@
         <p >Esta apiclación no esta hecha para navegadores tan obsoletos. Use Navegadores como Chrome, Firefox o Internet Explorer 9</p>
     </div>
 	<![endif]-->
+
+	{% block navegacion %} {% endblock %}
 
 	{% block body %}{% endblock %}
 
