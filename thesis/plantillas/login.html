@@ -1,18 +1,95 @@
-{% extends 'base.html' %}
-{% block title %} Login {% endblock %}
+{% extends 'shell.html' %}
+
+{% block title %}Login {% endblock %}
+
+{% block css %}
+	<style type="text/css" media="screen">
+		body{
+			background-color: #333;
+		}
+	</style>
+
+{% endblock %}
+
 {% block body %}
 
-<center><div class="col-sm-3 col-md-3">
-<div class="panel panel-primary">
-	<div class="panel-heading">Iniciar Sesión | Thesis</div>
-	<div class="panel-body">
-    	<form lass="form-login navbar-form" action="{% url 'principal.views.login_view' %}" method='POST'>
-		{% csrf_token %}
+<div  class="container">
+
+	<div class="row">
+
+		<div class="col-md-7">
+
+			<div class="jumbotron">
+				<h3>Thesis <p><small>Administra tus trabajos de grado de una forma sencilla y agil.</small><p></h3>
+			</div>
+
+		</div>
+
+		<div class="col-md-5">
+
+			<div class="panel panel-default">
+
+				<div class="panel-heading">
+					<center><h3>Iniciar Sesión en Thesis</h3></center>
+				</div>			
+
+
+				<div class="panel-body">
+
+					{% if mensaje  %}
+					    <div class="alert alert-danger">
+					    	<span class="glyphicon glyphicon-warning-sign"></span>
+							{{mensaje}}	
+						</div>	   
+					{% else %}
+						<div class="alert alert-info">
+							<span class="glyphicon glyphicon-info-sign"></span>
+							Ingresa tus datos para entrar en el sistema.
+						</div>	
+					{% endif %}
+
+
+					<form class="form-horizontal" role="form" action="." method="POST">
+						{% csrf_token %}
+						<div class="form-group">
+							<label class="col-lg-3 control-label" for="id_username">Dni</label>
+						    <div class="col-lg-9">
+							    	{{ form.username }}
+						    </div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-lg-3 control-label" for="id_password">Contraseña</label>
+						    <div class="col-lg-9">						    	
+					            {{ form.password }}							
+						    </div>
+						</div>
+
+						<div class="form-group">
+						    <div class="col-lg-offset-0 col-lg-12">
+						    	<input type="submit" value="Login" class="btn btn-block btn-success" >
+						    </div>
+						</div>
+					</form>						
+
+				</div> <!-- fin panel-body -->
+
+
+				<div class="panel-footer">
+					<center>
+					Todos los derechos reservados <br>
+					<strong> ©2013</strong>
+					</center>
+				</div>  					
+
+			</div> <!-- fin panel -->
+
+		</div> 
 		
-		{{form.as_p}}
-		<input type="submit" value="Login" class="btn btn-block btn-success" >
-		</form>
-  	</div>
-</div>
-</div></center>
-{% endblock %}
+
+	</div> <!-- fin row -->
+		
+
+</div>  f<!-- in container -->
+
+{% endblock %} 
