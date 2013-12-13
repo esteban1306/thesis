@@ -253,7 +253,7 @@ class TiposempresaAdmin(admin.ModelAdmin):
 class TrabajosgradoAdmin(admin.ModelAdmin):
     list_display = ('codigo', 'titulo', 'grupo_investigacion', 'nota_definitiva', 'docentes_director' )
     list_filter = ['codigo']
-    search_fields = ['titulo']    
+
 
 #Define un modelo de administracion para Visistas
 class VisitasAdmin(admin.ModelAdmin):

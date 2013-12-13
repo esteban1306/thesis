@@ -425,8 +425,6 @@ class Modalidadestg(models.Model):
     id = models.BigIntegerField(primary_key=True)
     #Campo que representa la modalidad del trabajo
     descripcion = models.CharField(max_length=30, blank=True)
-    #Referencia al trabajo de grado especificado por la modalidad
-    trabajogrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajogrado_codigo')
     class Meta:
         verbose_name_plural = "Modalidades Trabajos de Grado"
         
@@ -598,6 +596,8 @@ class Trabajosgrado(models.Model):
     nota_definitiva = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     #Referencia al docente que sera a su vez director del trabajo
     docentes_director = models.ForeignKey(Docentes, db_column='docentes_director')
+    #Referencia a la modalidad de trabajo de grado
+    modalidadestg = models.ForeignKey(Modalidadestg)
 
     def __unicode__(self):
         return self.titulo
