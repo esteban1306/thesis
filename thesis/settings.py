@@ -66,11 +66,11 @@ WSGI_APPLICATION = 'thesis.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.oracle',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'NAME': 'thesis',
-        'USER': 'root',
-        'PASSWORD': 'alberto',
+        'NAME': 'xe',
+        'USER': 'superadmin',
+        'PASSWORD': '12345',
         'HOST': '',
         'PORT': '',
     }
