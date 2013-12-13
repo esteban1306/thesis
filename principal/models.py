@@ -15,6 +15,7 @@ from django.db import models
 
 #Modelo de clase correspondiente a la tabla Asesores
 class Asesores(models.Model):
+
     #Codigo del trabajo de grado a cargo del asesor
     id = models.IntegerField(primary_key=True)    
     trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo')
@@ -47,6 +48,7 @@ class Aspectos(models.Model):
 
     class Meta:
         verbose_name_plural = "Aspectos"
+
         
         db_table = 'aspectos'
 
@@ -476,7 +478,9 @@ class PropuestatgRevisorest(models.Model):
     revisorestecnicos = models.ForeignKey('Revisorestecnicos')
     class Meta:
         verbose_name_plural = "Propuestas_Trabajos de Grado_Revisores Tecnicos"
+
         unique_together = (("propuestatg", "revisorestecnicos"),)
+
         
         db_table = 'propuestatg_revisorest'
 

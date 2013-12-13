@@ -47,7 +47,9 @@ class CoordinadorestgAdmin(admin.ModelAdmin):
 
 #Define un modelo de administracion para Asesores
 class AsesoresAdmin(admin.ModelAdmin):
+
     list_display = ('id','trabajosgrado_codigo','docentes_dni', 'fecha')
+
     
     def add_view(self, *args, **kwargs):
         self.fields = ('trabajosgrado_codigo','docentes_dni','fecha')
@@ -67,6 +69,7 @@ class AsesoresAdmin(admin.ModelAdmin):
             user.groups.add(grupo) 
 
 #Define un modelo de administracion para Jurados
+
 class JuradosAdmin(admin.ModelAdmin):
     list_display = ('trabajosgrado_codigo','docentes_dni','presidente', 'fecha')
 
@@ -297,7 +300,9 @@ admin.site.register(Empresaspasantes, EmpresaspasantesAdmin)
 admin.site.register(Estudiantes, EstudiantesAdmin)
 #Agregar el modelo Evaluacionestrabajogrado dentro de la interfaz administrativa
 admin.site.register(Evaluacionestrabajogrado, EvaluacionesTrabajoGradoAdmin)
+
 #Agregar el modelo Historicocriteriospropuestas dentro de la interfaz administrativa
+
 admin.site.register(Historicocriteriospropuestas,HistoricocriteriospropuestasAdmin)
 #Agregar el modelo Informesfinales dentro de la interfaz administrativa
 admin.site.register(Informesfinales,InformesfinalesAdmin)
