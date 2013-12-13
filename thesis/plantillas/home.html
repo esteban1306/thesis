@@ -43,10 +43,50 @@
 </div> <!-- end panel -->
 
 
-
 {% endblock sidebar_left %}
 
 {% block content %}
-	<h2>Trabajos de Grado en Seguimiento</h2></br>
-	  <p>Aqui viene una tabla</p>
+
+	<div class="jumbotron">
+        <h1>Thesis</h1></br>
+	  <p>La forma sencilla de administrar y hacer seguimiento a tus trabajos de grado.</p>     
+    </div>
+	
+	<div class="row">
+
+		<div class="col-lg-4">
+			<div class="panel">
+				<div class="panel-heading">
+					<h5>Trabajos de Grado</h5>
+				</div>
+				<p>Informacion de Trabajos de Grado</p>
+				<a class="btn btn-primary btn-lg btn-block">Ver</a>
+			</div>
+		</div>
+
+		{% if user.tipo == 'Coordinador T.Grado' %}
+		<div class="col-lg-4">
+			<div class="panel">
+				<div class="panel-heading">
+					<h5>XXXX</h5>
+				</div>
+				<p>Todo sobre xxxxx</p>
+				<a class="btn btn-primary btn-lg btn-block">Ver</a>
+			</div>
+		</div>
+
+		<div class="col-lg-4">
+			<div class="panel">
+				<div class="panel-heading">
+					<h5>Estadísticas</h5>
+				</div>
+				<p>Todo sobre estadísticas</p>
+				<a class="btn btn-primary btn-lg btn-block">Ver</a>
+			</div>
+		</div>
+		{% endif %}
+					
+	</div>
+
+
 {% endblock %}
