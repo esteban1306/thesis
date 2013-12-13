@@ -2,7 +2,7 @@
 
 from django import forms
 from django.contrib import admin
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, Permission
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, AuthenticationForm
 from django.utils.translation import ugettext, ugettext_lazy as _
@@ -103,5 +103,27 @@ class UsuarioAdmin(UserAdmin):
             obj.groups.add(g)
     """
 
+
+
+# Esta funcion permite pasarle al campo "name" del modelo "Group", la tupla con las variables estáticas 
+# de los tipos de usuarios en el modelo "Usuario", para garantizar consistencia de la aplicación
+class GroupAdmin(admin.ModelAdmin):
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        
+        if db_field.name == 'name':
+            kwargs['widget'] = forms.Select(choices=Usuario.TIPO_USUARIO)
+
+        if db_field.name == 'permissions':
+            kwargs['widget'] = admin.widgets.FilteredSelectMultiple('Permisos', False)
+
+        return super(GroupAdmin,self).formfield_for_dbfield(db_field,**kwargs)
+
+
 #Agregar el modelo Usuario dentro de la interfaz de usuario
 admin.site.register(Usuario, UsuarioAdmin)
+
+# desregistramos el modelo Group para volverlo a registrar personalizado
+admin.site.unregister(Group)
+# registramos de nuevo Group con el GroupAdmin que lo personaliza 
+admin.site.register(Group, GroupAdmin)
