@@ -40,7 +40,9 @@
                     <ul class="dropdown-menu ">
                         
                         {% if user.is_authenticated %}
+                        {% if user.is_admin %}
                         <li> <a href="/admin"><span class="glyphicon glyphicon-user"></span> Ver Administración </a> </li>
+                        {% endif %}
                         <li> <a href="{% url 'principal.views.logout_view' %}"><i class="fa fa-sign-out"></i> Salir </a> </li>
                         {% else %}
                             <form class="form-login navbar-form" method="post" action="{% url 'principal.views.home' %}"> {% csrf_token %}

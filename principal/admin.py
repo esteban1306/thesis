@@ -14,17 +14,15 @@ class EstudiantesAdmin(admin.ModelAdmin):
     search_fields = ['nombre']
 
     def save_model(self, request, obj, form, change):
-        obj.save()
-
-        if not change:
-            Usuario.objects.create_userRol(obj.dni, Usuario.ESTUDIANTE, obj.dni)
-            """
-            est = Estudiantes.objects.create(dni=obj.dni, nombre=obj.nombre, apellidos=obj.apellidos, trabajosgrado_codigo=null )
-            tipo = obj.tipo
-            g = Group.objects.get(name=tipo)
-            obj.groups.clear()
-            obj.groups.add(g)   
-            """
+        if change:
+            obj.save()
+        else:
+            #nombre = obj.__class__.__name__
+            obj.save()
+            user = Usuario.objects.create_userRol(obj.dni, Usuario.ESTUDIANTE, obj.dni)
+            
+            grupo = Group.objects.get(name=Usuario.ESTUDIANTE)
+            user.groups.add(grupo)
 
 #Define un modelo de administracion para Docentes
 class DocentesAdmin(admin.ModelAdmin):
@@ -67,7 +65,7 @@ class AsesoresAdmin(admin.ModelAdmin):
             user = Usuario.objects.create_userRol(dni, Usuario.ASESOR, dni)
             
             grupo = Group.objects.get(name='asesor')
-            user.groups.add(grupo) 
+            user.groups.add(grupo)
 
 #Define un modelo de administracion para Jurados
 
