@@ -3,6 +3,7 @@ from django.contrib import admin
 from models import *
 from usuarios.models import Usuario
 from django.contrib.auth.models import Group
+from django.db.models import Max
 
 #-------Modelos de Administracion para los Roles-------------------#
 
@@ -242,6 +243,18 @@ class TipodocenteAdmin(admin.ModelAdmin):
     list_display = ('id', 'descripcion')
     list_filter = ['descripcion']
     search_fields = ['descripcion']
+
+    def add_view(self, *args, **kwargs):
+        self.fields = ('descripcion',)
+        return super(TipodocenteAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.save()
+        else:
+            #nombre = obj.__class__.__name__
+            obj.id  = Tipodocente.objects.all().count() + 1
+            obj.save()
 
 #Define un modelo de administracion para Tiposempresa
 class TiposempresaAdmin(admin.ModelAdmin):

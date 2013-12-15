@@ -38,7 +38,7 @@ def home(request):
     loginForm = LoginForm()
     #Envio final del formulario
     ctx = {'loginForm':loginForm}
-    return render_to_response('home.html', ctx, context_instance=RequestContext(request))
+    return render_to_response('estudiante.html', ctx, context_instance=RequestContext(request))
     
 #Definicion de vista para el login  
 def login_view(request):
