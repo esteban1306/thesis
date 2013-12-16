@@ -147,3 +147,4 @@ def nuevo_EvaluacionesTrabajoGrado(request):
     else:
         formulario = Docentes()
     return render_to_response('registrarDocente.html',{'formulario':formulario}, context_instance=RequestContext(request))
+
