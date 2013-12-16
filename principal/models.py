@@ -98,9 +98,14 @@ class Conveniomarco(models.Model):
     #Fecha en que se aprobo el convenio
     fecha = models.DateField()
     #Estado del convenio
-    activo = models.CharField(max_length=1, blank=True)
+    activo = models.BooleanField(default=False)#(max_length=1, blank=True)
     #Nit de la empresa con que se ha hecho el convenio
     empresaspasantes_nit = models.ForeignKey('Empresaspasantes', db_column='empresaspasantes_nit')
+    
+    #El retorno a mostrar sera la descripcion del Conveniomarco
+    def __unicode__(self):
+        return self.empresaspasantes_nit.nombre
+
     class Meta:
         verbose_name_plural = "Convenios Marco"
         
@@ -422,7 +427,7 @@ class Modalidadespasantia(models.Model):
 #Modelo de clase correspondiente a la tabla Modadiladestg
 class Modalidadestg(models.Model):
     #Identificador de la modalidad del trabajo de grado
-    id = models.BigIntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     #Campo que representa la modalidad del trabajo
     descripcion = models.CharField(max_length=30, blank=True)
     class Meta:
@@ -557,7 +562,7 @@ class Sustentaciones(models.Model):
 #Modelo de clase correspondiente a la tabla Tipodocente
 class Tipodocente(models.Model):
     #Identificador unico del tipo de docente
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     #Campo que indica la clasificacion del docente (planta, catedratico, ocasional, externo)
     descripcion = models.CharField(max_length=30)
 

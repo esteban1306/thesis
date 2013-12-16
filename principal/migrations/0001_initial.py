@@ -10,7 +10,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding model 'Asesores'
         db.create_table(u'asesores', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('id', self.gf('django.db.models.fields.IntegerField')(primary_key=True)),
             ('trabajosgrado_codigo', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Trabajosgrado'], db_column=u'trabajosgrado_codigo')),
             ('docentes_dni', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Docentes'], db_column=u'docentes_dni')),
             ('fecha', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
@@ -24,7 +24,7 @@ class Migration(SchemaMigration):
         db.create_table(u'aspectos', (
             ('id', self.gf('django.db.models.fields.IntegerField')(primary_key=True)),
             ('descripcion', self.gf('django.db.models.fields.CharField')(max_length=20)),
-            ('porcentaje', self.gf('django.db.models.fields.DecimalField')(max_digits=2, decimal_places=2)),
+            ('porcentaje', self.gf('django.db.models.fields.DecimalField')(max_digits=3, decimal_places=2)),
             ('evaluacionestrabajogrado', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Evaluacionestrabajogrado'])),
         ))
         db.send_create_signal(u'principal', ['Aspectos'])
@@ -54,7 +54,7 @@ class Migration(SchemaMigration):
         db.create_table(u'conveniomarco', (
             ('id', self.gf('django.db.models.fields.BigIntegerField')(primary_key=True)),
             ('fecha', self.gf('django.db.models.fields.DateField')()),
-            ('activo', self.gf('django.db.models.fields.CharField')(max_length=1, blank=True)),
+            ('activo', self.gf('django.db.models.fields.BooleanField')(default=True)),
             ('empresaspasantes_nit', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Empresaspasantes'], db_column=u'empresaspasantes_nit')),
         ))
         db.send_create_signal(u'principal', ['Conveniomarco'])
@@ -89,8 +89,8 @@ class Migration(SchemaMigration):
         db.create_table(u'criteriosaspectos', (
             ('id', self.gf('django.db.models.fields.IntegerField')(primary_key=True)),
             ('descripcion', self.gf('django.db.models.fields.CharField')(max_length=30)),
-            ('porcentaje', self.gf('django.db.models.fields.DecimalField')(null=True, max_digits=2, decimal_places=2, blank=True)),
-            ('calificacion', self.gf('django.db.models.fields.DecimalField')(null=True, max_digits=2, decimal_places=2, blank=True)),
+            ('porcentaje', self.gf('django.db.models.fields.DecimalField')(null=True, max_digits=3, decimal_places=2, blank=True)),
+            ('calificacion', self.gf('django.db.models.fields.DecimalField')(null=True, max_digits=3, decimal_places=2, blank=True)),
             ('aspectos', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Aspectos'])),
         ))
         db.send_create_signal(u'principal', ['Criteriosaspectos'])
@@ -123,7 +123,7 @@ class Migration(SchemaMigration):
 
         # Adding model 'DocentesConsejocurricular'
         db.create_table(u'docentes_consejocurricular', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('id', self.gf('django.db.models.fields.IntegerField')(primary_key=True)),
             ('concejocurricular', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Concejocurricular'])),
             ('docentes_dni', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Docentes'], db_column=u'docentes_dni')),
         ))
@@ -131,13 +131,13 @@ class Migration(SchemaMigration):
 
         # Adding model 'Documentacion'
         db.create_table(u'documentacion', (
-            ('id', self.gf('django.db.models.fields.BigIntegerField')(primary_key=True)),
+            ('id', self.gf('django.db.models.fields.IntegerField')(primary_key=True)),
             ('fecha', self.gf('django.db.models.fields.DateField')()),
             ('asunto', self.gf('django.db.models.fields.CharField')(max_length=30)),
             ('descripcion', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('trabajosgrado_codigo', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Trabajosgrado'], db_column=u'trabajosgrado_codigo')),
             ('link', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('documentacion_alterna', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Documentacion'], null=True, blank=True)),
+            ('documentacion', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name=u'documentacion_alterna', null=True, to=orm['principal.Documentacion'])),
         ))
         db.send_create_signal(u'principal', ['Documentacion'])
 
@@ -161,7 +161,7 @@ class Migration(SchemaMigration):
 
         # Adding model 'Evaluacionestrabajogrado'
         db.create_table(u'evaluacionestrabajogrado', (
-            ('id', self.gf('django.db.models.fields.BigIntegerField')(primary_key=True)),
+            ('id', self.gf('django.db.models.fields.IntegerField')(primary_key=True)),
             ('fecha', self.gf('django.db.models.fields.DateField')()),
             ('nota_final_aspectos', self.gf('django.db.models.fields.DecimalField')(null=True, max_digits=3, decimal_places=2, blank=True)),
             ('caracter', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Caracter'])),
@@ -171,25 +171,23 @@ class Migration(SchemaMigration):
 
         # Adding model 'Historicocriteriospropuestas'
         db.create_table(u'historicocriteriospropuestas', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('id', self.gf('django.db.models.fields.IntegerField')(primary_key=True)),
             ('criterios', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Criterios'])),
             ('concejocurricular', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Concejocurricular'])),
             ('fecha', self.gf('django.db.models.fields.DateField')()),
             ('link', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
-            ('proptg_revtproptg', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.PropuestatgRevisorest'])),
-            ('proptg_revt_revtec', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'proptg_revt_revtec', to=orm['principal.PropuestatgRevisorest'])),
+            ('propuestatg_revisorest', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.PropuestatgRevisorest'])),
         ))
         db.send_create_signal(u'principal', ['Historicocriteriospropuestas'])
 
         # Adding model 'InformefinalCriterios'
         db.create_table(u'informefinal_criterios', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('id', self.gf('django.db.models.fields.BigIntegerField')(primary_key=True)),
             ('fecha', self.gf('django.db.models.fields.DateField')()),
             ('informesfinales', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Informesfinales'])),
             ('criteriosjurado', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Criteriosjurado'])),
-            ('jurados_trabajosgrado_codigo', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Jurados'], db_column=u'jurados_trabajosgrado_codigo')),
-            ('jurados_docentes_dni', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'jurados_docentes_dni', db_column=u'jurados_docentes_dni', to=orm['principal.Jurados'])),
             ('link', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
+            ('jurados', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Jurados'])),
         ))
         db.send_create_signal(u'principal', ['InformefinalCriterios'])
 
@@ -216,7 +214,7 @@ class Migration(SchemaMigration):
 
         # Adding model 'Jurados'
         db.create_table(u'jurados', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('id', self.gf('django.db.models.fields.IntegerField')(primary_key=True)),
             ('trabajosgrado_codigo', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Trabajosgrado'], db_column=u'trabajosgrado_codigo')),
             ('docentes_dni', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Docentes'], db_column=u'docentes_dni')),
             ('presidente', self.gf('django.db.models.fields.CharField')(max_length=1, blank=True)),
@@ -224,6 +222,9 @@ class Migration(SchemaMigration):
             ('fecha', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
         ))
         db.send_create_signal(u'principal', ['Jurados'])
+
+        # Adding unique constraint on 'Jurados', fields ['trabajosgrado_codigo', 'docentes_dni']
+        db.create_unique(u'jurados', [u'trabajosgrado_codigo', u'docentes_dni'])
 
         # Adding model 'Modalidadespasantia'
         db.create_table(u'modalidadespasantia', (
@@ -234,9 +235,8 @@ class Migration(SchemaMigration):
 
         # Adding model 'Modalidadestg'
         db.create_table(u'modalidadestg', (
-            ('id', self.gf('django.db.models.fields.BigIntegerField')(primary_key=True)),
+            ('id', self.gf('django.db.models.fields.IntegerField')(primary_key=True)),
             ('descripcion', self.gf('django.db.models.fields.CharField')(max_length=30, blank=True)),
-            ('trabajogrado_codigo', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Trabajosgrado'], db_column=u'trabajogrado_codigo')),
         ))
         db.send_create_signal(u'principal', ['Modalidadestg'])
 
@@ -263,11 +263,14 @@ class Migration(SchemaMigration):
 
         # Adding model 'PropuestatgRevisorest'
         db.create_table(u'propuestatg_revisorest', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('id', self.gf('django.db.models.fields.IntegerField')(primary_key=True)),
             ('propuestatg', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Propuestatg'])),
             ('revisorestecnicos', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Revisorestecnicos'])),
         ))
         db.send_create_signal(u'principal', ['PropuestatgRevisorest'])
+
+        # Adding unique constraint on 'PropuestatgRevisorest', fields ['propuestatg', 'revisorestecnicos']
+        db.create_unique(u'propuestatg_revisorest', ['propuestatg_id', 'revisorestecnicos_id'])
 
         # Adding model 'Revisorestecnicos'
         db.create_table(u'revisorestecnicos', (
@@ -306,7 +309,7 @@ class Migration(SchemaMigration):
             ('fecharealizacion', self.gf('django.db.models.fields.DateField')()),
             ('hora', self.gf('django.db.models.fields.DateField')()),
             ('lugar', self.gf('django.db.models.fields.CharField')(max_length=30)),
-            ('nota', self.gf('django.db.models.fields.DecimalField')(null=True, max_digits=2, decimal_places=2, blank=True)),
+            ('nota', self.gf('django.db.models.fields.DecimalField')(null=True, max_digits=3, decimal_places=2, blank=True)),
             ('trabajosgrado_codigo', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Trabajosgrado'], unique=True, db_column=u'trabajosgrado_codigo')),
         ))
         db.send_create_signal(u'principal', ['Sustentaciones'])
@@ -330,8 +333,9 @@ class Migration(SchemaMigration):
             ('codigo', self.gf('django.db.models.fields.BigIntegerField')(primary_key=True)),
             ('titulo', self.gf('django.db.models.fields.CharField')(max_length=30)),
             ('grupo_investigacion', self.gf('django.db.models.fields.CharField')(max_length=30, blank=True)),
-            ('nota_definitiva', self.gf('django.db.models.fields.DecimalField')(null=True, max_digits=2, decimal_places=2, blank=True)),
+            ('nota_definitiva', self.gf('django.db.models.fields.DecimalField')(null=True, max_digits=3, decimal_places=2, blank=True)),
             ('docentes_director', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Docentes'], db_column=u'docentes_director')),
+            ('modalidadestg', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['principal.Modalidadestg'])),
         ))
         db.send_create_signal(u'principal', ['Trabajosgrado'])
 
@@ -347,6 +351,12 @@ class Migration(SchemaMigration):
 
 
     def backwards(self, orm):
+        # Removing unique constraint on 'PropuestatgRevisorest', fields ['propuestatg', 'revisorestecnicos']
+        db.delete_unique(u'propuestatg_revisorest', ['propuestatg_id', 'revisorestecnicos_id'])
+
+        # Removing unique constraint on 'Jurados', fields ['trabajosgrado_codigo', 'docentes_dni']
+        db.delete_unique(u'jurados', [u'trabajosgrado_codigo', u'docentes_dni'])
+
         # Removing unique constraint on 'Asesores', fields ['trabajosgrado_codigo', 'docentes_dni']
         db.delete_unique(u'asesores', [u'trabajosgrado_codigo', u'docentes_dni'])
 
@@ -464,7 +474,7 @@ class Migration(SchemaMigration):
             'Meta': {'unique_together': "((u'trabajosgrado_codigo', u'docentes_dni'),)", 'object_name': 'Asesores', 'db_table': "u'asesores'"},
             'docentes_dni': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Docentes']", 'db_column': "u'docentes_dni'"}),
             'fecha': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True'}),
             'trabajosgrado_codigo': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Trabajosgrado']", 'db_column': "u'trabajosgrado_codigo'"})
         },
         u'principal.aspectos': {
@@ -472,7 +482,7 @@ class Migration(SchemaMigration):
             'descripcion': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
             'evaluacionestrabajogrado': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Evaluacionestrabajogrado']"}),
             'id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True'}),
-            'porcentaje': ('django.db.models.fields.DecimalField', [], {'max_digits': '2', 'decimal_places': '2'})
+            'porcentaje': ('django.db.models.fields.DecimalField', [], {'max_digits': '3', 'decimal_places': '2'})
         },
         u'principal.caracter': {
             'Meta': {'object_name': 'Caracter', 'db_table': "u'caracter'"},
@@ -491,7 +501,7 @@ class Migration(SchemaMigration):
         },
         u'principal.conveniomarco': {
             'Meta': {'object_name': 'Conveniomarco', 'db_table': "u'conveniomarco'"},
-            'activo': ('django.db.models.fields.CharField', [], {'max_length': '1', 'blank': 'True'}),
+            'activo': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'empresaspasantes_nit': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Empresaspasantes']", 'db_column': "u'empresaspasantes_nit'"}),
             'fecha': ('django.db.models.fields.DateField', [], {}),
             'id': ('django.db.models.fields.BigIntegerField', [], {'primary_key': 'True'})
@@ -519,10 +529,10 @@ class Migration(SchemaMigration):
         u'principal.criteriosaspectos': {
             'Meta': {'object_name': 'Criteriosaspectos', 'db_table': "u'criteriosaspectos'"},
             'aspectos': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Aspectos']"}),
-            'calificacion': ('django.db.models.fields.DecimalField', [], {'null': 'True', 'max_digits': '2', 'decimal_places': '2', 'blank': 'True'}),
+            'calificacion': ('django.db.models.fields.DecimalField', [], {'null': 'True', 'max_digits': '3', 'decimal_places': '2', 'blank': 'True'}),
             'descripcion': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True'}),
-            'porcentaje': ('django.db.models.fields.DecimalField', [], {'null': 'True', 'max_digits': '2', 'decimal_places': '2', 'blank': 'True'})
+            'porcentaje': ('django.db.models.fields.DecimalField', [], {'null': 'True', 'max_digits': '3', 'decimal_places': '2', 'blank': 'True'})
         },
         u'principal.criteriosjurado': {
             'Meta': {'object_name': 'Criteriosjurado', 'db_table': "u'criteriosjurado'"},
@@ -548,15 +558,15 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'DocentesConsejocurricular', 'db_table': "u'docentes_consejocurricular'"},
             'concejocurricular': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Concejocurricular']"}),
             'docentes_dni': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Docentes']", 'db_column': "u'docentes_dni'"}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
+            'id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True'})
         },
         u'principal.documentacion': {
             'Meta': {'object_name': 'Documentacion', 'db_table': "u'documentacion'"},
             'asunto': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'descripcion': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'documentacion_alterna': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Documentacion']", 'null': 'True', 'blank': 'True'}),
+            'documentacion': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "u'documentacion_alterna'", 'null': 'True', 'to': u"orm['principal.Documentacion']"}),
             'fecha': ('django.db.models.fields.DateField', [], {}),
-            'id': ('django.db.models.fields.BigIntegerField', [], {'primary_key': 'True'}),
+            'id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True'}),
             'link': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
             'trabajosgrado_codigo': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Trabajosgrado']", 'db_column': "u'trabajosgrado_codigo'"})
         },
@@ -578,7 +588,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Evaluacionestrabajogrado', 'db_table': "u'evaluacionestrabajogrado'"},
             'caracter': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Caracter']"}),
             'fecha': ('django.db.models.fields.DateField', [], {}),
-            'id': ('django.db.models.fields.BigIntegerField', [], {'primary_key': 'True'}),
+            'id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True'}),
             'nota_final_aspectos': ('django.db.models.fields.DecimalField', [], {'null': 'True', 'max_digits': '3', 'decimal_places': '2', 'blank': 'True'}),
             'trabajosgrado_codigo': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Trabajosgrado']", 'db_column': "u'Trabajosgrado_codigo'"})
         },
@@ -587,19 +597,17 @@ class Migration(SchemaMigration):
             'concejocurricular': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Concejocurricular']"}),
             'criterios': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Criterios']"}),
             'fecha': ('django.db.models.fields.DateField', [], {}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True'}),
             'link': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'proptg_revt_revtec': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'proptg_revt_revtec'", 'to': u"orm['principal.PropuestatgRevisorest']"}),
-            'proptg_revtproptg': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.PropuestatgRevisorest']"})
+            'propuestatg_revisorest': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.PropuestatgRevisorest']"})
         },
         u'principal.informefinalcriterios': {
             'Meta': {'object_name': 'InformefinalCriterios', 'db_table': "u'informefinal_criterios'"},
             'criteriosjurado': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Criteriosjurado']"}),
             'fecha': ('django.db.models.fields.DateField', [], {}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'id': ('django.db.models.fields.BigIntegerField', [], {'primary_key': 'True'}),
             'informesfinales': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Informesfinales']"}),
-            'jurados_docentes_dni': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'jurados_docentes_dni'", 'db_column': "u'jurados_docentes_dni'", 'to': u"orm['principal.Jurados']"}),
-            'jurados_trabajosgrado_codigo': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Jurados']", 'db_column': "u'jurados_trabajosgrado_codigo'"}),
+            'jurados': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Jurados']"}),
             'link': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'})
         },
         u'principal.informesfinales': {
@@ -620,11 +628,11 @@ class Migration(SchemaMigration):
             'pasantias_trabajosgrado_codigo': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Pasantias']", 'db_column': "u'pasantias_trabajosgrado_codigo'"})
         },
         u'principal.jurados': {
-            'Meta': {'object_name': 'Jurados', 'db_table': "u'jurados'"},
+            'Meta': {'unique_together': "((u'trabajosgrado_codigo', u'docentes_dni'),)", 'object_name': 'Jurados', 'db_table': "u'jurados'"},
             'concejocurricular': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Concejocurricular']"}),
             'docentes_dni': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Docentes']", 'db_column': "u'docentes_dni'"}),
             'fecha': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True'}),
             'presidente': ('django.db.models.fields.CharField', [], {'max_length': '1', 'blank': 'True'}),
             'trabajosgrado_codigo': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Trabajosgrado']", 'db_column': "u'trabajosgrado_codigo'"})
         },
@@ -636,8 +644,7 @@ class Migration(SchemaMigration):
         u'principal.modalidadestg': {
             'Meta': {'object_name': 'Modalidadestg', 'db_table': "u'modalidadestg'"},
             'descripcion': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'id': ('django.db.models.fields.BigIntegerField', [], {'primary_key': 'True'}),
-            'trabajogrado_codigo': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Trabajosgrado']", 'db_column': "u'trabajogrado_codigo'"})
+            'id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True'})
         },
         u'principal.pasantias': {
             'Meta': {'object_name': 'Pasantias', 'db_table': "u'pasantias'"},
@@ -657,8 +664,8 @@ class Migration(SchemaMigration):
             'trabajosgrado_codigo': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Trabajosgrado']", 'db_column': "u'trabajosgrado_codigo'"})
         },
         u'principal.propuestatgrevisorest': {
-            'Meta': {'object_name': 'PropuestatgRevisorest', 'db_table': "u'propuestatg_revisorest'"},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'Meta': {'unique_together': "((u'propuestatg', u'revisorestecnicos'),)", 'object_name': 'PropuestatgRevisorest', 'db_table': "u'propuestatg_revisorest'"},
+            'id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True'}),
             'propuestatg': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Propuestatg']"}),
             'revisorestecnicos': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Revisorestecnicos']"})
         },
@@ -693,7 +700,7 @@ class Migration(SchemaMigration):
             'hora': ('django.db.models.fields.DateField', [], {}),
             'id': ('django.db.models.fields.BigIntegerField', [], {'primary_key': 'True'}),
             'lugar': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
-            'nota': ('django.db.models.fields.DecimalField', [], {'null': 'True', 'max_digits': '2', 'decimal_places': '2', 'blank': 'True'}),
+            'nota': ('django.db.models.fields.DecimalField', [], {'null': 'True', 'max_digits': '3', 'decimal_places': '2', 'blank': 'True'}),
             'trabajosgrado_codigo': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Trabajosgrado']", 'unique': 'True', 'db_column': "u'trabajosgrado_codigo'"})
         },
         u'principal.tipodocente': {
@@ -711,7 +718,8 @@ class Migration(SchemaMigration):
             'codigo': ('django.db.models.fields.BigIntegerField', [], {'primary_key': 'True'}),
             'docentes_director': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Docentes']", 'db_column': "u'docentes_director'"}),
             'grupo_investigacion': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'nota_definitiva': ('django.db.models.fields.DecimalField', [], {'null': 'True', 'max_digits': '2', 'decimal_places': '2', 'blank': 'True'}),
+            'modalidadestg': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['principal.Modalidadestg']"}),
+            'nota_definitiva': ('django.db.models.fields.DecimalField', [], {'null': 'True', 'max_digits': '3', 'decimal_places': '2', 'blank': 'True'}),
             'titulo': ('django.db.models.fields.CharField', [], {'max_length': '30'})
         },
         u'principal.visitas': {

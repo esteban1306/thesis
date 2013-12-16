@@ -33,22 +33,33 @@ class DocentesAdmin(admin.ModelAdmin):
 #Agregar el modelo Estudiantes dentro de la interfaz administrativa
 class CoordinadorestgAdmin(admin.ModelAdmin):
     
+    list_display = ('id','docentes_dni','anio', 'semestreacademico')
+    
+    def add_view(self, *args, **kwargs):
+        self.fields = ('docentes_dni','anio','semestreacademico')
+        return super(CoordinadorestgAdmin, self).add_view(*args, **kwargs)
+
     def save_model(self, request, obj, form, change):
         if change:
             obj.save()
         else:
-            obj.save()
-            dni = obj.docentes_dni.dni
-            user = Usuario.objects.create_userRol(dni, Usuario.COORDINADOR, dni)
-
-            grupo = Group.objects.get(name='coordinador')
-            user.groups.add(grupo)
+            maximo = Aspectos.objects.all().aggregate(m=Max('id'))
+            if maximo['m'] is not None:
+                obj.id  = maximo['m'] + 1
+                obj.save()
+            else:
+                obj.id  = 1
+                obj.save()          
+        dni = obj.docentes_dni.dni
+        user = Usuario.objects.create_userRol(dni, Usuario.ASESOR, dni)
+            
+        grupo = Group.objects.get(name=Usuario.ESTUDIANTE)
+        user.groups.add(grupo)
 
 #Define un modelo de administracion para Asesores
 class AsesoresAdmin(admin.ModelAdmin):
 
     list_display = ('id','trabajosgrado_codigo','docentes_dni', 'fecha')
-
     
     def add_view(self, *args, **kwargs):
         self.fields = ('trabajosgrado_codigo','docentes_dni','fecha')
@@ -91,25 +102,106 @@ class AspectosAdmin(admin.ModelAdmin):
     list_display = ('id', 'descripcion', 'porcentaje')
     search_fields = ['descripcion']
 
+    def add_view(self, *args, **kwargs):
+        self.fields = ('descripcion', 'porcentaje', 'evaluacionestrabajogrado')
+        return super(AspectosAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.save()
+        else:
+            #nombre = obj.__class__.__name__
+            maximo = Aspectos.objects.all().aggregate(m=Max('id'))
+            if maximo['m'] is not None:
+                obj.id  = maximo['m'] + 1
+                obj.save()
+            else:
+                obj.id  = 1
+                obj.save() 
+
 #Define un modelo de administracion para Caracter
 class CaracterAdmin(admin.ModelAdmin):
     list_display = ('id', 'descripcion')
     search_fields = ['descripcion']
+
+    def add_view(self, *args, **kwargs):
+        self.fields = ('descripcion',)
+        return super(CaracterAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.save()
+        else:
+            maximo = Caracter.objects.all().aggregate(m=Max('id'))
+            if maximo['m'] is not None:
+                obj.id  = maximo['m'] + 1
+                obj.save()
+            else:
+                obj.id  = 1
+                obj.save()       
 
 #Define un modelo de administracion para Concejo curricular
 class ConcejocurricularAdmin(admin.ModelAdmin):
     list_display = ('id', 'fechacreacion')
     search_fields = ['fechacreacion']
 
+    def add_view(self, *args, **kwargs):
+        self.fields = ('fechacreacion',)
+        return super(ConcejocurricularAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.save()
+        else:
+            maximo = Concejocurricular.objects.all().aggregate(m=Max('id'))
+            if maximo['m'] is not None:
+                obj.id  = maximo['m'] + 1
+                obj.save()
+            else:
+                obj.id  = 1
+                obj.save()   
+
 #Define un modelo de administracion para Conceptos solicitudes
 class ConceptossolicitudesAdmin(admin.ModelAdmin):
     list_display = ('id', 'descripcion')
     search_fields = ['descripcion']
 
+    def add_view(self, *args, **kwargs):
+        self.fields = ('descripcion',)
+        return super(ConceptossolicitudesAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.save()
+        else:
+            maximo = Conceptossolicitudes.objects.all().aggregate(m=Max('id'))
+            if maximo['m'] is not None:
+                obj.id  = maximo['m'] + 1
+                obj.save()
+            else:
+                obj.id  = 1
+                obj.save()
+
 #Define un modelo de administracion para Conveniosmarco
 class ConveniosmarcoAdmin(admin.ModelAdmin):
     list_display = ('id', 'fecha', 'activo', 'empresaspasantes_nit')
     search_fields = ['empresaspasantes_nit', 'fecha']
+
+    def add_view(self, *args, **kwargs):
+        self.fields = ('fecha', 'activo', 'empresaspasantes_nit')
+        return super(ConveniosmarcoAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.save()
+        else:
+            maximo = Conveniomarco.objects.all().aggregate(m=Max('id'))
+            if maximo['m'] is not None:
+                obj.id  = maximo['m'] + 1
+                obj.save()
+            else:
+                obj.id  = 1
+                obj.save()
 
 #Define un modelo de administracion para Convocatorias
 class ConvocatoriasAdmin(admin.ModelAdmin):
@@ -157,6 +249,23 @@ class EmpresaspasantesAdmin(admin.ModelAdmin):
 class EvaluacionesTrabajoGradoAdmin(admin.ModelAdmin):
     list_display = ('id','fecha','nota_final_aspectos','caracter')
     search_fields = ['caracter']
+
+    def add_view(self, *args, **kwargs):
+        self.fields = ('fecha','nota_final_aspectos','caracter', 'trabajosgrado_codigo')
+        return super(EvaluacionesTrabajoGradoAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.save()
+        else:
+            #nombre = obj.__class__.__name__
+            maximo = Evaluacionestrabajogrado.objects.all().aggregate(m=Max('id'))
+            if maximo['m'] is not None:
+                obj.id  = maximo['m'] + 1
+                obj.save()
+            else:
+                obj.id  = 1
+                obj.save()     
 
 #Define un modelo de administracion para Historicocriteriospropuestas
 class HistoricocriteriospropuestasAdmin(admin.ModelAdmin):
@@ -250,17 +359,35 @@ class TipodocenteAdmin(admin.ModelAdmin):
         if change:
             obj.save()
         else:
-            #nombre = obj.__class__.__name__
             maximo = Tipodocente.objects.all().aggregate(m=Max('id'))
-            print maximo
-            obj.id  = maximo['m'] + 1
-            obj.save()
+            if maximo['m'] is not None:
+                obj.id  = maximo['m'] + 1
+                obj.save()
+            else:
+                obj.id  = 1
+                obj.save()
 
 #Define un modelo de administracion para Tiposempresa
 class TiposempresaAdmin(admin.ModelAdmin):
     list_display = ('id', 'descripcion')
     list_filter = ['descripcion']
     search_fields = ['descripcion']    
+
+    def add_view(self, *args, **kwargs):
+        self.fields = ('descripcion',)
+        return super(TiposempresaAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.save()
+        else:
+            maximo = Tiposempresa.objects.all().aggregate(m=Max('id'))
+            if maximo['m'] is not None:
+                obj.id  = maximo['m'] + 1
+                obj.save()
+            else:
+                obj.id  = 1
+                obj.save()
 
 #Define un modelo de administracion para Trabajosgrado
 class TrabajosgradoAdmin(admin.ModelAdmin):
