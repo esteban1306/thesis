@@ -91,10 +91,43 @@ class AspectosAdmin(admin.ModelAdmin):
     list_display = ('id', 'descripcion', 'porcentaje')
     search_fields = ['descripcion']
 
+    def add_view(self, *args, **kwargs):
+        self.fields = ('descripcion', 'porcentaje', 'evaluacionestrabajogrado')
+        return super(AspectosAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.save()
+        else:
+            #nombre = obj.__class__.__name__
+            maximo = Aspectos.objects.all().aggregate(m=Max('id'))
+            if maximo['m'] is not None:
+                obj.id  = maximo['m'] + 1
+                obj.save()
+            else:
+                obj.id  = 1
+                obj.save() 
+
 #Define un modelo de administracion para Caracter
 class CaracterAdmin(admin.ModelAdmin):
     list_display = ('id', 'descripcion')
     search_fields = ['descripcion']
+
+    def add_view(self, *args, **kwargs):
+        self.fields = ('descripcion',)
+        return super(CaracterAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.save()
+        else:
+            maximo = Caracter.objects.all().aggregate(m=Max('id'))
+            if maximo['m'] is not None:
+                obj.id  = maximo['m'] + 1
+                obj.save()
+            else:
+                obj.id  = 1
+                obj.save()       
 
 #Define un modelo de administracion para Concejo curricular
 class ConcejocurricularAdmin(admin.ModelAdmin):
@@ -157,6 +190,23 @@ class EmpresaspasantesAdmin(admin.ModelAdmin):
 class EvaluacionesTrabajoGradoAdmin(admin.ModelAdmin):
     list_display = ('id','fecha','nota_final_aspectos','caracter')
     search_fields = ['caracter']
+
+    def add_view(self, *args, **kwargs):
+        self.fields = ('fecha','nota_final_aspectos','caracter', 'trabajosgrado_codigo')
+        return super(EvaluacionesTrabajoGradoAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.save()
+        else:
+            #nombre = obj.__class__.__name__
+            maximo = Evaluacionestrabajogrado.objects.all().aggregate(m=Max('id'))
+            if maximo['m'] is not None:
+                obj.id  = maximo['m'] + 1
+                obj.save()
+            else:
+                obj.id  = 1
+                obj.save()     
 
 #Define un modelo de administracion para Historicocriteriospropuestas
 class HistoricocriteriospropuestasAdmin(admin.ModelAdmin):
@@ -250,11 +300,13 @@ class TipodocenteAdmin(admin.ModelAdmin):
         if change:
             obj.save()
         else:
-            #nombre = obj.__class__.__name__
             maximo = Tipodocente.objects.all().aggregate(m=Max('id'))
-            print maximo
-            obj.id  = maximo['m'] + 1
-            obj.save()
+            if maximo['m'] is not None:
+                obj.id  = maximo['m'] + 1
+                obj.save()
+            else:
+                obj.id  = 1
+                obj.save()
 
 #Define un modelo de administracion para Tiposempresa
 class TiposempresaAdmin(admin.ModelAdmin):
