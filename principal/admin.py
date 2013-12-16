@@ -33,22 +33,33 @@ class DocentesAdmin(admin.ModelAdmin):
 #Agregar el modelo Estudiantes dentro de la interfaz administrativa
 class CoordinadorestgAdmin(admin.ModelAdmin):
     
+    list_display = ('id','docentes_dni','anio', 'semestreacademico')
+    
+    def add_view(self, *args, **kwargs):
+        self.fields = ('docentes_dni','anio','semestreacademico')
+        return super(CoordinadorestgAdmin, self).add_view(*args, **kwargs)
+
     def save_model(self, request, obj, form, change):
         if change:
             obj.save()
         else:
-            obj.save()
-            dni = obj.docentes_dni.dni
-            user = Usuario.objects.create_userRol(dni, Usuario.COORDINADOR, dni)
-
-            grupo = Group.objects.get(name='coordinador')
-            user.groups.add(grupo)
+            maximo = Aspectos.objects.all().aggregate(m=Max('id'))
+            if maximo['m'] is not None:
+                obj.id  = maximo['m'] + 1
+                obj.save()
+            else:
+                obj.id  = 1
+                obj.save()          
+        dni = obj.docentes_dni.dni
+        user = Usuario.objects.create_userRol(dni, Usuario.ASESOR, dni)
+            
+        grupo = Group.objects.get(name=Usuario.ESTUDIANTE)
+        user.groups.add(grupo)
 
 #Define un modelo de administracion para Asesores
 class AsesoresAdmin(admin.ModelAdmin):
 
     list_display = ('id','trabajosgrado_codigo','docentes_dni', 'fecha')
-
     
     def add_view(self, *args, **kwargs):
         self.fields = ('trabajosgrado_codigo','docentes_dni','fecha')
