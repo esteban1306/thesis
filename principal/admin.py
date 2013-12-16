@@ -58,7 +58,7 @@ class AsesoresAdmin(admin.ModelAdmin):
         if change:
             obj.save()
         else:
-            #nombre = obj.__class__.__name__
+            #nombre = obj.__class__.__name__            
             obj.id = Asesores.objects.all().count() + 1
             obj.save()
             dni = obj.docentes_dni.dni
@@ -251,7 +251,9 @@ class TipodocenteAdmin(admin.ModelAdmin):
             obj.save()
         else:
             #nombre = obj.__class__.__name__
-            obj.id  = Tipodocente.objects.all().count() + 1
+            maximo = Tipodocente.objects.all().aggregate(m=Max('id'))
+            print maximo
+            obj.id  = maximo['m'] + 1
             obj.save()
 
 #Define un modelo de administracion para Tiposempresa
