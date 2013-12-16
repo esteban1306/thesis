@@ -1,6 +1,5 @@
 #Importar objeto para renderizar la solicitud o mostrar error 404 en la pagina
-from django.shortcuts import render_to_response, get_object_or_404
-from django.shortcuts import render
+from django.shortcuts import render_to_response, get_object_or_404, render
 #Importar objetos http para el procesamiento de solicitudes, y redireccionar a otras paginas
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
@@ -16,29 +15,14 @@ from django.contrib.auth import login, logout, authenticate
 #Definicion de vista principal 
 def home(request):
     
-    #Formulario de login
-    loginForm = LoginForm()
-    #Si la solicitud fue enviada...
-    if request.method == 'POST':
-        #El formulario es enlazado mediante este metodo 
-        loginForm = LoginForm(request.POST)
-        #Verificar si el formulario cumple con las condiciones de validacion
-        if loginForm.is_valid():
-            #Limpiar datos ingresados...
-            username  = loginForm.cleaned_data['username']
-            password  = loginForm.cleaned_data['password']
-            user = authenticate(username=username, password=password)
-            if user is not None and user.is_active:
-                login(request, user)
-                #Redireccionar despues del envio de datos
-                return HttpResponseRedirect('/')
-    else:
-        if request.user.is_authenticated() == False:
-            return HttpResponseRedirect('login/')
-    loginForm = LoginForm()
-    #Envio final del formulario
-    ctx = {'loginForm':loginForm}
-    return render_to_response('estudiante.html', ctx, context_instance=RequestContext(request))
+    if request.user.is_authenticated() == False:
+        return HttpResponseRedirect('login/')
+
+    return render(request, 'home.html')
+
+
+def trabajos_grado_list(request):
+    return render(request, 'trabajos_grado_list.html')
     
 #Definicion de vista para el login  
 def login_view(request):
