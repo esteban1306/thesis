@@ -134,15 +134,63 @@ class ConcejocurricularAdmin(admin.ModelAdmin):
     list_display = ('id', 'fechacreacion')
     search_fields = ['fechacreacion']
 
+    def add_view(self, *args, **kwargs):
+        self.fields = ('fechacreacion',)
+        return super(ConcejocurricularAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.save()
+        else:
+            maximo = Concejocurricular.objects.all().aggregate(m=Max('id'))
+            if maximo['m'] is not None:
+                obj.id  = maximo['m'] + 1
+                obj.save()
+            else:
+                obj.id  = 1
+                obj.save()   
+
 #Define un modelo de administracion para Conceptos solicitudes
 class ConceptossolicitudesAdmin(admin.ModelAdmin):
     list_display = ('id', 'descripcion')
     search_fields = ['descripcion']
 
+    def add_view(self, *args, **kwargs):
+        self.fields = ('descripcion',)
+        return super(ConceptossolicitudesAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.save()
+        else:
+            maximo = Conceptossolicitudes.objects.all().aggregate(m=Max('id'))
+            if maximo['m'] is not None:
+                obj.id  = maximo['m'] + 1
+                obj.save()
+            else:
+                obj.id  = 1
+                obj.save()
+
 #Define un modelo de administracion para Conveniosmarco
 class ConveniosmarcoAdmin(admin.ModelAdmin):
     list_display = ('id', 'fecha', 'activo', 'empresaspasantes_nit')
     search_fields = ['empresaspasantes_nit', 'fecha']
+
+    def add_view(self, *args, **kwargs):
+        self.fields = ('fecha', 'activo', 'empresaspasantes_nit')
+        return super(ConveniosmarcoAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.save()
+        else:
+            maximo = Conveniomarco.objects.all().aggregate(m=Max('id'))
+            if maximo['m'] is not None:
+                obj.id  = maximo['m'] + 1
+                obj.save()
+            else:
+                obj.id  = 1
+                obj.save()
 
 #Define un modelo de administracion para Convocatorias
 class ConvocatoriasAdmin(admin.ModelAdmin):
@@ -313,6 +361,22 @@ class TiposempresaAdmin(admin.ModelAdmin):
     list_display = ('id', 'descripcion')
     list_filter = ['descripcion']
     search_fields = ['descripcion']    
+
+    def add_view(self, *args, **kwargs):
+        self.fields = ('descripcion',)
+        return super(TiposempresaAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.save()
+        else:
+            maximo = Tiposempresa.objects.all().aggregate(m=Max('id'))
+            if maximo['m'] is not None:
+                obj.id  = maximo['m'] + 1
+                obj.save()
+            else:
+                obj.id  = 1
+                obj.save()
 
 #Define un modelo de administracion para Trabajosgrado
 class TrabajosgradoAdmin(admin.ModelAdmin):
