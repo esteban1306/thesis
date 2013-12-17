@@ -25,12 +25,12 @@ class DocentesAdmin(admin.ModelAdmin):
     list_display  = ('dni','nombre','apellidos', 'tipodocente')
     list_filter   = ['nombre']
     search_fields = ['nombre']
-
+    """
     def save_model(self, request, obj, form, change):
         obj.save()
         if not change:
             Usuario.objects.create_userRol(obj.dni, obj.tipodocente.descripcion, obj.dni)
-        
+    """   
             
 
 #Agregar el modelo Estudiantes dentro de la interfaz administrativa
@@ -291,12 +291,12 @@ class TipodocenteAdmin(admin.ModelAdmin):
     def add_view(self, *args, **kwargs):
         self.fields = ('descripcion',)
         return super(TipodocenteAdmin, self).add_view(*args, **kwargs)
-
+    """
     def formfield_for_dbfield(self, db_field, **kwargs):    
         if db_field.name == 'descripcion':
             kwargs['widget'] = forms.Select(choices=Usuario.TIPO_USUARIO[1:])  # en los tipos de docente no puede haber un tipo estudiante..
         return super(TipodocenteAdmin,self).formfield_for_dbfield(db_field,**kwargs)
-
+    """
     def save_model(self, request, obj, form, change):
         if not change:
             obj.id  = get_id_autoincremental(obj)
@@ -321,12 +321,12 @@ class TiposempresaAdmin(admin.ModelAdmin):
 class TrabajosgradoAdmin(admin.ModelAdmin):
     list_display = ('codigo', 'titulo', 'grupo_investigacion', 'nota_definitiva', 'docentes_director' )
     list_filter = ['codigo']
-
+    """
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "docentes_director":
             kwargs["queryset"] = Docentes.objects.filter(tipodocente__descripcion=Usuario.DIRECTOR) #pk=tipoDocenteDirector.id)
         return super(TrabajosgradoAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
-
+    """
 
 #Define un modelo de administracion para Visistas
 class VisitasAdmin(admin.ModelAdmin):

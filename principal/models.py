@@ -430,6 +430,10 @@ class Modalidadestg(models.Model):
     id = models.IntegerField(primary_key=True)
     #Campo que representa la modalidad del trabajo
     descripcion = models.CharField(max_length=30, blank=True)
+
+    def __unicode__(self):
+        return self.descripcion
+    
     class Meta:
         verbose_name_plural = "Modalidades Trabajos de Grado"
         
@@ -562,7 +566,7 @@ class Sustentaciones(models.Model):
 #Modelo de clase correspondiente a la tabla Tipodocente
 class Tipodocente(models.Model):
     #Identificador unico del tipo de docente
-    id = models.AutoField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     #Campo que indica la clasificacion del docente (planta, catedratico, ocasional, externo)
     descripcion = models.CharField(max_length=30)
 
