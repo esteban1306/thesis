@@ -4,21 +4,55 @@ from django.shortcuts import render_to_response, get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 #Importar modelos necesarios para construir las vistas
-from models import Tipodocente, Docentes, Caracter, Evaluacionestrabajogrado
+from models import *
 #Importar los modelos de formularios creados en forms.py
 from forms import LoginForm, TipodocenteForm, DocentesForm, CaracterForm, EvaluacionesTrabajoGradoForm
 #Importar objetos de autenticacion de django
 from django.contrib.auth import login, logout, authenticate
 
+from usuarios.models import Usuario
+
 # Creacion de vistas
 
 #Definicion de vista principal 
-def home(request):
-    
+def home(request):   
     if request.user.is_authenticated() == False:
         return HttpResponseRedirect('login/')
 
-    return render(request, 'home.html')
+    ctx = {}
+    if request.user.tipo == Usuario.ESTUDIANTE:   
+        person = Estudiantes.objects.get(dni=request.user.dni)
+    if request.user.tipo == Usuario.DIRECTOR:
+        person = 'Nadie'
+    if request.user.tipo == Usuario.COORDINADOR:
+        person = 'Nadie'
+    if request.user.tipo == Usuario.ASESOR:
+        person = 'Nadie'
+    if request.user.tipo == Usuario.JURADO:
+        person = 'Nadie'
+
+    ctx['person'] = person
+
+    return render(request, 'home.html', ctx)
+
+
+
+def estudiante_detalle(request, dni):
+
+    person = Estudiantes.objects.get(dni=dni)
+    user = Usuario.objects.get(dni=person.dni)
+    ctx = {'person':person, 'usuario':user}
+
+    return render(request, 'estudiante_detalle.html', ctx)
+
+
+
+def trabajo_grado_detalle(request, codigo):
+
+    trabajo = Trabajosgrado.objects.get(codigo=codigo)
+    ctx = {'trabajo':trabajo}
+    return render(request, 'trabajo_grado_detalle.html', ctx)
+
 
 
 def trabajos_grado_list(request):

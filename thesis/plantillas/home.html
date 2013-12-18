@@ -2,48 +2,21 @@
 
 {% block title %} Home {% endblock %}
 
+{% block css %}
+	<style>
+		.item {text-align: center;}
+		h1 { font-size: 5em;}
+	</style>
+{% endblock %}
+
+
+
 {% block sidebar_left %}
-
-<div class="panel panel-default">
-
-	<IMG SRC="media/images/tesis_image.jpg" WIDTH=178 HEIGHT=180 ALT="tesis_image">
-	<div class="panel-heading">ACCIONES</div>
-
-
-	<div class="list-group nav-servicios">
-
-		<a href="{% url 'principal.views.home' %}" class="list-group-item">
-			<span class="badge">{{num_total}}</span> 
-			<i class="fa fa-calendar fw"></i> Opcion 1
-		</a>
-
-		<a href="{% url 'principal.views.home' %}" class="list-group-item ">
-			<span class="badge">{{num_cola}}</span>
-			<i class="fa fa-clock-o fw"></i>  Opcion 2
-		</a>
-
-		<a href="{% url 'principal.views.home' %}" class="list-group-item "> 
-			<span class="badge">{{num_revision}}</span>
-			<i class="fa fa-wrench fw"></i> Opcion 3
-		</a>
-
-		<a href="{% url 'principal.views.home'  %}" class="list-group-item ">
-			<span class="badge">{{num_reparado}}</span>
-			<i class="fa fa-check fw"></i> Opcion 4
-		</a>
-
-		<a href="{% url 'principal.views.home' %}" class="list-group-item ">
-			<span class="badge">{{num_entregado}}</span>
-			<i class="fa fa-smile-o fw"></i> Opcion 5
-		</a>	
-
-	</div>
-	
-
-</div> <!-- end panel -->
-
-
+	{% if user.tipo == user.ESTUDIANTE%}
+		{% include "principal/widgets/nav_estudiante.html" %}
+	{% endif %}
 {% endblock sidebar_left %}
+
 
 
 {% block header %}
@@ -64,10 +37,20 @@
 	<div class="row">
 
 		{% if user.tipo == user.ESTUDIANTE%}
-		<div class="col-sm-4" style="text-align:center;">
-			<h1 style="font-size:5em;"><span class="glyphicon glyphicon-book"></span></h1>
-			<h3>Trabajos grados</h3>
-			<a href="{% url 'trabajos_grado_list' %}" class="btn btn-primary btn-lg btn-block">Ver</a>	
+
+		<div class="col-sm-4 item">
+			<h1><i class="fa fa-user"></i></h1>
+			<a href="{{ person.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">Perfil</a>	
+		</div>
+
+		<div class="col-sm-4 item">
+			<h1 ><i class="fa fa-book"></i></h1>
+			<a href="{{person.trabajosgrado_codigo.get_absolute_url}}" class="btn btn-primary btn-lg btn-block">Trabajo de Grado</a>	
+		</div>
+
+		<div class="col-sm-4 item">
+			<h1 ><i class="fa fa-calendar"></i></h1>
+			<a href="#" class="btn btn-primary btn-lg btn-block">Cronograma</a>	
 		</div>
 
 		{% endif %}

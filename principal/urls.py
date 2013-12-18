@@ -4,7 +4,10 @@ from django.conf.urls import patterns, include, url
 urlpatterns = patterns('',
 
 	#Permite el acceso a la vista de la pagina principal 
-    url(r'^$','principal.views.home'),
+    url(r'^$','principal.views.home', name='home'),
+
+    url(r'^estudiante/(\d+)/$', 'principal.views.estudiante_detalle', name='estudiante_detalle'),
+    url(r'^trabajo/(\d+)/$', 'principal.views.trabajo_grado_detalle', name='trabajo_grado_detalle'),
 
     url(r'^trabajos_grado_list$','principal.views.trabajos_grado_list', name='trabajos_grado_list'),
     #Permite el acceso a la vista de la lista de estudiantes
