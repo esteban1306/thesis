@@ -32,8 +32,8 @@
 		</div>
 	</div>
 	<div class="col-sm-10">
-		<h2>{{person.nombre}}</h2>
-		<h4>{{person.apellidos}}</h4>
+		<h2>{{estudiante.nombre}}</h2>
+		<h4>{{estudiante.apellidos}}</h4>
 	</div>
 </div>
 
@@ -46,7 +46,7 @@
 			<tbody>	
 				<tr>
 					<td>Cédula: </td>
-					<td><span class="glyphicon glyphicon-subtitles"></span>&nbsp;&nbsp; {{person.dni}}</td>
+					<td><span class="glyphicon glyphicon-subtitles"></span>&nbsp;&nbsp; {{estudiante.dni}}</td>
 				</tr>
 				<tr>
 					<td>Rol: </td>
@@ -62,7 +62,7 @@
 			<div class="panel-heading">Trabajo de Grado</div>
 			<div class="panel-body">
 				<h1 ><i class="fa fa-book"></i></h1>
-				<a href="{{person.trabajosgrado_codigo.get_absolute_url}}" class="btn btn-info btn-block">{{person.trabajosgrado_codigo.titulo}}</a>
+				<a href="{{estudiante.trabajosgrado_codigo.get_absolute_url}}" class="btn btn-info btn-block">{{estudiante.trabajosgrado_codigo.titulo}}</a>
 			</div>
 		</div>
 	</div>

@@ -20,8 +20,10 @@ def home(request):
         return HttpResponseRedirect('login/')
 
     ctx = {}
-    if request.user.tipo == Usuario.ESTUDIANTE:   
-        person = Estudiantes.objects.get(dni=request.user.dni)
+    if request.user.tipo == Usuario.ESTUDIANTE:   # OJO por ahora esto solo funciona con user de tipo ESTUDIANTE 
+        ctx['estudiante'] = Estudiantes.objects.get(dni=request.user.dni)
+        ctx['perfil']     = ctx['estudiante']
+
     if request.user.tipo == Usuario.DIRECTOR:
         person = 'Nadie'
     if request.user.tipo == Usuario.COORDINADOR:
@@ -31,7 +33,6 @@ def home(request):
     if request.user.tipo == Usuario.JURADO:
         person = 'Nadie'
 
-    ctx['person'] = person
 
     return render(request, 'home.html', ctx)
 
@@ -39,18 +40,26 @@ def home(request):
 
 def estudiante_detalle(request, dni):
 
-    person = Estudiantes.objects.get(dni=dni)
-    user = Usuario.objects.get(dni=person.dni)
-    ctx = {'person':person, 'usuario':user}
+    estudiante = Estudiantes.objects.get(dni=dni)
+    usuario = Usuario.objects.get(dni=estudiante.dni)
+
+    if request.user.tipo == Usuario.ESTUDIANTE:  # OJO por ahora esto solo funciona con user de tipo ESTUDIANTE
+        perfil = Estudiantes.objects.get(dni=request.user.dni)
+
+    ctx = {'estudiante':estudiante, 'usuario':usuario, 'perfil':perfil}
 
     return render(request, 'estudiante_detalle.html', ctx)
 
 
 
 def trabajo_grado_detalle(request, codigo):
-
     trabajo = Trabajosgrado.objects.get(codigo=codigo)
-    ctx = {'trabajo':trabajo}
+    estudiantes = Estudiantes.objects.filter(trabajosgrado_codigo=trabajo.codigo)
+
+    if request.user.tipo == Usuario.ESTUDIANTE:  # OJO por ahora esto solo funciona con user de tipo ESTUDIANTE
+        perfil = Estudiantes.objects.get(dni=request.user.dni)
+
+    ctx = {'trabajo':trabajo, 'estudiantes':estudiantes, 'perfil':perfil}
     return render(request, 'trabajo_grado_detalle.html', ctx)
 
 
