@@ -22,8 +22,16 @@ class UsuarioManager(BaseUserManager):
     def create_userRol(self, dni, tipo, password):
         if tipo == Usuario.ESTUDIANTE:
             user = self.model(dni=dni, tipo=tipo, is_active=True, is_admin=False, is_superuser=False)
-        if tipo == Usuario.DIRECTOR:
-            user = self.model(dni=dni, tipo=tipo, is_active=True, is_admin=True, is_superuser=False)
+        if tipo == Usuario.DIRECTOR:         
+            try:
+                user = Usuario.objects.get(dni=dni)
+            except Usuario.DoesNotExist:
+                user = None
+            if user is not None:
+                grupo = Group.objects.get(name=tipo)
+                user.groups.add(grupo)
+                return user
+            user = self.model(dni=dni, tipo=tipo, is_active=True, is_admin=True, is_superuser=False)           
         if tipo == Usuario.COORDINADOR:
             user = self.model(dni=dni, tipo=tipo, is_active=True, is_admin=True, is_superuser=False)
         if tipo == Usuario.JURADO:

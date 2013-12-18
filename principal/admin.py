@@ -45,6 +45,7 @@ class CoordinadorestgAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if not change:
             obj.id  = get_id_autoincremental(obj)
+            user = Usuario.objects.create_userRol(obj.dni, Usuario.COORDINADOR, obj.dni)
         obj.save()          
  
          
@@ -478,6 +479,10 @@ class TrabajosgradoAdmin(admin.ModelAdmin):
             kwargs["queryset"] = Docentes.objects.filter(tipodocente__descripcion=Usuario.DIRECTOR) #pk=tipoDocenteDirector.id)
         return super(TrabajosgradoAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
     """
+    def save_model(self, request, obj, form, change):
+        if not change:
+            user = Usuario.objects.create_userRol(obj.docentes_director.dni, Usuario.DIRECTOR, obj.docentes_director.dni)
+        obj.save()
 
 #Define un modelo de administracion para Visistas
 class VisitasAdmin(admin.ModelAdmin):
