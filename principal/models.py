@@ -12,6 +12,9 @@
 from __future__ import unicode_literals
 from django.db import models
 
+# reverse es usado para crear url para cada instancia
+from django.core.urlresolvers import reverse
+
 
 #Modelo de clase correspondiente a la tabla Asesores
 class Asesores(models.Model):
@@ -295,6 +298,13 @@ class Estudiantes(models.Model):
     apellidos = models.CharField(max_length=30)
     #Referencia al trabajo de grado que desarrollara
     trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo')
+    
+    def get_full_name(self):
+        return '%s %s' %(self.nombre, self.apellidos)
+
+    def get_absolute_url(self):      
+        return reverse('estudiante_detalle', args=[str(self.dni)])
+
     class Meta:
         verbose_name_plural = "Estudiantes"
         
@@ -610,6 +620,9 @@ class Trabajosgrado(models.Model):
 
     def __unicode__(self):
         return self.titulo
+
+    def get_absolute_url(self):      
+        return reverse('trabajo_grado_detalle', args=[str(self.codigo)])
         
     class Meta:
         verbose_name_plural = "Trabajos de Grado"
