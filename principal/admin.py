@@ -144,45 +144,106 @@ class ConveniosmarcoAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if not change:
             obj.id  = get_id_autoincremental(obj)
-        obj.save() 
-
-
+        obj.save()
 
 #Define un modelo de administracion para Convocatorias
 class ConvocatoriasAdmin(admin.ModelAdmin):
     list_display = ('id', 'descripcion', 'fechainicio', 'fechalimite')
     search_fields = ['descripcion']
 
+    def add_view(self, *args, **kwargs):
+        self.fields = ('descripcion', 'fechainicio', 'fechalimite', 'solicitudespasantes')
+        return super(ConvocatoriasAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.id  = get_id_autoincremental(obj)
+        obj.save()
+
 #Define un modelo de administracion para Criterios
 class CriteriosAdmin(admin.ModelAdmin):
     list_display = ('id', 'descripcion')
     search_fields = ['descripcion']
+
+    def add_view(self, *args, **kwargs):
+        self.fields = ('descripcion', )
+        return super(CriteriosAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.id  = get_id_autoincremental(obj)
+        obj.save()
 
 #Define un modelo de administracion para CriteriosAspectos
 class CriteriosaspectosAdmin(admin.ModelAdmin):
     list_display = ('id', 'descripcion', 'porcentaje', 'calificacion')
     search_fields = ['descripcion']
 
+    def add_view(self, *args, **kwargs):
+        self.fields = ('descripcion', 'porcentaje', 'calificacion', 'aspectos',)
+        return super(CriteriosaspectosAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.id  = get_id_autoincremental(obj)
+        obj.save()
+
 #Define un modelo de administracion para Criteriosjurados
 class CriteriosjuradosAdmin(admin.ModelAdmin):
     list_display = ('id', 'descripcion')
     search_fields = ['descripcion']
+
+    def add_view(self, *args, **kwargs):
+        self.fields = ('descripcion',)
+        return super(CriteriosjuradosAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.id  = get_id_autoincremental(obj)
+        obj.save()
 
 #Define un modelo de administracion para Cronogramas
 class CronogramasAdmin(admin.ModelAdmin):
     list_display = ('id', 'descripcion', 'fechainicio', 'fechafin', 'trabajosgrado_codigo')
     search_fields = ['descripcion']
 
+    def add_view(self, *args, **kwargs):
+        self.fields = ('descripcion', 'fechainicio', 'fechafin', 'trabajosgrado_codigo')
+        return super(CronogramasAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.id  = get_id_autoincremental(obj)
+        obj.save()
+
 #Define un modelo de administracion para Docentesconcejorcurricular
 class DocentesconcejocurricularAdmin(admin.ModelAdmin):
-    list_display = ('concejocurricular', 'docentes_dni')
+    list_display = ('id', 'concejocurricular', 'docentes_dni')
     list_filter = ['docentes_dni']
     search_fields = ['docentes_dni']
+
+    def add_view(self, *args, **kwargs):
+        self.fields = ('concejocurricular', 'docentes_dni')
+        return super(DocentesconcejocurricularAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.id  = get_id_autoincremental(obj)
+        obj.save()
 
 #Define un modelo de administracion para DocumentacionAdmin
 class DocumentacionAdmin(admin.ModelAdmin):
     list_display =('id', 'fecha', 'asunto', 'descripcion', 'trabajosgrado_codigo', 'link')
     search_fields = ['asunto']
+
+    def add_view(self, *args, **kwargs):
+        self.fields = ('fecha', 'asunto', 'descripcion', 'trabajosgrado_codigo', 'link', 'documentacion')
+        return super(DocumentacionAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.id  = get_id_autoincremental(obj)
+        obj.save()
 
 #Define un modelo de administracion para Empreaspasantes
 class EmpresaspasantesAdmin(admin.ModelAdmin):
@@ -206,9 +267,18 @@ class EvaluacionesTrabajoGradoAdmin(admin.ModelAdmin):
 
 #Define un modelo de administracion para Historicocriteriospropuestas
 class HistoricocriteriospropuestasAdmin(admin.ModelAdmin):
-    list_display = ('fecha', 'link')
+    list_display = ('id', 'fecha', 'link')
     list_filter = ['fecha']
     search_fields = ['link']
+
+    def add_view(self, *args, **kwargs):
+        self.fields = ('fecha', 'criterios', 'concejocurricular', 'propuestatg_revisorest', 'link')
+        return super(HistoricocriteriospropuestasAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.id  = get_id_autoincremental(obj)
+        obj.save()
 
 #Define un modelo de administracion para Informesfinales
 class InformesfinalesAdmin(admin.ModelAdmin):
@@ -216,17 +286,44 @@ class InformesfinalesAdmin(admin.ModelAdmin):
     list_filter = ['id']
     search_fields = ['id']
 
+    def add_view(self, *args, **kwargs):
+        self.fields = ('titulo', 'fecha', 'concejocurricular', 'coordinadorestg', 'trabajosgrado_codigo', 'link')
+        return super(InformesfinalesAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.id  = get_id_autoincremental(obj)
+        obj.save()
+
 #Define un modelo de administracion para Informefinalcriterios
 class InformefinalCriteriosAdmin(admin.ModelAdmin):
-    list_display = ('fecha', 'link')
+    list_display = ('id', 'fecha', 'link')
     list_filter = ['fecha']
     search_fields = ['fecha']
 
+    def add_view(self, *args, **kwargs):
+        self.fields = ('fecha', 'informesfinales', 'criteriosjurado', 'jurados','link')
+        return super(InformefinalCriteriosAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.id  = get_id_autoincremental(obj)
+        obj.save()
+
 #Define un modelo de administracion para Informesperiodicos
 class InformesperiodicosAdmin(admin.ModelAdmin):
-    list_display = ('id', 'link', 'fecha')
+    list_display = ('id', 'fecha', 'link')
     list_filter = ['id']
     search_fields = ['id']
+
+    def add_view(self, *args, **kwargs):
+        self.fields = ('fecha', 'link', 'pasantias_trabajosgrado_codigo')
+        return super(InformesperiodicosAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.id  = get_id_autoincremental(obj)
+        obj.save()
 
 #Define un modelo de administracion para Modalidadespasantia
 class ModalidadespasantiaAdmin(admin.ModelAdmin):
@@ -234,17 +331,35 @@ class ModalidadespasantiaAdmin(admin.ModelAdmin):
     list_filter = ['id']
     search_fields = ['id']
 
+    def add_view(self, *args, **kwargs):
+        self.fields = ('descripcion',)
+        return super(ModalidadespasantiaAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.id  = get_id_autoincremental(obj)
+        obj.save()
+
 #Define un modelo de administracion para Modalidades de trabajo de grado
 class ModalidadestgAdmin(admin.ModelAdmin):
     list_display = ('id', 'descripcion')
     list_filter = ['id']
     search_fields = ['id'] 
 
+    def add_view(self, *args, **kwargs):
+        self.fields = ('descripcion',)
+        return super(ModalidadestgAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.id  = get_id_autoincremental(obj)
+        obj.save()
+
 #Define un modelo de administracion para Pasantias
 class PasantiasAdmin(admin.ModelAdmin):
-    list_display = ('codigo', 'propuestaspasantias_id')
-    list_filter = ['codigo']
-    search_fields = ['codigo']
+    list_display = ('trabajosgrado_codigo', 'empresaspasantes', 'modalidadespasantia')
+    list_filter = ['trabajosgrado_codigo']
+    search_fields = ['trabajosgrado_codigo']
 
 #Define un modelo de administracion para Propuestas de trabajo de grado
 class PropuestatgAdmin(admin.ModelAdmin):
@@ -252,11 +367,29 @@ class PropuestatgAdmin(admin.ModelAdmin):
     list_filter = ['id']
     search_fields = ['id']
 
+    def add_view(self, *args, **kwargs):
+        self.fields = ('titulo', 'fechapresentacion', 'coordinadorestg', 'trabajosgrado_codigo', 'link')
+        return super(PropuestatgAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.id  = get_id_autoincremental(obj)
+        obj.save()
+
 #Define un modelo de administracion para Propuestas de trabajo de grado
 class PropuestatgRevisorestAdmin(admin.ModelAdmin):
     list_display = ('id', 'propuestatg', 'revisorestecnicos')
     list_filter = ['id']
     search_fields = ['id']
+
+    def add_view(self, *args, **kwargs):
+        self.fields = ('propuestatg', 'revisorestecnicos')
+        return super(PropuestatgRevisorestAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.id  = get_id_autoincremental(obj)
+        obj.save()
 
 #Define un modelo de administracion para Revisores Tecnicos
 class RevisorestecnicosAdmin(admin.ModelAdmin):
@@ -264,11 +397,29 @@ class RevisorestecnicosAdmin(admin.ModelAdmin):
     list_filter = ['id']
     search_fields = ['id']
 
+    def add_view(self, *args, **kwargs):
+        self.fields = ('docentes_dni', 'concepto')
+        return super(RevisorestecnicosAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.id  = get_id_autoincremental(obj)
+        obj.save()
+
 #Define un modelo de administracion para Solicitudes pasantes
 class SolicitudespasantesAdmin(admin.ModelAdmin):
     list_display = ('id', 'fecha', 'empresaspasantes', 'concejocurricular', 'conceptossolicitudes', 'link', 'revisorestecnicos')
     list_filter = ['id']
     search_fields = ['id']
+
+    def add_view(self, *args, **kwargs):
+        self.fields = ('fecha', 'empresaspasantes', 'concejocurricular', 'conceptossolicitudes', 'revisorestecnicos', 'link')
+        return super(SolicitudespasantesAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.id  = get_id_autoincremental(obj)
+        obj.save()
 
 #Define un modelo de administracion para Supervisores empresas
 class SupervisoresempresasAdmin(admin.ModelAdmin):
@@ -334,7 +485,14 @@ class VisitasAdmin(admin.ModelAdmin):
     list_filter = ['id']
     search_fields = ['id']
 
+    def add_view(self, *args, **kwargs):
+        self.fields = ('fecha', 'hora', 'coordinadorestg', 'empresaspasantes_nit')
+        return super(VisitasAdmin, self).add_view(*args, **kwargs)
 
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.id  = get_id_autoincremental(obj)
+        obj.save()
 
 
 """
