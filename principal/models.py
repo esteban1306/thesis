@@ -354,10 +354,6 @@ class InformefinalCriterios(models.Model):
     informesfinales = models.ForeignKey('Informesfinales')
     #Campo donde se incluye los criterios que designa el jurado calificador
     criteriosjurado = models.ForeignKey(Criteriosjurado)
-    #Referencia al jurado que emitio el informe
-    #jurados_trabajosgrado_codigo = models.ForeignKey('Jurados', db_column='jurados_trabajosgrado_codigo')
-    #Referencia al docente que actua como jurado
-    #jurados_docentes_dni = models.ForeignKey('Jurados', db_column='jurados_docentes_dni', related_name="jurados_docentes_dni")
     #Enlace web sobre el detalle de los criterios del informe final 
     link = models.CharField(max_length=20, blank=True)
     jurados = models.ForeignKey('Jurados')
@@ -391,13 +387,13 @@ class Informesfinales(models.Model):
 #Modelo de clase correspondiente a la tabla Informesperiodicos
 class Informesperiodicos(models.Model):
     #Identificador unico de los informes periodicos de la pasantia
-    id = models.BigIntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     #Enlace con el informe detallado de la pasantia
     link = models.CharField(max_length=30)
     #Campo con la fecha en que se realiza el informe periodico
     fecha = models.DateField()
     #Referencia a la pasantia a que alude el informe
-    pasantias_trabajosgrado_codigo = models.ForeignKey('Pasantias', db_column='pasantias_trabajosgrado_codigo')
+    pasantias_trabajosgrado_codigo = models.ForeignKey('Pasantias', db_column='trabajosgrado_codigo')#pasantias_trabajosgrado_codigo')
     class Meta:
         verbose_name_plural = "Informes Periodicos"
         
@@ -426,9 +422,13 @@ class Jurados(models.Model):
 #Modelo de clase correspondiente a la tabla Modalidadespasantia
 class Modalidadespasantia(models.Model):
     #Identificador unico de la modalidad de la pasantia
-    id = models.BigIntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     #Descripcion de la modalidad de pasantia (laboral, proyeccion social, internacional o investigacion)
     descripcion = models.CharField(max_length=20)
+
+    def __unicode__(self):
+        return self.descripcion
+
     class Meta:
         verbose_name_plural = "Modalidades Pasantia"
         
@@ -451,16 +451,13 @@ class Modalidadestg(models.Model):
 
 #Modelo de clase correspondiente a la tabla Pasantias
 class Pasantias(models.Model):
-    #Identificador unico de la pasantia
-    codigo = models.BigIntegerField(primary_key=True)
-    #Referencia al trabajo de grado presentado por el(los) estudiante(s)
-    trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo', unique=True)
+    #Identificador unico de la pasantia, heredado del trabajo de grado
+    trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo', primary_key=True)
     #Empresa pasante que solicita la pasantia
     empresaspasantes = models.ForeignKey(Empresaspasantes)
     #Campo que referencia la modalidad de la pasantia
     modalidadespasantia = models.ForeignKey(Modalidadespasantia)
-    #Referencia de la previa propuesta de pasantia
-    propuestaspasantias_id = models.BigIntegerField(unique=True)
+
     class Meta:
         verbose_name_plural = "Pasantias"
         
@@ -480,6 +477,7 @@ class Propuestatg(models.Model):
     link = models.CharField(max_length=20, blank=True)
     #Referencia al trabajo de grado al que pertenece la propuesta
     trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo')
+    
     class Meta:
         verbose_name_plural = "Propuestas Trabajos de Grado"
         
