@@ -27,6 +27,10 @@
 	{% if user.tipo == user.JURADO %}
 		{% include "principal/widgets/nav_jurado.html" %}
 	{% endif %}
+
+	{% if user.tipo == user.DIRECTOR %}
+		{% include "principal/widgets/nav_director.html" %}
+	{% endif %}
 {% endblock sidebar_left %}
 
 
@@ -77,7 +81,7 @@
 
 		<div class="col-sm-4 item">
 			<h1><i class="fa fa-user"></i></h1>
-			<a href="{{ perfil.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">Perfil</a>	
+			<a href="{{ asesor.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">Perfil</a>	
 		</div>
 		{% endif %}
 
@@ -107,6 +111,25 @@
 			<h1><i class="fa fa-user"></i></h1>
 			<a href="{{ jurado.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">Perfil</a>	
 		</div>
+		{% endif %}
+
+		{% if user.tipo == user.DIRECTOR %}
+
+		<div class="col-sm-4 item">
+			<h1 ><i class="fa fa-book"></i></h1>
+			<a href="{% url 'trabajos_grado_list_director' perfil.dni %}" class="btn btn-primary btn-lg btn-block">Listar Trabajos de Grado</a>	
+		</div>
+
+		<div class="col-sm-4 item">
+			<h1 ><i class="fa fa-cogs"></i></h1>
+			<a href="#" class="btn btn-primary btn-lg btn-block">Pasantía</a>	
+		</div>
+
+		<div class="col-sm-4 item">
+			<h1><i class="fa fa-user"></i></h1>
+			<a href="{{ director.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">Perfil</a>	
+		</div>
+
 		{% endif %}
 
 	</div>

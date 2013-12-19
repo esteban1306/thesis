@@ -27,6 +27,10 @@
 	{% if user.tipo == user.JURADO %}
 		{% include "principal/widgets/nav_jurado.html" %}
 	{% endif %}
+
+	{% if user.tipo == user.DIRECTOR %}
+		{% include "principal/widgets/nav_director.html" %}
+	{% endif %}
 {% endblock sidebar_left %}
 
 {% block content %}
@@ -61,6 +65,17 @@
 			<h1 ><i class="fa fa-book"></i></h1>
 			<h3>{{trab.titulo}}</h3>
 			Asignado el {{jurado.fecha}}
+		</a>
+		{% empty %}
+		<h3>No hay trabajos de grado en esta seccion todavía</h3>
+		{% endfor %}
+	{% endif %}
+
+	{% if director %}
+		{% for trab in trabajos_director %}
+		<a href="{% url 'trabajo_grado_detalle' trab.codigo %}" class="list-group-item ">
+			<h1 ><i class="fa fa-book"></i></h1>
+			<h3>{{trab.titulo}}</h3>
 		</a>
 		{% empty %}
 		<h3>No hay trabajos de grado en esta seccion todavía</h3>

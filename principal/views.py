@@ -26,7 +26,8 @@ def home(request):
         ctx['perfil']     = ctx['estudiante']
 
     if request.user.tipo == Usuario.DIRECTOR:
-        person = 'Nadie'
+        ctx['director'] = Docentes.objects.get(dni=request.user.dni)
+        ctx['perfil']     = ctx['director']
 
     if request.user.tipo == Usuario.COORDINADOR:
         ctx['coordinador'] = Coordinadorestg.objects.filter(docentes_dni=request.user.dni).distinct().first()
@@ -52,6 +53,8 @@ def estudiante_detalle(request, dni):
     if request.user.tipo == Usuario.ASESOR:  
         perfil = Docentes.objects.get(dni=request.user.dni)
     if request.user.tipo == Usuario.COORDINADOR:  
+        perfil = Docentes.objects.get(dni=request.user.dni)
+    if request.user.tipo == Usuario.DIRECTOR:  
         perfil = Docentes.objects.get(dni=request.user.dni)
 
     ctx = {'estudiante':estudiante, 'usuario':usuario, 'perfil':perfil}
@@ -94,6 +97,18 @@ def jurado_detalle(request, dni):
 
     return render(request, 'jurado_detalle.html', ctx)
 
+def director_detalle(request, dni):
+
+    director = Docentes.objects.get(dni=dni)
+    usuario = Usuario.objects.get(dni=director.dni)
+
+    if request.user.tipo == Usuario.DIRECTOR:  
+        perfil = Docentes.objects.get(dni=request.user.dni)
+
+    ctx = {'director':director, 'usuario':usuario, 'perfil':perfil}
+
+    return render(request, 'director_detalle.html', ctx)
+
 def trabajo_grado_detalle(request, codigo):
     trabajo = Trabajosgrado.objects.get(codigo=codigo)
     estudiantes = Estudiantes.objects.filter(trabajosgrado_codigo=trabajo.codigo)
@@ -105,6 +120,8 @@ def trabajo_grado_detalle(request, codigo):
     if request.user.tipo == Usuario.COORDINADOR:
         perfil = Docentes.objects.get(dni=request.user.dni)
     if request.user.tipo == Usuario.JURADO:
+        perfil = Docentes.objects.get(dni=request.user.dni)
+    if request.user.tipo == Usuario.DIRECTOR:
         perfil = Docentes.objects.get(dni=request.user.dni)
 
     ctx = {'trabajo':trabajo, 'estudiantes':estudiantes, 'perfil':perfil}
@@ -140,6 +157,14 @@ def trabajos_grado_list_jurado(request, dni):
     perfil = Docentes.objects.get(dni=request.user.dni)
     jurado = Jurados.objects.filter(docentes_dni=request.user.dni).first()
     ctx = {'trabajos_jurado':trabajos_jurado, 'perfil':perfil, 'jurado':jurado}
+    return render(request, 'trabajos_grado_list.html', ctx)
+
+def trabajos_grado_list_director(request, dni):
+
+    director = Docentes.objects.get(dni=request.user.dni)
+    trabajos_director = Trabajosgrado.objects.filter(docentes_director=director)
+    perfil = Docentes.objects.get(dni=request.user.dni)
+    ctx = {'trabajos_director':trabajos_director, 'director':director, 'perfil':perfil}
     return render(request, 'trabajos_grado_list.html', ctx)
 
 #Definicion de vista para el login  

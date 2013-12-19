@@ -28,6 +28,10 @@
 	{% if user.tipo == user.JURADO %}
 		{% include "principal/widgets/nav_jurado.html" %}
 	{% endif %}
+
+	{% if user.tipo == user.DIRECTOR %}
+		{% include "principal/widgets/nav_director.html" %}
+	{% endif %}
 {% endblock sidebar_left %}
 
 
@@ -96,16 +100,6 @@
 		</table>
 	</div>
 
-
-	<div class="col-sm-4 ">
-		<div class="panel panel-default foraneos">
-			<div class="panel-heading">DIRECTOR</div>
-			<div class="panel-body">
-				<h1 ><i class="fa fa-user"></i></h1>
-				<a href="{{person.trabajosgrado_codigo.get_absolute_url}}" class="btn btn-info btn-block">Prof. {{trabajo.docentes_director.nombre}}</a>
-			</div>
-		</div>
-	</div>
 
 </div>
 
