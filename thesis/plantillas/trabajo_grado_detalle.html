@@ -37,6 +37,14 @@
 			<span class="label label-primary pull-right">{{trabajo.codigo}}</span>
 			{{trabajo.titulo|title}}
 		</h2>
+
+		 
+		{% for estudiante in estudiantes %}
+			<h4>
+				<a href="{{estudiante.get_absolute_url}}">{{estudiante.get_full_name}}</a> 
+			</h4>
+		{% endfor %}
+		
 	</div>
 </div>
 
@@ -48,7 +56,7 @@
 		<table class="table table-striped">
 			<tbody>	
 				<tr>
-					<td>Códico: </td>
+					<td>Código: </td>
 					<td><i class="fa fa-dot-circle-o"></i>&nbsp;&nbsp; {{trabajo.codigo}}</td>
 				</tr>
 				<tr>
@@ -58,7 +66,12 @@
 				<tr>
 					<td>Nota Definitiva: </td>
 					<td><span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp; {{trabajo.nota_definitiva}}</td>
-				</tr>				
+				</tr>
+				<tr>
+					<td>Modalidades: </td>
+					<td><span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp; {{trabajo.modalidadestg.descripcion}}</td>
+				</tr>	
+		
 			</tbody>
 			
 		</table>

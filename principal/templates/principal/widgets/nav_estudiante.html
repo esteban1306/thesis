@@ -5,24 +5,32 @@
 	
 	<div class="list-group">
 
+
 		<a href="{% url 'home' %}" class="list-group-item">
 			<span class="badge"><i class="fa fa-chevron-circle-right"></i></span> 
 			<i class="fa fa-home fa-fw"></i>&nbsp;&nbsp; Home
 		</a>
+	
 
-		<a href="{{ person.get_absolute_url }}" class="list-group-item">
-			<span class="badge"><i class="fa fa-chevron-circle-right"></i></span> 
-			<i class="fa fa-user fa-fw"></i>&nbsp;&nbsp; Perfil
-		</a>
-
-		<a href="{{person.trabajosgrado_codigo.get_absolute_url}}" class="list-group-item">
+		{% if trabajo %}
+		<a href="{{trabajo.get_absolute_url}}" class="list-group-item">
+		{% else %}
+		<a href="{{estudiante.trabajosgrado_codigo.get_absolute_url}}" class="list-group-item">
+		{% endif %}
 			<span class="badge"><i class="fa fa-chevron-circle-right"></i></span> 
 			<i class="fa fa-book fa-fw"></i>&nbsp;&nbsp; Trabajo de Grado
 		</a>
 
+
 		<a href="#" class="list-group-item">
 			<span class="badge"><i class="fa fa-chevron-circle-right"></i></span> 
-			<i class="fa fa-calendar fa-fw"></i>&nbsp;&nbsp; Trabajo de Grado
+			<i class="fa fa-cogs fa-fw"></i>&nbsp;&nbsp; Pasantía
+		</a>
+
+		<a href="{{ perfil.get_absolute_url }}" class="list-group-item">
+		
+			<span class="badge"><i class="fa fa-chevron-circle-right"></i></span> 
+			<i class="fa fa-user fa-fw"></i>&nbsp;&nbsp; Mi Perfil
 		</a>
 
 	</div>
