@@ -1,0 +1,106 @@
+{% extends 'shell.html' %}
+{% block title %} Trabajo de Grado {% endblock %}
+
+{% block css %}
+	<style>
+		.foto {text-align: center;}
+		.foto i {font-size: 6em;}
+		.foraneos {text-align: center;}
+		.foraneos h1 {font-size: 4em; margin: 0;}
+		.linea {margin: 20px 0;}
+	</style>
+{% endblock %}
+
+
+{% block sidebar_left %}
+	{% if user.tipo == user.ESTUDIANTE%}
+		{% include "principal/widgets/nav_estudiante.html" %}
+	{% endif %}
+
+	{% if user.tipo == user.ASESOR %}
+		{% include "principal/widgets/nav_asesor.html" %}
+	{% endif %}
+
+	{% if user.tipo == user.COORDINADOR %}
+		{% include "principal/widgets/nav_coordinador.html" %}
+	{% endif %}
+
+	{% if user.tipo == user.JURADO %}
+		{% include "principal/widgets/nav_jurado.html" %}
+	{% endif %}
+
+	{% if user.tipo == user.DIRECTOR %}
+		{% include "principal/widgets/nav_director.html" %}
+	{% endif %}
+{% endblock sidebar_left %}
+
+
+{% block header %}
+	<li><p class="navbar-text">Trabajo de Grado</p></li>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-sm-2 foto">
+		<div class="img-thumbnail">
+			<i class="fa fa-book"></i>
+		</div>
+	</div>
+	<div class="col-sm-10">
+		<h2>
+			<span class="label label-primary pull-right">{{trabajo.codigo}}</span>
+			{{trabajo.titulo|title}}
+		</h2>
+		 
+		{% for estudiante in estudiantes %}
+			<h4>
+				<a href="{{estudiante.get_absolute_url}}">{{estudiante.get_full_name}}</a> 
+			</h4>
+		{% empty %}
+			<h5>No hay estudiantes asignados a este proyecto de grado</h5>
+		{% endfor %}
+		
+	</div>
+</div>
+
+<div class="panel panel-default linea"></div>
+
+<h3>Datos</h3>
+<div class="row">
+	<div class="col-sm-8">
+		<table class="table table-striped">
+			<tbody>	
+				<tr>
+					<td>Código: </td>
+					<td><i class="fa fa-dot-circle-o"></i>&nbsp;&nbsp; {{trabajo.codigo}}</td>
+				</tr>
+				<tr>
+					<td>Grupo de Investicación: </td>
+					<td><i class="fa fa-users"></i>&nbsp;&nbsp; {{trabajo.grupo_investigacion}}</td>
+				</tr>
+				<tr>
+					<td>Nota Definitiva: </td>
+					<td><span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp; {{trabajo.nota_definitiva}}</td>
+				</tr>
+				<tr>
+					<td>Modalidades: </td>
+					<td><span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp; {{trabajo.modalidadestg.descripcion}}</td>
+				</tr>	
+				<tr>
+					<td>Documentacion: </td>
+					<td>
+						<a href="{{person.trabajosgrado_codigo.get_absolute_url}}" 
+						onclick="window.open('/admin/principal/documentacion/add/','Agregar Usuario','width=960,height=700');" class="btn btn-info btn-block">Agregar Documento</a>
+					</td>
+				</tr>
+		
+			</tbody>
+			
+		</table>
+	</div>
+
+
+</div>
+
+{% endblock content %}

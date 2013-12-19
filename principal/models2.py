@@ -12,10 +12,10 @@ from __future__ import unicode_literals
 from django.db import models
 
 class Asesores(models.Model):
+    id = models.BigIntegerField(primary_key=True)
     trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo')
     docentes_dni = models.ForeignKey('Docentes', db_column='docentes_dni')
     fecha = models.DateField(blank=True, null=True)
-    id = models.BigIntegerField(primary_key=True)
     class Meta:
         managed = False
         db_table = 'asesores'
@@ -176,9 +176,9 @@ class Docentes(models.Model):
         db_table = 'docentes'
 
 class DocentesConsejocurricular(models.Model):
+    id = models.BigIntegerField(primary_key=True)
     concejocurricular = models.ForeignKey(Concejocurricular)
     docentes_dni = models.ForeignKey(Docentes, db_column='docentes_dni')
-    id = models.BigIntegerField(primary_key=True)
     class Meta:
         managed = False
         db_table = 'docentes_consejocurricular'
@@ -218,29 +218,29 @@ class Evaluacionestrabajogrado(models.Model):
     fecha = models.DateField()
     nota_final_aspectos = models.DecimalField(max_digits=0, decimal_places=-127, blank=True, null=True)
     caracter = models.ForeignKey(Caracter)
-    trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo', blank=True, null=True)
+    trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo')
     class Meta:
         managed = False
         db_table = 'evaluacionestrabajogrado'
 
 class Historicocriteriospropuestas(models.Model):
+    id = models.BigIntegerField(primary_key=True)
     criterios = models.ForeignKey(Criterios)
     concejocurricular = models.ForeignKey(Concejocurricular)
     fecha = models.DateField()
     link = models.CharField(max_length=20, blank=True)
-    id = models.BigIntegerField(primary_key=True)
     propuestatg_revisorest = models.ForeignKey('PropuestatgRevisorest')
     class Meta:
         managed = False
         db_table = 'historicocriteriospropuestas'
 
 class InformefinalCriterios(models.Model):
+    id = models.BigIntegerField(primary_key=True)
     fecha = models.DateField()
     informesfinales = models.ForeignKey('Informesfinales')
     criteriosjurado = models.ForeignKey(Criteriosjurado)
     link = models.CharField(max_length=20, blank=True)
     jurados = models.ForeignKey('Jurados')
-    id = models.BigIntegerField(primary_key=True)
     class Meta:
         managed = False
         db_table = 'informefinal_criterios'
@@ -267,12 +267,12 @@ class Informesperiodicos(models.Model):
         db_table = 'informesperiodicos'
 
 class Jurados(models.Model):
+    id = models.BigIntegerField(primary_key=True)
     trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo')
     docentes_dni = models.ForeignKey(Docentes, db_column='docentes_dni')
     presidente = models.CharField(max_length=1, blank=True)
     concejocurricular = models.ForeignKey(Concejocurricular)
     fecha = models.DateField(blank=True, null=True)
-    id = models.BigIntegerField(primary_key=True)
     class Meta:
         managed = False
         db_table = 'jurados'
@@ -287,7 +287,6 @@ class Modalidadespasantia(models.Model):
 class Modalidadestg(models.Model):
     id = models.BigIntegerField(primary_key=True)
     descripcion = models.CharField(max_length=30, blank=True)
-    trabajogrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajogrado_codigo')
     class Meta:
         managed = False
         db_table = 'modalidadestg'
@@ -314,9 +313,9 @@ class Propuestatg(models.Model):
         db_table = 'propuestatg'
 
 class PropuestatgRevisorest(models.Model):
+    id = models.BigIntegerField(primary_key=True)
     propuestatg = models.ForeignKey(Propuestatg)
     revisorestecnicos = models.ForeignKey('Revisorestecnicos')
-    id = models.BigIntegerField(primary_key=True)
     class Meta:
         managed = False
         db_table = 'propuestatg_revisorest'
@@ -392,6 +391,7 @@ class Trabajosgrado(models.Model):
     grupo_investigacion = models.CharField(max_length=30, blank=True)
     nota_definitiva = models.DecimalField(max_digits=0, decimal_places=-127, blank=True, null=True)
     docentes_director = models.ForeignKey(Docentes, db_column='docentes_director')
+    modalidadestg = models.ForeignKey(Modalidadestg)
     class Meta:
         managed = False
         db_table = 'trabajosgrado'

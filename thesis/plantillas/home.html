@@ -2,51 +2,105 @@
 
 {% block title %} Home {% endblock %}
 
+{% block css %}
+	<style>
+		.item {text-align: center;}
+		h1 { font-size: 5em;}
+	</style>
+{% endblock %}
+
+
+
 {% block sidebar_left %}
-
-<div class="panel panel-default">
-
-	<IMG SRC="media/images/tesis_image.jpg" WIDTH=178 HEIGHT=180 ALT="tesis_image">
-	<div class="panel-heading">SERVICIOS</div>
-
-
-	<div class="list-group nav-servicios">
-
-		<a href="{% url 'principal.views.home' %}" class="list-group-item">
-			<span class="badge">{{num_total}}</span> 
-			<i class="fa fa-calendar fw"></i> Opcion 1
-		</a>
-
-		<a href="{% url 'principal.views.home' %}" class="list-group-item ">
-			<span class="badge">{{num_cola}}</span>
-			<i class="fa fa-clock-o fw"></i>  Opcion 2
-		</a>
-
-		<a href="{% url 'principal.views.home' %}" class="list-group-item "> 
-			<span class="badge">{{num_revision}}</span>
-			<i class="fa fa-wrench fw"></i> Opcion 3
-		</a>
-
-		<a href="{% url 'principal.views.home'  %}" class="list-group-item ">
-			<span class="badge">{{num_reparado}}</span>
-			<i class="fa fa-check fw"></i> Opcion 4
-		</a>
-
-		<a href="{% url 'principal.views.home' %}" class="list-group-item ">
-			<span class="badge">{{num_entregado}}</span>
-			<i class="fa fa-smile-o fw"></i> Opcion 5
-		</a>	
-
-	</div>
-	
-
-</div> <!-- end panel -->
-
-
-
+	{% if user.tipo == user.ESTUDIANTE%}
+		{% include "principal/widgets/nav_estudiante.html" %}
+	{% endif %}
 {% endblock sidebar_left %}
 
+
+
+{% block header %}
+
+<ul class="nav navbar-nav">
+		<li><p class="navbar-text">Bienvenido (a)</p></li>
+	</ul> <!-- end navbar-header -->
+
+{% endblock header %}
+
 {% block content %}
-	<h2>Trabajos de Grado en Seguimiento</h2></br>
-	  <p>Aqui viene una tabla</p>
+
+	<div class="jumbotron">
+        <h1>Thesis</h1>
+		<p>La forma sencilla de administrar y hacer seguimiento a tus trabajos de grado.</p> 
+		
+ 	 	    <head>
+			    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+			    <script type="text/javascript">
+			      google.load("visualization", "1", {packages:["corechart"]});
+			      google.setOnLoadCallback(drawChart);
+			      function drawChart() {
+			        var data = google.visualization.arrayToDataTable([
+			          ['Task', 'Hours per Day'],
+			          ['Work',     11],
+			          ['Eat',      2],
+			          ['Commute',  2],
+			          ['Watch TV', 2],
+			          ['Sleep',    7]
+			        ]);
+
+			        var options = {
+			          title: 'My Daily Activities',
+			          is3D: true,
+			        };
+
+			        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+			        chart.draw(data, options);
+			      }
+			    </script>
+  			</head>
+  <body>
+    <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
+  </body>
+  	</body>    
+    </div>
+	
+	<div class="row">
+
+		{% if user.tipo == user.ESTUDIANTE%}
+
+		<div class="col-sm-4 item">
+			<h1 ><i class="fa fa-book"></i></h1>
+			<a href="{{estudiante.trabajosgrado_codigo.get_absolute_url}}" class="btn btn-primary btn-lg btn-block">Trabajo de Grado</a>	
+		</div>
+
+		<div class="col-sm-4 item">
+			<h1 ><i class="fa fa-cogs"></i></h1>
+			<a href="#" class="btn btn-primary btn-lg btn-block">Pasantía</a>	
+		</div>
+
+		<div class="col-sm-4 item">
+			<h1><i class="fa fa-user"></i></h1>
+			<a href="{{ estudiante.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">Perfil</a>	
+		</div>
+
+		<div class="col-sm-4 item">
+			<h1><i class="fa fa-folder-open"></i></h1>
+			<a href="{% url 'estudiante_pdf' user.dni%}" class="btn btn-primary btn-lg btn-block">Generar Reporte de Estudiante</a>	
+		</div>
+
+		<div class="col-sm-4 item">
+			<h1><i class="fa fa-file"></i></h1>
+			<a href="{% url 'lista_trabajos_pdf'%}" class="btn btn-primary btn-lg btn-block">Ver trabajos de grado</a>	
+		</div>
+
+		<div class="col-sm-4 item">
+			<h1><i class="fa fa-file"></i></h1>
+			<a href="{% url 'reporte_criterios_pdf'%}" class="btn btn-primary btn-lg btn-block">Reporte de Criterios</a>	
+		</div>
+
+		{% endif %}
+					
+	</div>
+
+
 {% endblock %}

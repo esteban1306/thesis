@@ -1,0 +1,78 @@
+{% extends 'shell.html' %}
+{% block title %} Coordinador TG {% endblock %}
+
+{% block css %}
+	<style>
+		.foto {text-align: center;}
+		.foto i {font-size: 6em;}
+		.foraneos {text-align: center;}
+		.foraneos h1 {font-size: 4em; margin: 0;}
+		.linea {margin: 20px 0;}
+	</style>
+{% endblock %}
+
+
+{% block sidebar_left %}
+	{% if user.tipo == user.COORDINADOR %}
+		{% include "principal/widgets/nav_coordinador.html" %}
+	{% endif %}
+{% endblock sidebar_left %}
+
+{% block header %}
+	<li><p class="navbar-text">Coordinador</p></li>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-sm-2 foto">
+		<div class="img-thumbnail">
+			<i class="fa fa-user"></i>
+		</div>
+	</div>
+	<div class="col-sm-10">
+		<h2>{{perfil.nombre}}</h2>
+		<h4>{{perfil.apellidos}}</h4>
+	</div>
+</div>
+
+<div class="panel panel-default linea"></div>
+
+<h3>Datos Personales</h3>
+<div class="row">
+	<div class="col-sm-8">
+		<table class="table table-striped">
+			<tbody>	
+				<tr>
+					<td>Cédula: </td>
+					<td><span class="glyphicon glyphicon-subtitles"></span>&nbsp;&nbsp; {{perfil.dni}}</td>
+				</tr>
+				<tr>
+					<td>Rol: </td>
+					<td><span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp; {{usuario.tipo}}</td>
+				</tr>
+				<tr>
+					<td>Año: </td>
+					<td><span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp; {{coordinador.anio}}</td>
+				</tr>
+				<tr>
+					<td>Semestre Academico: </td>
+					<td><span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp; {{coordinador.semestreacademico}}</td>
+				</tr>
+			</tbody>
+			
+		</table>
+	</div>
+
+	<div class="col-sm-4 ">
+		<div class="panel panel-default foraneos">
+			<div class="panel-heading">Listado de Trabajos de Grado</div>
+			<div class="panel-body">
+				<h1 ><i class="fa fa-book"></i></h1>
+				<a href="{% url 'trabajos_grado_list_coordinador' perfil.dni %}" class="btn btn-info btn-block">Ver Todos</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}

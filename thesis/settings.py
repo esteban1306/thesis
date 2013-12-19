@@ -30,6 +30,10 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
+WKHTMLTOPDF_CMD_OPTIONS = {
+   #WKHTMLTOPDF_CMD='wkhtmltopdf' 
+   'quiet':True,
+}
 
 
 # Application definition
@@ -45,6 +49,7 @@ INSTALLED_APPS = (
     'principal',
     'usuarios',
     'south',
+    'wkhtmltopdf',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -66,11 +71,11 @@ WSGI_APPLICATION = 'thesis.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.oracle',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'NAME': 'thesis',
-        'USER': 'root',
-        'PASSWORD': 'alberto',
+        'NAME': 'xe',
+        'USER': 'superadmin',
+        'PASSWORD': '12345',
         'HOST': '',
         'PORT': '',
     }
@@ -102,6 +107,12 @@ STATIC_URL = '/static/'
 TEMPLATE_DIRS = (
     os.path.join(RUTA_PROYECTO,'plantillas'),
     os.path.join(RUTA_PROYECTO,'plantillas/admin/base_site.html'),
+)
+
+# List of callables that know how to import templates from various sources.
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
 )
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a

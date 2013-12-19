@@ -3,19 +3,14 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>{% block title %} {% endblock %}| Thesis</title>
 
 	<link rel="stylesheet" href="{{MEDIA_URL}}bootstrap/css/bootstrap.css">
 	<link rel="stylesheet" href="{{MEDIA_URL}}bootstrap/css/bootstrap-theme.css">
+	<link rel="stylesheet" href="{{MEDIA_URL}}font-awesome/css/font-awesome.min.css">
 
 	<link rel="stylesheet" href="{{MEDIA_URL}}css/style.css">
-
-	<!--<link rel="stylesheet" href="{{MEDIA_URL}}font-awesome/css/font-awesome.min.css">-->
-	<script src="{{MEDIA_URL}}js/jquery.js"></script>
-	<script src="{{MEDIA_URL}}bootstrap/js/bootstrap.js"></script>
-
 	{% block css %} {% endblock %}
-
-	<title>{% block title %} {% endblock %}| Thesis</title>
 </head>
 <body>
 	<!--[if lt IE 8]>
@@ -28,5 +23,7 @@
 
 	{% block body %}{% endblock %}
 
+	<script src="{{MEDIA_URL}}js/jquery.js"></script>
+	<script src="{{MEDIA_URL}}bootstrap/js/bootstrap.js"></script>
 </body>
 </html>

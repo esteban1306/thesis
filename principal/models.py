@@ -12,6 +12,9 @@
 from __future__ import unicode_literals
 from django.db import models
 
+# reverse es usado para crear url para cada instancia
+from django.core.urlresolvers import reverse
+
 
 #Modelo de clase correspondiente a la tabla Asesores
 class Asesores(models.Model):
@@ -26,6 +29,12 @@ class Asesores(models.Model):
 
     def __unicode__(self):
         return "%s" % self.id
+
+    def get_absolute_url(self):
+        return reverse('asesor_detalle', args=[str(self.docentes_dni.dni)])
+
+    def get_listado_url(self):
+        return reverse('trabajos_grado_list_asesor', args=[str(self.docentes_dni)])
 
     class Meta:
         unique_together = (("trabajosgrado_codigo", "docentes_dni"),)
@@ -98,9 +107,14 @@ class Conveniomarco(models.Model):
     #Fecha en que se aprobo el convenio
     fecha = models.DateField()
     #Estado del convenio
-    activo = models.CharField(max_length=1, blank=True)
+    activo = models.BooleanField(default=False)#(max_length=1, blank=True)
     #Nit de la empresa con que se ha hecho el convenio
     empresaspasantes_nit = models.ForeignKey('Empresaspasantes', db_column='empresaspasantes_nit')
+    
+    #El retorno a mostrar sera la descripcion del Conveniomarco
+    def __unicode__(self):
+        return self.empresaspasantes_nit.nombre
+
     class Meta:
         verbose_name_plural = "Convenios Marco"
         
@@ -133,6 +147,10 @@ class Coordinadorestg(models.Model):
     anio = models.BigIntegerField(db_column='a\xf1o') # Field renamed to remove unsuitable characters.
     #Semestre en el cual sera coordinador
     semestreacademico = models.CharField(max_length=1)
+
+    def get_absolute_url(self):
+        return reverse('coordinador_detalle', args=[str(self.docentes_dni.dni)])
+
     class Meta:
         verbose_name_plural = "Coordinadores Trabajos de Grado"
         
@@ -220,8 +238,15 @@ class Docentes(models.Model):
     #Referencia al tipo de docente 
     tipodocente = models.ForeignKey('Tipodocente')
 
+    def get_full_name(self):
+        return '%s %s' %(self.nombre, self.apellidos)
+
+    def get_absolute_url(self):
+        return reverse('director_detalle', args=[str(self.dni)])
+
     def __unicode__(self):
         return self.nombre
+
     class Meta:
         verbose_name_plural = "Docentes"
         
@@ -290,6 +315,13 @@ class Estudiantes(models.Model):
     apellidos = models.CharField(max_length=30)
     #Referencia al trabajo de grado que desarrollara
     trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo')
+    
+    def get_full_name(self):
+        return '%s %s' %(self.nombre, self.apellidos)
+
+    def get_absolute_url(self):      
+        return reverse('estudiante_detalle', args=[str(self.dni)])
+
     class Meta:
         verbose_name_plural = "Estudiantes"
         
@@ -339,10 +371,6 @@ class InformefinalCriterios(models.Model):
     informesfinales = models.ForeignKey('Informesfinales')
     #Campo donde se incluye los criterios que designa el jurado calificador
     criteriosjurado = models.ForeignKey(Criteriosjurado)
-    #Referencia al jurado que emitio el informe
-    #jurados_trabajosgrado_codigo = models.ForeignKey('Jurados', db_column='jurados_trabajosgrado_codigo')
-    #Referencia al docente que actua como jurado
-    #jurados_docentes_dni = models.ForeignKey('Jurados', db_column='jurados_docentes_dni', related_name="jurados_docentes_dni")
     #Enlace web sobre el detalle de los criterios del informe final 
     link = models.CharField(max_length=20, blank=True)
     jurados = models.ForeignKey('Jurados')
@@ -376,13 +404,13 @@ class Informesfinales(models.Model):
 #Modelo de clase correspondiente a la tabla Informesperiodicos
 class Informesperiodicos(models.Model):
     #Identificador unico de los informes periodicos de la pasantia
-    id = models.BigIntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     #Enlace con el informe detallado de la pasantia
     link = models.CharField(max_length=30)
     #Campo con la fecha en que se realiza el informe periodico
     fecha = models.DateField()
     #Referencia a la pasantia a que alude el informe
-    pasantias_trabajosgrado_codigo = models.ForeignKey('Pasantias', db_column='pasantias_trabajosgrado_codigo')
+    pasantias_trabajosgrado_codigo = models.ForeignKey('Pasantias', db_column='trabajosgrado_codigo')#pasantias_trabajosgrado_codigo')
     class Meta:
         verbose_name_plural = "Informes Periodicos"
         
@@ -402,6 +430,13 @@ class Jurados(models.Model):
     concejocurricular = models.ForeignKey(Concejocurricular)
     #Fecha de asignacion de jurados
     fecha = models.DateField(blank=True, null=True)
+
+    def get_absolute_url(self):
+        return reverse('jurado_detalle', args=[str(self.docentes_dni.dni)])
+
+    def __unicode__(self):
+        return self.docentes_dni.nombre 
+
     class Meta:
         verbose_name_plural = "Jurados"
         unique_together = (("trabajosgrado_codigo", "docentes_dni"),)
@@ -411,9 +446,13 @@ class Jurados(models.Model):
 #Modelo de clase correspondiente a la tabla Modalidadespasantia
 class Modalidadespasantia(models.Model):
     #Identificador unico de la modalidad de la pasantia
-    id = models.BigIntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     #Descripcion de la modalidad de pasantia (laboral, proyeccion social, internacional o investigacion)
     descripcion = models.CharField(max_length=20)
+
+    def __unicode__(self):
+        return self.descripcion
+
     class Meta:
         verbose_name_plural = "Modalidades Pasantia"
         
@@ -422,11 +461,13 @@ class Modalidadespasantia(models.Model):
 #Modelo de clase correspondiente a la tabla Modadiladestg
 class Modalidadestg(models.Model):
     #Identificador de la modalidad del trabajo de grado
-    id = models.BigIntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     #Campo que representa la modalidad del trabajo
     descripcion = models.CharField(max_length=30, blank=True)
-    #Referencia al trabajo de grado especificado por la modalidad
-    trabajogrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajogrado_codigo')
+
+    def __unicode__(self):
+        return self.descripcion
+    
     class Meta:
         verbose_name_plural = "Modalidades Trabajos de Grado"
         
@@ -434,16 +475,13 @@ class Modalidadestg(models.Model):
 
 #Modelo de clase correspondiente a la tabla Pasantias
 class Pasantias(models.Model):
-    #Identificador unico de la pasantia
-    codigo = models.BigIntegerField(primary_key=True)
-    #Referencia al trabajo de grado presentado por el(los) estudiante(s)
-    trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo', unique=True)
+    #Identificador unico de la pasantia, heredado del trabajo de grado
+    trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo', primary_key=True)
     #Empresa pasante que solicita la pasantia
     empresaspasantes = models.ForeignKey(Empresaspasantes)
     #Campo que referencia la modalidad de la pasantia
     modalidadespasantia = models.ForeignKey(Modalidadespasantia)
-    #Referencia de la previa propuesta de pasantia
-    propuestaspasantias_id = models.BigIntegerField(unique=True)
+
     class Meta:
         verbose_name_plural = "Pasantias"
         
@@ -463,6 +501,7 @@ class Propuestatg(models.Model):
     link = models.CharField(max_length=20, blank=True)
     #Referencia al trabajo de grado al que pertenece la propuesta
     trabajosgrado_codigo = models.ForeignKey('Trabajosgrado', db_column='trabajosgrado_codigo')
+    
     class Meta:
         verbose_name_plural = "Propuestas Trabajos de Grado"
         
@@ -598,9 +637,14 @@ class Trabajosgrado(models.Model):
     nota_definitiva = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     #Referencia al docente que sera a su vez director del trabajo
     docentes_director = models.ForeignKey(Docentes, db_column='docentes_director')
+    #Referencia a la modalidad de trabajo de grado
+    modalidadestg = models.ForeignKey(Modalidadestg)
 
     def __unicode__(self):
         return self.titulo
+
+    def get_absolute_url(self):      
+        return reverse('trabajo_grado_detalle', args=[str(self.codigo)])
         
     class Meta:
         verbose_name_plural = "Trabajos de Grado"

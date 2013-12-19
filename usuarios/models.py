@@ -22,14 +22,46 @@ class UsuarioManager(BaseUserManager):
     def create_userRol(self, dni, tipo, password):
         if tipo == Usuario.ESTUDIANTE:
             user = self.model(dni=dni, tipo=tipo, is_active=True, is_admin=False, is_superuser=False)
+        if tipo == Usuario.DIRECTOR:         
+            try:
+                user = Usuario.objects.get(dni=dni)
+            except Usuario.DoesNotExist:
+                user = None
+            if user is not None:
+                grupo = Group.objects.get(name=tipo)
+                user.groups.add(grupo)
+                return user
+            user = self.model(dni=dni, tipo=tipo, is_active=True, is_admin=True, is_superuser=False)           
         if tipo == Usuario.COORDINADOR:
             user = self.model(dni=dni, tipo=tipo, is_active=True, is_admin=True, is_superuser=False)
         if tipo == Usuario.JURADO:
-            user = self.model(dni=dni, tipo=tipo, is_active=True, is_admin=False, is_superuser=False)
+            try:
+                user = Usuario.objects.get(dni=dni)
+            except Usuario.DoesNotExist:
+                user = None
+            if user is not None:
+                grupo = Group.objects.get(name=tipo)
+                user.groups.add(grupo)
+                return user
+            user = self.model(dni=dni, tipo=tipo, is_active=True, is_admin=True, is_superuser=False)
         if tipo == Usuario.ASESOR:
-            user = self.model(dni=dni, tipo=tipo, is_active=True, is_admin=False, is_superuser=False)
+            try:
+                user = Usuario.objects.get(dni=dni)
+            except Usuario.DoesNotExist:
+                user = None
+            if user is not None:
+                grupo = Group.objects.get(name=tipo)
+                user.groups.add(grupo)
+                return user
+            user = self.model(dni=dni, tipo=tipo, is_active=True, is_admin=True, is_superuser=False)
+       
         user.set_password(password)
         user.save(using=self._db)
+
+        # aqui agrego el grupo de permiso
+        grupo = Group.objects.get(name=user.tipo)
+        user.groups.add(grupo)
+
         return user
 
 def TIPO_USERS_FROM_GROUP():
@@ -43,11 +75,11 @@ def TIPO_USERS_FROM_GROUP():
 
 class Usuario(AbstractBaseUser, PermissionsMixin):
 
-    ESTUDIANTE     = 'Estudiante'
-    DIRECTOR   = 'Director'
-    COORDINADOR  = 'Coordinador T.Grado'
-    ASESOR = 'Asesor'
-    JURADO = 'Jurado'
+    ESTUDIANTE   = 'estudiante'
+    DIRECTOR     = 'director'
+    COORDINADOR  = 'coordinador'
+    ASESOR       = 'asesor'
+    JURADO       = 'jurado'
     
     TIPO_USUARIO = (
         (ESTUDIANTE, 'Estudiante'),
