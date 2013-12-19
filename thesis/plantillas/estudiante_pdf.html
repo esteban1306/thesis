@@ -1,0 +1,264 @@
+<!--
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+</head>    
+<body>
+   <table class="table table-striped">
+			<tbody>	
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+				    <h1 class="panel-title">REPORTE PARA ESTUDIANTE</h1>
+				  </div>
+				    <div class="panel-body">
+				    <h2>Datos Personales: </h2>
+					<tr>
+						Cédula: 
+						<span class="glyphicon glyphicon-subtitles"></span>{{person.dni}}
+					</br>
+					</tr>
+					<tr>
+						Nombre: 
+						<span class="glyphicon glyphicon-subtitles"></span>{{person.nombre}}
+					</br>
+						<tr>
+						Apellidos: 
+						<span class="glyphicon glyphicon-subtitles"></span>{{person.apellidos}}
+					</br>
+					</tr>
+					<tr>
+						<td> </td>Rol:
+						<span class="glyphicon glyphicon-tag"></span> {{usuario.tipo}}</td>
+					</tr>
+					</br>
+				    </div>
+				</div>
+
+				
+
+				<div class="panel panel-default linea">
+
+				<h2>Datos del trabajo de grado:</h2>	
+					<blockquote>  
+					<div class="col-sm-8">
+					<tbody>	
+						<tr>
+							Código: 
+							 {{person.trabajosgrado_codigo.codigo}}</br>
+						</tr>
+						<tr>
+							Grupo de Investigación: 
+							{{person.trabajosgrado_codigo.grupo_investigacion}}</br>
+						</tr>		
+						<tr>
+							Titulo: 
+							{{person.trabajosgrado_codigo.titulo}} </br>
+						</tr>
+						<tr>
+							Nota definitiva: 
+							{{person.trabajosgrado_codigo.nota_definitiva}} </BR>
+						</tr>
+						<tr>	
+							<u></br>Director:</u>
+							<blockquote>  
+							Nombre: 
+							{{person.trabajosgrado_codigo.docentes_director.nombre}}<BR>
+							Apellidos:
+							{{person.trabajosgrado_codigo.docentes_director.apellidos}}<BR>
+							Tipo de docente:
+							{{person.trabajosgrado_codigo.docentes_director.tipodocente.descripcion}}<BR>
+						</blockquote>  
+						</tr>
+						<tr>	
+							<u></br>Asesores:</u>
+							<ul>
+								id  Nombre Fecha</br>
+								{% for i in asesores_detrabajo %}
+								{{i.id}}  {{i.docentes_dni}}  {{i.fecha}}</br>
+								{% endfor %}
+							</ul></br>
+						</tr>
+						<tr>	
+							<u>Jurados:</U>
+							<ul>
+								id Nombre Fecha</br>
+								{% for i in jurados_detrabajo %}
+								{{i.id}}  {{i.docentes_dni}}  {{i.fecha}}</br>
+								{% endfor %}
+							</ul>
+						</tr>
+		
+					</tbody>
+				</div>
+			</blockquote>  
+				</FRAMESET COLS="30%,70%">
+			</tbody>
+
+			
+	</table>
+</body>
+</html>
+
+ -->
+
+<html>
+	<head>
+		<title>HTML Online Editor Sample</title>
+	</head>
+	<body>
+		<h1 style="text-align: center;">
+			REPORTE DEL ESTUDIANTE</h1>
+		<p>
+			&nbsp;</p>
+		<p>
+			<u>DATOS DEL ESTUDIANTE</u></p>
+		<table align="left" border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+			<tbody>
+				<tr>
+					<td>
+						NOMBRE</td>
+					<td>
+						{{person.nombre}}</td>
+				</tr>
+				<tr>
+					<td>
+						APELLIDOS</td>
+					<td>
+						{{person.apellidos}}</td>
+				</tr>
+				<tr>
+					<td>
+						D.N.I</td>
+					<td>
+						{{person.dni}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<p>
+			&nbsp;</p>
+		<p>
+			&nbsp;</p>
+
+		<p>
+			<u>DATOS DEL TRABAJO DE GRADO</u></p>
+		<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+			<tbody>
+				<tr>
+					<td>
+						CODIGO</td>
+					<td>
+						{{person.trabajosgrado_codigo.codigo}}</td>
+				</tr>
+				<tr>
+					<td>
+						GRUPO DE INVESTIGACION</td>
+					<td>
+						{{person.trabajosgrado_codigo.grupo_investigacion}}</td>
+				</tr>
+				<tr>
+					<td>
+						TITULO</td>
+					<td>
+						{{person.trabajosgrado_codigo.titulo}}</td>
+				</tr>
+				<tr>
+					<td>
+						NOTA DEFINITIVA</td>
+					<td>
+						{{person.trabajosgrado_codigo.nota_definitiva}}</td>
+				</tr>
+				<tr>
+					<td>
+						MODALIDAD</td>
+					<td>
+						{{person.trabajosgrado_codigo.modalidadestg}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<p>
+			&nbsp;</p>
+		<p>
+			&nbsp;</p>
+		<p>
+			<u>DIRECTOR</u></p>
+		<table align="left" border="0.1" cellpadding="1" cellspacing="1" style="width: 500px;">
+			<tbody>
+				<tr>
+					<td>
+						NOMBRE</td>
+					<td>
+						{{person.trabajosgrado_codigo.docentes_director.nombre}}</td>
+				</tr>
+				<tr>
+					<td>
+						APELLIDOS</td>
+					<td>
+						{{person.trabajosgrado_codigo.docentes_director.apellidos}}</td>
+				</tr>
+				<tr>
+					<td>
+						TIPO DOCENTE</td>
+					<td>
+						{{person.trabajosgrado_codigo.docentes_director.tipodocente.descripcion}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<p>
+			&nbsp;</p>
+		<p>
+			&nbsp;</p>
+		
+			<u>ASESORES</u></p>
+		<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+			<tbody>
+				<tr>
+					<td>
+						ID</td>
+					<td>
+						NOMBRE</td>
+					<td>
+						FECHA</td>
+				</tr>
+				{% for i in asesores_detrabajo %}
+				<tr>
+					<td>
+						{{i.id}} </td>
+
+					<td>
+						{{i.docentes_dni}}</td>
+					<td>
+						{{i.fecha}}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<p>
+			&nbsp;</p>
+		<p>
+			&nbsp;</p>
+		<p>
+			<u>JURADOS</u></p>
+		<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+			<tbody>
+				<tr>
+					<td>
+						ID</td>
+					<td>
+						NOMBRE</td>
+					<td>
+						FECHA</td>
+				</tr>
+				{% for j in jurados_detrabajo %}
+				<tr>
+					<td>
+						{{j.id}} </td>
+					<td>
+						{{j.docentes_dni}}</td>
+					<td>
+						{{j.fecha}}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table></body>
+</html>
