@@ -45,9 +45,9 @@ class CoordinadorestgAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if not change:
             obj.id  = get_id_autoincremental(obj)
-            user = Usuario.objects.create_userRol(obj.dni, Usuario.COORDINADOR, obj.dni)
+            dni = obj.docentes_dni.dni
+            user = Usuario.objects.create_userRol(dni, Usuario.COORDINADOR, dni)
         obj.save()          
- 
          
 
 #Define un modelo de administracion para Asesores
