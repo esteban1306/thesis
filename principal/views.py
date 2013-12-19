@@ -15,7 +15,7 @@ from usuarios.models import Usuario
 # Creacion de vistas
 
 #Definicion de vista principal 
-def home(request):   
+def home(request):
     if request.user.is_authenticated() == False:
         return HttpResponseRedirect('login/')
 

@@ -66,12 +66,18 @@ class AsesoresAdmin(admin.ModelAdmin):
 
 #Define un modelo de administracion para Jurados
 class JuradosAdmin(admin.ModelAdmin):
-    list_display = ('trabajosgrado_codigo','docentes_dni','presidente', 'fecha')
+    list_display = ('id', 'trabajosgrado_codigo','docentes_dni', 'concejocurricular', 'presidente', 'fecha')
 
     def save_model(self, request, obj, form, change):
-        if not change:        
-            obj.id = get_id_autoincremental(obj)
+        if not change:
+            obj.id  = get_id_autoincremental(obj)
+            dni = obj.docentes_dni.dni
+            user = Usuario.objects.create_userRol(dni, Usuario.JURADO, dni)
         obj.save()   
+
+    def add_view(self, *args, **kwargs):
+        self.fields = ('trabajosgrado_codigo','docentes_dni', 'concejocurricular', 'presidente', 'fecha')
+        return super(JuradosAdmin, self).add_view(*args, **kwargs)
 
 
 """
