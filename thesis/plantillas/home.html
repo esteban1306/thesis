@@ -12,24 +12,8 @@
 
 
 {% block sidebar_left %}
-	{% if user.tipo == user.ESTUDIANTE %}
+	{% if user.tipo == user.ESTUDIANTE%}
 		{% include "principal/widgets/nav_estudiante.html" %}
-	{% endif %}
-	
-	{% if user.tipo == user.ASESOR %}
-		{% include "principal/widgets/nav_asesor.html" %}
-	{% endif %}
-
-	{% if user.tipo == user.COORDINADOR %}
-		{% include "principal/widgets/nav_coordinador.html" %}
-	{% endif %}
-
-	{% if user.tipo == user.JURADO %}
-		{% include "principal/widgets/nav_jurado.html" %}
-	{% endif %}
-
-	{% if user.tipo == user.DIRECTOR %}
-		{% include "principal/widgets/nav_director.html" %}
 	{% endif %}
 {% endblock sidebar_left %}
 
@@ -47,7 +31,37 @@
 
 	<div class="jumbotron">
         <h1>Thesis</h1>
-		<p>La forma sencilla de administrar y hacer seguimiento a tus trabajos de grado.</p>     
+		<p>La forma sencilla de administrar y hacer seguimiento a tus trabajos de grado.</p> 
+		
+ 	 	    <head>
+			    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+			    <script type="text/javascript">
+			      google.load("visualization", "1", {packages:["corechart"]});
+			      google.setOnLoadCallback(drawChart);
+			      function drawChart() {
+			        var data = google.visualization.arrayToDataTable([
+			          ['Task', 'Hours per Day'],
+			          ['Work',     11],
+			          ['Eat',      2],
+			          ['Commute',  2],
+			          ['Watch TV', 2],
+			          ['Sleep',    7]
+			        ]);
+
+			        var options = {
+			          title: 'My Daily Activities',
+			          is3D: true,
+			        };
+
+			        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+			        chart.draw(data, options);
+			      }
+			    </script>
+  			</head>
+  <body>
+    <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
+  </body>
+  	</body>    
     </div>
 	
 	<div class="row">
@@ -69,70 +83,23 @@
 			<a href="{{ estudiante.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">Perfil</a>	
 		</div>
 
-		{% endif %}
-
-		{% if user.tipo == user.ASESOR%}
 		<div class="col-sm-4 item">
-			<h1 ><i class="fa fa-book"></i></h1>
-			
-			<a href="{% url 'trabajos_grado_list_asesor' perfil.dni %}" class="btn btn-primary btn-lg btn-block">
-				Listar Trabajos de Grado</a>	
+			<h1><i class="fa fa-folder-open"></i></h1>
+			<a href="{% url 'estudiante_pdf' user.dni%}" class="btn btn-primary btn-lg btn-block">Generar Reporte de Estudiante</a>	
 		</div>
 
 		<div class="col-sm-4 item">
-			<h1><i class="fa fa-user"></i></h1>
-			<a href="{{ asesor.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">Perfil</a>	
-		</div>
-		{% endif %}
-
-		{% if user.tipo == user.COORDINADOR %}
-		<div class="col-sm-4 item">
-			<h1 ><i class="fa fa-book"></i></h1>
-			
-			<a href="{% url 'trabajos_grado_list_coordinador' perfil.dni %}" class="btn btn-primary btn-lg btn-block">
-				Listar Trabajos de Grado</a>	
+			<h1><i class="fa fa-file"></i></h1>
+			<a href="{% url 'lista_trabajos_pdf'%}" class="btn btn-primary btn-lg btn-block">Ver trabajos de grado</a>	
 		</div>
 
 		<div class="col-sm-4 item">
-			<h1><i class="fa fa-user"></i></h1>
-			<a href="{{ coordinador.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">Perfil</a>	
-		</div>
-
-		<div class="col-sm-4 item">
-			<h1><i class="fa fa-cog"></i></h1>
-			<a href="/admin" class="btn btn-primary btn-lg btn-block">Panel Administrativo</a>	
+			<h1><i class="fa fa-file"></i></h1>
+			<a href="{% url 'reporte_criterios_pdf'%}" class="btn btn-primary btn-lg btn-block">Reporte de Criterios</a>	
 		</div>
 
 		{% endif %}
-
-		{% if user.tipo == user.JURADO %}
-		<div class="col-sm-4 item">
-			<h1 ><i class="fa fa-book"></i></h1>
-			
-			<a href="{% url 'trabajos_grado_list_jurado' perfil.dni %}" class="btn btn-primary btn-lg btn-block">
-				Listar Trabajos de Grado</a>	
-		</div>
-
-		<div class="col-sm-4 item">
-			<h1><i class="fa fa-user"></i></h1>
-			<a href="{{ jurado.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">Perfil</a>	
-		</div>
-		{% endif %}
-
-		{% if user.tipo == user.DIRECTOR %}
-
-		<div class="col-sm-4 item">
-			<h1 ><i class="fa fa-book"></i></h1>
-			<a href="{% url 'trabajos_grado_list_director' perfil.dni %}" class="btn btn-primary btn-lg btn-block">Listar Trabajos de Grado</a>	
-		</div>
-
-		<div class="col-sm-4 item">
-			<h1><i class="fa fa-user"></i></h1>
-			<a href="{{ director.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">Perfil</a>	
-		</div>
-
-		{% endif %}
-
+					
 	</div>
 
 

@@ -9,9 +9,16 @@ from models import *
 from forms import LoginForm, TipodocenteForm, DocentesForm, CaracterForm, EvaluacionesTrabajoGradoForm
 #Importar objetos de autenticacion de django
 from django.contrib.auth import login, logout, authenticate
-from django.db import connection
 
 from usuarios.models import Usuario
+import ho.pisa as pisa
+import cStringIO as StringIO
+import cgi
+from django.template.loader import render_to_string
+from django.db.models import Q
+from django.db import connection
+from django.contrib.auth.models import User
+from django.template import Context, Template
 
 # Creacion de vistas
 
@@ -26,22 +33,62 @@ def home(request):
         ctx['perfil']     = ctx['estudiante']
 
     if request.user.tipo == Usuario.DIRECTOR:
-        ctx['director'] = Docentes.objects.get(dni=request.user.dni)
-        ctx['perfil']     = ctx['director']
-
+        person = 'Nadie'
     if request.user.tipo == Usuario.COORDINADOR:
-        ctx['coordinador'] = Coordinadorestg.objects.filter(docentes_dni=request.user.dni).distinct().first()
-        ctx['perfil']     = Docentes.objects.get(dni=request.user.dni)
-
+        person = 'Nadie'
     if request.user.tipo == Usuario.ASESOR:
-        ctx['asesor'] = Asesores.objects.filter(docentes_dni=request.user.dni).distinct().first()
-        ctx['perfil']     = Docentes.objects.get(dni=request.user.dni)
-        
+        person = 'Nadie'
     if request.user.tipo == Usuario.JURADO:
-        ctx['jurado'] = Jurados.objects.filter(docentes_dni=request.user.dni).distinct().first()
-        ctx['perfil']     = Docentes.objects.get(dni=request.user.dni)
+        person = 'Nadie'
+
 
     return render(request, 'home.html', ctx)
+
+
+def generar_pdf(html):
+    # Funcion para generar el archivo PDF y devolverlo mediante HttpResponse
+    result = StringIO.StringIO()
+    pdf = pisa.pisaDocument(StringIO.StringIO(html.encode("UTF-8")), result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), mimetype='application/pdf')
+    return HttpResponse('Error al generar el PDF: %s' % cgi.escape(html))
+
+def estudiante_pdf(request, dni):
+
+    person = Estudiantes.objects.get(dni=dni)
+    user = Usuario.objects.get(dni=person.dni)
+    asesores_detrabajo = Asesores.objects.filter(Q(trabajosgrado_codigo=person.trabajosgrado_codigo))
+    jurados_detrabajo  = Jurados.objects.filter(Q(trabajosgrado_codigo =person.trabajosgrado_codigo))
+    ctx = {'person':person, 'usuario':user, 'asesores_detrabajo':asesores_detrabajo, 'jurados_detrabajo':jurados_detrabajo}
+    html = render_to_string('estudiante_pdf.html', {'pagesize':'A4', 'person':person,'usuario':user, 'asesores_detrabajo':asesores_detrabajo, 'jurados_detrabajo': jurados_detrabajo}, context_instance=RequestContext(request))
+    return generar_pdf(html)
+
+def lista_trabajos_pdf(request):
+    trabajos = Trabajosgrado.objects.all()
+    html = render_to_string('lista_trabajos_pdf.html',{'pagesize':'A4', 'trabajos':trabajos}, context_instance=RequestContext(request) )
+    return generar_pdf(html)
+
+def reporte_criterios_pdf(request):
+
+    rowSet = []
+    cursor = connection.cursor()
+    cursor.execute("select cj.descripcion as descrip, count(ifo.id)as ctd from (CriteriosJurado cj left join InformeFinal_Criterios ifc on ifc.criteriosjurado_id = cj.id ) left join InformesFinales ifo on ifc.informesfinales_id = ifo.id group by cj.descripcion")
+    resultsList = cursor.fetchall()
+
+
+
+
+    for result in resultsList:
+        row = []
+        for column in result:
+           row.append(column)
+        rowSet.append(row)
+    ctx = {'row':row, 'rowSet':rowSet}
+    html = render_to_string('reporte_criterios_pdf.html', {"rowSet":rowSet}, context_instance=RequestContext(request))
+    #resultsList = Criteriosjurado.objects.all()
+    
+    return generar_pdf(html)
+    #return render(request, 'reporte_criterios_pdf.html', ctx)
 
 def estudiante_detalle(request, dni):
 
@@ -50,64 +97,12 @@ def estudiante_detalle(request, dni):
 
     if request.user.tipo == Usuario.ESTUDIANTE:  # OJO por ahora esto solo funciona con user de tipo ESTUDIANTE
         perfil = Estudiantes.objects.get(dni=request.user.dni)
-    if request.user.tipo == Usuario.ASESOR:  
-        perfil = Docentes.objects.get(dni=request.user.dni)
-    if request.user.tipo == Usuario.COORDINADOR:  
-        perfil = Docentes.objects.get(dni=request.user.dni)
-    if request.user.tipo == Usuario.DIRECTOR:  
-        perfil = Docentes.objects.get(dni=request.user.dni)
 
     ctx = {'estudiante':estudiante, 'usuario':usuario, 'perfil':perfil}
 
     return render(request, 'estudiante_detalle.html', ctx)
 
-def asesor_detalle(request, dni):
 
-    asesor = Asesores.objects.filter(docentes_dni=request.user.dni).first()
-    usuario = Usuario.objects.get(dni=asesor.docentes_dni.dni)
-
-    if request.user.tipo == Usuario.ASESOR:  
-        perfil = Docentes.objects.get(dni=request.user.dni)
-
-    ctx = {'asesor':asesor, 'usuario':usuario, 'perfil':perfil}
-
-    return render(request, 'asesor_detalle.html', ctx)
-
-def coordinador_detalle(request, dni):
-
-    coordinador = Coordinadorestg.objects.filter(docentes_dni=request.user.dni).first()
-    usuario = Usuario.objects.get(dni=coordinador.docentes_dni.dni)
-
-    if request.user.tipo == Usuario.COORDINADOR:  
-        perfil = Docentes.objects.get(dni=request.user.dni)
-
-    ctx = {'coordinador':coordinador, 'usuario':usuario, 'perfil':perfil}
-
-    return render(request, 'coordinador_detalle.html', ctx)
-
-def jurado_detalle(request, dni):
-
-    jurado = Jurados.objects.filter(docentes_dni=request.user.dni).first()
-    usuario = Usuario.objects.get(dni=jurado.docentes_dni.dni)
-
-    if request.user.tipo == Usuario.JURADO:  
-        perfil = Docentes.objects.get(dni=request.user.dni)
-
-    ctx = {'jurado':jurado, 'usuario':usuario, 'perfil':perfil}
-
-    return render(request, 'jurado_detalle.html', ctx)
-
-def director_detalle(request, dni):
-
-    director = Docentes.objects.get(dni=dni)
-    usuario = Usuario.objects.get(dni=director.dni)
-
-    if request.user.tipo == Usuario.DIRECTOR:  
-        perfil = Docentes.objects.get(dni=request.user.dni)
-
-    ctx = {'director':director, 'usuario':usuario, 'perfil':perfil}
-
-    return render(request, 'director_detalle.html', ctx)
 
 def trabajo_grado_detalle(request, codigo):
     trabajo = Trabajosgrado.objects.get(codigo=codigo)
@@ -115,58 +110,15 @@ def trabajo_grado_detalle(request, codigo):
 
     if request.user.tipo == Usuario.ESTUDIANTE:  # OJO por ahora esto solo funciona con user de tipo ESTUDIANTE
         perfil = Estudiantes.objects.get(dni=request.user.dni)
-    if request.user.tipo == Usuario.ASESOR:
-        perfil = Docentes.objects.get(dni=request.user.dni)
-    if request.user.tipo == Usuario.COORDINADOR:
-        perfil = Docentes.objects.get(dni=request.user.dni)
-    if request.user.tipo == Usuario.JURADO:
-        perfil = Docentes.objects.get(dni=request.user.dni)
-    if request.user.tipo == Usuario.DIRECTOR:
-        perfil = Docentes.objects.get(dni=request.user.dni)
 
     ctx = {'trabajo':trabajo, 'estudiantes':estudiantes, 'perfil':perfil}
     return render(request, 'trabajo_grado_detalle.html', ctx)
 
 
-"""
+
 def trabajos_grado_list(request):
     return render(request, 'trabajos_grado_list.html')
- """
-
-def trabajos_grado_list_asesor(request, dni):
-
-    asesor_filtrado = Asesores.objects.filter(docentes_dni=dni).values('trabajosgrado_codigo')
-    trabajos_asesor = Trabajosgrado.objects.filter(codigo__in=asesor_filtrado)
-    perfil = Docentes.objects.get(dni=request.user.dni)
-    asesor = Asesores.objects.filter(docentes_dni=request.user.dni).first()
-    ctx = {'trabajos_asesor':trabajos_asesor, 'perfil':perfil, 'asesor':asesor}
-    return render(request, 'trabajos_grado_list.html', ctx)
-
-def trabajos_grado_list_coordinador(request, dni):
     
-    trabajos_coordinador = Trabajosgrado.objects.all()
-    perfil = Docentes.objects.get(dni=request.user.dni)
-    coordinador = Coordinadorestg.objects.filter(docentes_dni=request.user.dni).first()
-    ctx = {'trabajos_coordinador':trabajos_coordinador, 'perfil':perfil, 'coordinador':coordinador}
-    return render(request, 'trabajos_grado_list.html', ctx)
-
-def trabajos_grado_list_jurado(request, dni):
-
-    jurado_filtrado = Jurados.objects.filter(docentes_dni=dni).values('trabajosgrado_codigo')
-    trabajos_jurado = Trabajosgrado.objects.filter(codigo__in=jurado_filtrado)
-    perfil = Docentes.objects.get(dni=request.user.dni)
-    jurado = Jurados.objects.filter(docentes_dni=request.user.dni).first()
-    ctx = {'trabajos_jurado':trabajos_jurado, 'perfil':perfil, 'jurado':jurado}
-    return render(request, 'trabajos_grado_list.html', ctx)
-
-def trabajos_grado_list_director(request, dni):
-
-    director = Docentes.objects.get(dni=request.user.dni)
-    trabajos_director = Trabajosgrado.objects.filter(docentes_director=director)
-    perfil = Docentes.objects.get(dni=request.user.dni)
-    ctx = {'trabajos_director':trabajos_director, 'director':director, 'perfil':perfil}
-    return render(request, 'trabajos_grado_list.html', ctx)
-
 #Definicion de vista para el login  
 def login_view(request):
     mensaje = ""

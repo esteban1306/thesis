@@ -30,6 +30,10 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
+WKHTMLTOPDF_CMD_OPTIONS = {
+   #WKHTMLTOPDF_CMD='wkhtmltopdf' 
+   'quiet':True,
+}
 
 
 # Application definition
@@ -45,6 +49,7 @@ INSTALLED_APPS = (
     'principal',
     'usuarios',
     'south',
+    'wkhtmltopdf',
 )
 
 MIDDLEWARE_CLASSES = (

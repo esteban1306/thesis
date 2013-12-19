@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+</head>    
+<body>
+<u><h1>TRABAJOS DE GRADO</h1></u></p>
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<p>A continuacion se presenta la lista de todos los trabajos de grado con su respectivo estado de dearrollo.
+		<blockquote>
+			<u>En proceso: </u>si el proyecto aun se encuentra en la etapa de dearrollo.</br>
+			<u>Terminado:  </u>cuando el proyecto ha sido finalizado exitosamente y por ende posee nota de evaluacion</br>
+		</blockquote>
+	</p>
+	</br>
+			<tbody>
+				<tr>
+					<td>
+						CODIGO</td>
+					<td>
+						TITULO</td>
+					<td>
+						ESTADO</td>
+				</tr>
+				{% for t in trabajos %}
+				<tr>
+					<td>
+						{{t.codigo}} </td>
+					<td>
+						{{t.titulo}}</td>
+					<td>
+						{% if t.nota_definitiva%}
+							Terminado
+						{% else %}
+							En proceso
+						{% endif %}
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+</body>
+</html>
