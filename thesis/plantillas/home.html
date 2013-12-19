@@ -97,6 +97,12 @@
 			<h1><i class="fa fa-user"></i></h1>
 			<a href="{{ coordinador.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">Perfil</a>	
 		</div>
+
+		<div class="col-sm-4 item">
+			<h1><i class="fa fa-cog"></i></h1>
+			<a href="/admin" class="btn btn-primary btn-lg btn-block">Panel Administrativo</a>	
+		</div>
+
 		{% endif %}
 
 		{% if user.tipo == user.JURADO %}

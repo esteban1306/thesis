@@ -51,6 +51,12 @@
 					<td>Rol: </td>
 					<td><span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp; {{usuario.tipo}}</td>
 				</tr>
+				{% if jurado.presidente == 1 %}
+				<tr>
+					<td>Presidente </td>
+					<td><span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp; {{usuario.tipo}}</td>
+				</tr>
+				{% endif %}
 			</tbody>
 			
 		</table>

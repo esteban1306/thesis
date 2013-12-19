@@ -434,6 +434,9 @@ class Jurados(models.Model):
     def get_absolute_url(self):
         return reverse('jurado_detalle', args=[str(self.docentes_dni.dni)])
 
+    def __unicode__(self):
+        return self.docentes_dni.nombre 
+
     class Meta:
         verbose_name_plural = "Jurados"
         unique_together = (("trabajosgrado_codigo", "docentes_dni"),)

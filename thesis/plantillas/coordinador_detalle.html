@@ -1,5 +1,5 @@
 {% extends 'shell.html' %}
-{% block title %} Asesor {% endblock %}
+{% block title %} Coordinador TG {% endblock %}
 
 {% block css %}
 	<style>
@@ -51,6 +51,14 @@
 					<td>Rol: </td>
 					<td><span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp; {{usuario.tipo}}</td>
 				</tr>
+				<tr>
+					<td>Año: </td>
+					<td><span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp; {{coordinador.anio}}</td>
+				</tr>
+				<tr>
+					<td>Semestre Academico: </td>
+					<td><span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp; {{coordinador.semestreacademico}}</td>
+				</tr>
 			</tbody>
 			
 		</table>
@@ -61,7 +69,7 @@
 			<div class="panel-heading">Listado de Trabajos de Grado</div>
 			<div class="panel-body">
 				<h1 ><i class="fa fa-book"></i></h1>
-				<a href="{% url 'trabajos_grado_list_asesor' perfil.dni %}" class="btn btn-info btn-block">Ver Todos</a>
+				<a href="{% url 'trabajos_grado_list_coordinador' perfil.dni %}" class="btn btn-info btn-block">Ver Todos</a>
 			</div>
 		</div>
 	</div>

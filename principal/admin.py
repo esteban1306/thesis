@@ -254,6 +254,31 @@ class DocumentacionAdmin(admin.ModelAdmin):
             obj.id  = get_id_autoincremental(obj)
         obj.save()
 
+    def queryset(self, request):
+        qs = super(DocumentacionAdmin, self).queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.tipo == Usuario.JURADO:
+            jurado_filtrado = Jurados.objects.filter(docentes_dni=request.user.dni).values('trabajosgrado_codigo')
+            trabajos_jurados = Trabajosgrado.objects.filter(codigo__in=jurado_filtrado)
+
+            return qs.filter(trabajosgrado_codigo=trabajos_jurados)
+        return qs
+        if request.user.tipo == Usuario.ASESOR:
+            asesor_filtrado = Asesores.objects.filter(docentes_dni=request.user.dni).values('trabajosgrado_codigo')
+            trabajos_asesores = Trabajosgrado.objects.filter(codigo__in=asesor_filtrado)
+
+            return qs.filter(trabajosgrado_codigo=trabajos_asesores)
+        return qs
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "trabajosgrado_codigo":
+            if request.user.tipo == Usuario.JURADO:
+                jurado_filtrado = Jurados.objects.filter(docentes_dni=request.user.dni).values('trabajosgrado_codigo')
+                trabajos_jurados = Trabajosgrado.objects.filter(codigo__in=jurado_filtrado)
+                kwargs["queryset"] = Trabajosgrado.objects.filter(codigo__in=trabajos_jurados)
+        return super(DocumentacionAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
 #Define un modelo de administracion para Empreaspasantes
 class EmpresaspasantesAdmin(admin.ModelAdmin):
     list_display = ('nit', 'nombre', 'direccion', 'tiposempresa')
@@ -272,7 +297,26 @@ class EvaluacionesTrabajoGradoAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if not change:
             obj.id  = get_id_autoincremental(obj)
-        obj.save()    
+        obj.save()
+
+    def queryset(self, request):
+        qs = super(EvaluacionesTrabajoGradoAdmin, self).queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.tipo == Usuario.JURADO:
+            jurado_filtrado = Jurados.objects.filter(docentes_dni=request.user.dni).values('trabajosgrado_codigo')
+            trabajos_jurados = Trabajosgrado.objects.filter(codigo__in=jurado_filtrado)
+
+            return qs.filter(trabajosgrado_codigo__in=trabajos_jurados)
+        return qs
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "trabajosgrado_codigo":
+            if request.user.tipo == Usuario.JURADO:
+                jurado_filtrado = Jurados.objects.filter(docentes_dni=request.user.dni).values('trabajosgrado_codigo')
+                trabajos_jurados = Trabajosgrado.objects.filter(codigo__in=jurado_filtrado)
+                kwargs["queryset"] = Trabajosgrado.objects.filter(codigo__in=trabajos_jurados)
+        return super(EvaluacionesTrabajoGradoAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 #Define un modelo de administracion para Historicocriteriospropuestas
 class HistoricocriteriospropuestasAdmin(admin.ModelAdmin):
@@ -304,6 +348,17 @@ class InformesfinalesAdmin(admin.ModelAdmin):
             obj.id  = get_id_autoincremental(obj)
         obj.save()
 
+    def queryset(self, request):
+        qs = super(InformesfinalesAdmin, self).queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.tipo == Usuario.JURADO:
+            jurado_filtrado = Jurados.objects.filter(docentes_dni=request.user.dni).values('trabajosgrado_codigo')
+            trabajos_jurados = Trabajosgrado.objects.filter(codigo__in=jurado_filtrado)
+
+            return qs.filter(trabajosgrado_codigo__in=trabajos_jurados)
+        return qs
+
 #Define un modelo de administracion para Informefinalcriterios
 class InformefinalCriteriosAdmin(admin.ModelAdmin):
     list_display = ('id', 'fecha', 'link')
@@ -318,6 +373,11 @@ class InformefinalCriteriosAdmin(admin.ModelAdmin):
         if not change:
             obj.id  = get_id_autoincremental(obj)
         obj.save()
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "jurados":
+            kwargs["queryset"] = Jurados.objects.filter(docentes_dni=request.user.dni)
+        return super(InformefinalCriteriosAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 #Define un modelo de administracion para Informesperiodicos
 class InformesperiodicosAdmin(admin.ModelAdmin):
@@ -385,6 +445,25 @@ class PropuestatgAdmin(admin.ModelAdmin):
             obj.id  = get_id_autoincremental(obj)
         obj.save()
 
+    def queryset(self, request):
+        qs = super(PropuestatgAdmin, self).queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.tipo == Usuario.JURADO:
+            jurado_filtrado = Jurados.objects.filter(docentes_dni=request.user.dni).values('trabajosgrado_codigo')
+            trabajos_jurados = Trabajosgrado.objects.filter(codigo__in=jurado_filtrado)
+
+            return qs.filter(trabajosgrado_codigo=trabajos_jurados)
+        return qs
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "trabajosgrado_codigo":
+            if request.user.tipo == Usuario.JURADO:
+                jurado_filtrado = Jurados.objects.filter(docentes_dni=request.user.dni).values('trabajosgrado_codigo')
+                trabajos_jurados = Trabajosgrado.objects.filter(codigo__in=jurado_filtrado)
+                kwargs["queryset"] = Trabajosgrado.objects.filter(codigo__in=trabajos_jurados)
+        return super(PropuestatgAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
 #Define un modelo de administracion para Propuestas de trabajo de grado
 class PropuestatgRevisorestAdmin(admin.ModelAdmin):
     list_display = ('id', 'propuestatg', 'revisorestecnicos')
@@ -399,6 +478,7 @@ class PropuestatgRevisorestAdmin(admin.ModelAdmin):
         if not change:
             obj.id  = get_id_autoincremental(obj)
         obj.save()
+
 
 #Define un modelo de administracion para Revisores Tecnicos
 class RevisorestecnicosAdmin(admin.ModelAdmin):
@@ -441,6 +521,23 @@ class SustentacionesAdmin(admin.ModelAdmin):
     list_display = ('id', 'fechapublicacion', 'fecharealizacion', 'hora','lugar' , 'nota', 'trabajosgrado_codigo')
     list_filter = ['id']
     search_fields = ['id']
+
+    def add_view(self, *args, **kwargs):
+        self.fields = ('fechapublicacion', 'fecharealizacion', 'hora','lugar' , 'nota', 'trabajosgrado_codigo')
+        return super(SustentacionesAdmin, self).add_view(*args, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.id  = get_id_autoincremental(obj)
+        obj.save()
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "trabajosgrado_codigo":
+            if request.user.tipo == Usuario.JURADO:
+                jurado_filtrado = Jurados.objects.filter(docentes_dni=request.user.dni).values('trabajosgrado_codigo')
+                trabajos_jurados = Trabajosgrado.objects.filter(codigo__in=jurado_filtrado)
+                kwargs["queryset"] = Trabajosgrado.objects.filter(codigo__in=trabajos_jurados)
+        return super(SustentacionesAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 #Define un modelo de administracion para Tipodocente
 class TipodocenteAdmin(admin.ModelAdmin):
@@ -491,6 +588,19 @@ class TrabajosgradoAdmin(admin.ModelAdmin):
         if not change:
             user = Usuario.objects.create_userRol(obj.docentes_director.dni, Usuario.DIRECTOR, obj.docentes_director.dni)
         obj.save()
+
+    def queryset(self, request):
+        qs = super(TrabajosgradoAdmin, self).queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.tipo == Usuario.ASESOR:
+            asesor_filtrado = Asesores.objects.filter(docentes_dni=request.user.dni).values('trabajosgrado_codigo')
+            #trabajos_asesor = Trabajosgrado.objects.filter(codigo__in=asesor_filtrado)
+            return qs.filter(codigo__in=asesor_filtrado)
+        if request.user.tipo == Usuario.JURADO:
+            jurado_filtrado = Jurados.objects.filter(docentes_dni=request.user.dni).values('trabajosgrado_codigo')
+            return qs.filter(codigo__in=jurado_filtrado)
+        return qs
 
 #Define un modelo de administracion para Visistas
 class VisitasAdmin(admin.ModelAdmin):
