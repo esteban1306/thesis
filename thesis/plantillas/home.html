@@ -12,8 +12,12 @@
 
 
 {% block sidebar_left %}
-	{% if user.tipo == user.ESTUDIANTE%}
+	{% if user.tipo == user.ESTUDIANTE %}
 		{% include "principal/widgets/nav_estudiante.html" %}
+	{% endif %}
+	
+	{% if user.tipo == user.ASESOR %}
+		{% include "principal/widgets/nav_asesor.html" %}
 	{% endif %}
 {% endblock sidebar_left %}
 
@@ -53,6 +57,25 @@
 			<a href="{{ estudiante.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">Perfil</a>	
 		</div>
 
+		{% endif %}
+
+		{% if user.tipo == user.ASESOR%}
+		<div class="col-sm-4 item">
+			<h1 ><i class="fa fa-book"></i></h1>
+			
+			<a href="{% url 'trabajos_grado_list_asesor' perfil.dni %}" class="btn btn-primary btn-lg btn-block">
+				Listar Trabajos de Grado</a>	
+		</div>
+
+		<div class="col-sm-4 item">
+			<h1 ><i class="fa fa-cogs"></i></h1>
+			<a href="#" class="btn btn-primary btn-lg btn-block">Pasantía</a>	
+		</div>
+
+		<div class="col-sm-4 item">
+			<h1><i class="fa fa-user"></i></h1>
+			<a href="{{ perfil.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">Perfil</a>	
+		</div>
 		{% endif %}
 					
 	</div>

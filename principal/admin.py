@@ -62,6 +62,8 @@ class AsesoresAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if not change:
             obj.id  = get_id_autoincremental(obj)
+            dni = obj.docentes_dni.dni
+            user = Usuario.objects.create_userRol(dni, Usuario.ASESOR, dni)
         obj.save() 
 
 #Define un modelo de administracion para Jurados

@@ -30,6 +30,9 @@ class Asesores(models.Model):
     def __unicode__(self):
         return "%s" % self.id
 
+    def get_listado_url(self):
+        return reverse('trabajos_grado_list_asesor', args=[str(self.docentes_dni)])
+
     class Meta:
         unique_together = (("trabajosgrado_codigo", "docentes_dni"),)
         verbose_name_plural = "Asesores"
@@ -228,8 +231,15 @@ class Docentes(models.Model):
     #Referencia al tipo de docente 
     tipodocente = models.ForeignKey('Tipodocente')
 
+    def get_full_name(self):
+        return '%s %s' %(self.nombre, self.apellidos)
+
+    def get_absolute_url(self):      
+        return reverse('asesor_detalle', args=[str(self.dni)])
+
     def __unicode__(self):
         return self.nombre
+
     class Meta:
         verbose_name_plural = "Docentes"
         

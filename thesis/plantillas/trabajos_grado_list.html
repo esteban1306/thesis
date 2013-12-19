@@ -1,1 +1,16 @@
+{% extends 'shell.html' %}
+{% block title %} Trabajo de Grado del Asesor {% endblock %}
+
+
+{% block sidebar_left %}	
+	{% if user.tipo == user.ASESOR %}
+		{% include "principal/widgets/nav_asesor.html" %}
+	{% endif %}
+{% endblock sidebar_left %}
+
+
 <h1>HOla soy trabajos grados list</h1>
+
+{% for res in trabajos_asesor %}
+	<h3>{{res}}</h3>
+{% endfor %}

@@ -9,6 +9,7 @@ from models import *
 from forms import LoginForm, TipodocenteForm, DocentesForm, CaracterForm, EvaluacionesTrabajoGradoForm
 #Importar objetos de autenticacion de django
 from django.contrib.auth import login, logout, authenticate
+from django.db import connection
 
 from usuarios.models import Usuario
 
@@ -29,14 +30,14 @@ def home(request):
     if request.user.tipo == Usuario.COORDINADOR:
         person = 'Nadie'
     if request.user.tipo == Usuario.ASESOR:
-        person = 'Nadie'
+        ctx['asesor'] = Asesores.objects.filter(docentes_dni=request.user.dni).distinct().first()
+        ctx['perfil']     = Docentes.objects.get(dni=request.user.dni)
+        #person = 'Nadie'
     if request.user.tipo == Usuario.JURADO:
         person = 'Nadie'
 
 
     return render(request, 'home.html', ctx)
-
-
 
 def estudiante_detalle(request, dni):
 
@@ -50,6 +51,17 @@ def estudiante_detalle(request, dni):
 
     return render(request, 'estudiante_detalle.html', ctx)
 
+def asesor_detalle(request, dni):
+
+    asesor = Asesores.objects.filter(docentes_dni=request.user.dni).first()
+    usuario = Usuario.objects.get(dni=asesor.docentes_dni.dni)
+
+    if request.user.tipo == Usuario.ASESOR:  
+        perfil = Docentes.objects.get(dni=request.user.dni)
+
+    ctx = {'asesor':asesor, 'usuario':usuario, 'perfil':perfil}
+    print asesor,usuario,perfil.dni
+    return render(request, 'asesor_detalle.html', ctx)
 
 
 def trabajo_grado_detalle(request, codigo):
@@ -63,10 +75,19 @@ def trabajo_grado_detalle(request, codigo):
     return render(request, 'trabajo_grado_detalle.html', ctx)
 
 
-
+"""
 def trabajos_grado_list(request):
     return render(request, 'trabajos_grado_list.html')
-    
+ """
+
+def trabajos_grado_list_asesor(request, dni):
+
+    asesor_filtrado = Asesores.objects.filter(docentes_dni=dni).values('trabajosgrado_codigo')
+    trabajos_asesor = Trabajosgrado.objects.filter(codigo__in=asesor_filtrado)
+    perfil = Docentes.objects.get(dni=request.user.dni)
+    ctx = {'trabajos_asesor':trabajos_asesor, 'perfil':perfil}
+    return render(request, 'trabajos_grado_list.html', ctx)
+
 #Definicion de vista para el login  
 def login_view(request):
     mensaje = ""
