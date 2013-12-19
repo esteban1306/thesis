@@ -144,6 +144,10 @@ class Coordinadorestg(models.Model):
     anio = models.BigIntegerField(db_column='a\xf1o') # Field renamed to remove unsuitable characters.
     #Semestre en el cual sera coordinador
     semestreacademico = models.CharField(max_length=1)
+
+    def get_absolute_url(self):
+        return reverse('coordinador_detalle', args=[str(self.docentes_dni.dni)])
+
     class Meta:
         verbose_name_plural = "Coordinadores Trabajos de Grado"
         
@@ -234,7 +238,7 @@ class Docentes(models.Model):
     def get_full_name(self):
         return '%s %s' %(self.nombre, self.apellidos)
 
-    def get_absolute_url(self):      
+    def get_absolute_url(self):
         return reverse('asesor_detalle', args=[str(self.dni)])
 
     def __unicode__(self):

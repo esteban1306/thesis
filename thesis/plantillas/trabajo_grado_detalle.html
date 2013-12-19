@@ -12,10 +12,15 @@
 {% endblock %}
 
 
-
 {% block sidebar_left %}
 	{% if user.tipo == user.ESTUDIANTE%}
 		{% include "principal/widgets/nav_estudiante.html" %}
+	{% endif %}
+	{% if user.tipo == user.ASESOR %}
+		{% include "principal/widgets/nav_asesor.html" %}
+	{% endif %}
+	{% if user.tipo == user.COORDINADOR %}
+		{% include "principal/widgets/nav_coordinador.html" %}
 	{% endif %}
 {% endblock sidebar_left %}
 
@@ -37,12 +42,13 @@
 			<span class="label label-primary pull-right">{{trabajo.codigo}}</span>
 			{{trabajo.titulo|title}}
 		</h2>
-
 		 
 		{% for estudiante in estudiantes %}
 			<h4>
 				<a href="{{estudiante.get_absolute_url}}">{{estudiante.get_full_name}}</a> 
 			</h4>
+		{% empty %}
+			<h5>No hay estudiantes asignados a este proyecto de grado</h5>
 		{% endfor %}
 		
 	</div>
@@ -71,11 +77,19 @@
 					<td>Modalidades: </td>
 					<td><span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp; {{trabajo.modalidadestg.descripcion}}</td>
 				</tr>	
+				<tr>
+					<td>Documentacion: </td>
+					<td>
+						<a href="{{person.trabajosgrado_codigo.get_absolute_url}}" 
+						onclick="window.open('/admin/principal/documentacion/add/','Agregar Usuario','width=960,height=700');" class="btn btn-info btn-block">Agregar Documento</a>
+					</td>
+				</tr>
 		
 			</tbody>
 			
 		</table>
 	</div>
+
 
 	<div class="col-sm-4 ">
 		<div class="panel panel-default foraneos">
@@ -86,6 +100,7 @@
 			</div>
 		</div>
 	</div>
+
 </div>
 
 {% endblock content %}

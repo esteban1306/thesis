@@ -28,14 +28,14 @@ def home(request):
     if request.user.tipo == Usuario.DIRECTOR:
         person = 'Nadie'
     if request.user.tipo == Usuario.COORDINADOR:
-        person = 'Nadie'
+        ctx['coordinador'] = Coordinadorestg.objects.filter(docentes_dni=request.user.dni).distinct().first()
+        ctx['perfil']     = Docentes.objects.get(dni=request.user.dni)
     if request.user.tipo == Usuario.ASESOR:
         ctx['asesor'] = Asesores.objects.filter(docentes_dni=request.user.dni).distinct().first()
         ctx['perfil']     = Docentes.objects.get(dni=request.user.dni)
         #person = 'Nadie'
     if request.user.tipo == Usuario.JURADO:
         person = 'Nadie'
-
 
     return render(request, 'home.html', ctx)
 
@@ -46,6 +46,10 @@ def estudiante_detalle(request, dni):
 
     if request.user.tipo == Usuario.ESTUDIANTE:  # OJO por ahora esto solo funciona con user de tipo ESTUDIANTE
         perfil = Estudiantes.objects.get(dni=request.user.dni)
+    if request.user.tipo == Usuario.ASESOR:  
+        perfil = Docentes.objects.get(dni=request.user.dni)
+    if request.user.tipo == Usuario.COORDINADOR:  
+        perfil = Docentes.objects.get(dni=request.user.dni)
 
     ctx = {'estudiante':estudiante, 'usuario':usuario, 'perfil':perfil}
 
@@ -60,9 +64,20 @@ def asesor_detalle(request, dni):
         perfil = Docentes.objects.get(dni=request.user.dni)
 
     ctx = {'asesor':asesor, 'usuario':usuario, 'perfil':perfil}
-    print asesor,usuario,perfil.dni
+
     return render(request, 'asesor_detalle.html', ctx)
 
+def coordinador_detalle(request, dni):
+
+    coordinador = Coordinadorestg.objects.filter(docentes_dni=request.user.dni).first()
+    usuario = Usuario.objects.get(dni=coordinador.docentes_dni.dni)
+
+    if request.user.tipo == Usuario.COORDINADOR:  
+        perfil = Docentes.objects.get(dni=request.user.dni)
+
+    ctx = {'coordinador':coordinador, 'usuario':usuario, 'perfil':perfil}
+    print coordinador,usuario,perfil.dni
+    return render(request, 'coordinador_detalle.html', ctx)
 
 def trabajo_grado_detalle(request, codigo):
     trabajo = Trabajosgrado.objects.get(codigo=codigo)
@@ -70,6 +85,10 @@ def trabajo_grado_detalle(request, codigo):
 
     if request.user.tipo == Usuario.ESTUDIANTE:  # OJO por ahora esto solo funciona con user de tipo ESTUDIANTE
         perfil = Estudiantes.objects.get(dni=request.user.dni)
+    if request.user.tipo == Usuario.ASESOR:
+        perfil = Docentes.objects.get(dni=request.user.dni)
+    if request.user.tipo == Usuario.COORDINADOR:
+        perfil = Docentes.objects.get(dni=request.user.dni)
 
     ctx = {'trabajo':trabajo, 'estudiantes':estudiantes, 'perfil':perfil}
     return render(request, 'trabajo_grado_detalle.html', ctx)
@@ -85,7 +104,16 @@ def trabajos_grado_list_asesor(request, dni):
     asesor_filtrado = Asesores.objects.filter(docentes_dni=dni).values('trabajosgrado_codigo')
     trabajos_asesor = Trabajosgrado.objects.filter(codigo__in=asesor_filtrado)
     perfil = Docentes.objects.get(dni=request.user.dni)
-    ctx = {'trabajos_asesor':trabajos_asesor, 'perfil':perfil}
+    asesor = Asesores.objects.filter(docentes_dni=request.user.dni).first()
+    ctx = {'trabajos_asesor':trabajos_asesor, 'perfil':perfil, 'asesor':asesor}
+    return render(request, 'trabajos_grado_list.html', ctx)
+
+def trabajos_grado_list_coordinador(request, dni):
+    
+    trabajos_coordinador = Trabajosgrado.objects.all()
+    perfil = Docentes.objects.get(dni=request.user.dni)
+    coordinador = Coordinadorestg.objects.filter(docentes_dni=request.user.dni).first()
+    ctx = {'trabajos_coordinador':trabajos_coordinador, 'perfil':perfil, 'coordinador':coordinador}
     return render(request, 'trabajos_grado_list.html', ctx)
 
 #Definicion de vista para el login  

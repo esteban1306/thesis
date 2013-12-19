@@ -20,10 +20,10 @@
         <div class="collapse navbar-collapse navbar-conten-collapse">
 
             <ul class="nav navbar-nav">
-                {% if user.tipo == 'Estudiante' %}
+                {% if user.tipo == 'Estudiantess' %}
                 <li class="item-home"><a href="/">Estudiante</a></li>
                 {% endif %}
-                {% if user.tipo == 'Coordinador T.Grado' %}
+                {% if user.tipo == 'Coordinador T.Grados' %}
                 <li class="item-ayuda"><a href="#">Tab 2</a></li>
                 <li class="item-ayuda"><a href="#">Tab 3</a></li>
                 {% endif %}
@@ -70,7 +70,7 @@
                     </ul>
                 </li>
 
-                {% if user.is_admin %}
+                {% if user.is_admin and user.tipo %}
 
                 <li class="dropdown item-config">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">

@@ -45,7 +45,7 @@ class UsuarioManager(BaseUserManager):
                 grupo = Group.objects.get(name=tipo)
                 user.groups.add(grupo)
                 return user
-            user = self.model(dni=dni, tipo=tipo, is_active=True, is_admin=False, is_superuser=False)
+            user = self.model(dni=dni, tipo=tipo, is_active=True, is_admin=True, is_superuser=False)
        
         user.set_password(password)
         user.save(using=self._db)

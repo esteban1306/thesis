@@ -1,16 +1,56 @@
 {% extends 'shell.html' %}
 {% block title %} Trabajo de Grado del Asesor {% endblock %}
 
+{% block css %}
+	<style>
+		.foto {text-align: center;}
+		.foto i {font-size: 6em;}
+		.foraneos {text-align: center;}
+		.foraneos h1 {font-size: 4em; margin: 0;}
+		.linea {margin: 20px 0;}
+	</style>
+{% endblock %}
+
+{% block header %}
+	<li><p class="navbar-text">Trabajos de Grado en Seguimiento</p></li>
+{% endblock %}
 
 {% block sidebar_left %}	
 	{% if user.tipo == user.ASESOR %}
 		{% include "principal/widgets/nav_asesor.html" %}
 	{% endif %}
+
+	{% if user.tipo == user.COORDINADOR %}
+		{% include "principal/widgets/nav_coordinador.html" %}
+	{% endif %}
 {% endblock sidebar_left %}
 
+{% block content %}
+	
+	{% if coordinador %}
+		{% for trab in trabajos_coordinador %}
+		<a href="{% url 'trabajo_grado_detalle' trab.codigo %}" class="list-group-item ">
+			<h1 ><i class="fa fa-book"></i></h1>
+			<h3>{{trab.titulo}}</h3>
+			
+		</a>
+		{% empty %}
+		<h3>No hay trabajos de grado en esta seccion todavía</h3>
+		{% endfor %}
+	{% endif %}
+	
+	{% if asesor %}
+		{% for trab in trabajos_asesor %}
+		<a href="{% url 'trabajo_grado_detalle' trab.codigo %}" class="list-group-item ">
+			<h1 ><i class="fa fa-book"></i></h1>
+			<h3>{{trab.titulo}}</h3>
+			Asignado el {{asesor.fecha}}
+		</a>
+		{% empty %}
+		<h3>No hay trabajos de grado en esta seccion todavía</h3>
+		{% endfor %}
+	{% endif %}
+  	
+	
+{% endblock content %}
 
-<h1>HOla soy trabajos grados list</h1>
-
-{% for res in trabajos_asesor %}
-	<h3>{{res}}</h3>
-{% endfor %}
