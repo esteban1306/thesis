@@ -427,6 +427,10 @@ class Jurados(models.Model):
     concejocurricular = models.ForeignKey(Concejocurricular)
     #Fecha de asignacion de jurados
     fecha = models.DateField(blank=True, null=True)
+
+    def get_absolute_url(self):
+        return reverse('jurado_detalle', args=[str(self.docentes_dni.dni)])
+
     class Meta:
         verbose_name_plural = "Jurados"
         unique_together = (("trabajosgrado_codigo", "docentes_dni"),)

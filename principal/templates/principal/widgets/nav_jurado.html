@@ -1,0 +1,28 @@
+<div class="panel panel-default">
+
+	<IMG SRC="/media/images/tesis_image.jpg" WIDTH=178 HEIGHT=180 ALT="tesis_image">
+	<div class="panel-heading">ACCIONES</div>
+	
+	<div class="list-group">
+
+
+		<a href="{% url 'home' %}" class="list-group-item">
+			<span class="badge"><i class="fa fa-chevron-circle-right"></i></span> 
+			<i class="fa fa-home fa-fw"></i>&nbsp;&nbsp; Home
+		</a>
+	
+
+		<a href="{% url 'trabajos_grado_list_jurado' perfil.dni %}" class="list-group-item">
+			<span class="badge"><i class="fa fa-chevron-circle-right"></i></span> 
+			<i class="fa fa-book fa-fw"></i>&nbsp;&nbsp; Listar Trabajos de Grado
+		</a>
+
+		<a href="{% url 'jurado_detalle' perfil.dni %}" class="list-group-item">
+		
+			<span class="badge"><i class="fa fa-chevron-circle-right"></i></span> 
+			<i class="fa fa-user fa-fw"></i>&nbsp;&nbsp; Mi Perfil
+		</a>
+
+	</div>
+
+</div> <!-- end panel -->

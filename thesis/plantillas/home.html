@@ -23,6 +23,10 @@
 	{% if user.tipo == user.COORDINADOR %}
 		{% include "principal/widgets/nav_coordinador.html" %}
 	{% endif %}
+
+	{% if user.tipo == user.JURADO %}
+		{% include "principal/widgets/nav_jurado.html" %}
+	{% endif %}
 {% endblock sidebar_left %}
 
 
@@ -90,7 +94,21 @@
 			<a href="{{ coordinador.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">Perfil</a>	
 		</div>
 		{% endif %}
-					
+
+		{% if user.tipo == user.JURADO %}
+		<div class="col-sm-4 item">
+			<h1 ><i class="fa fa-book"></i></h1>
+			
+			<a href="{% url 'trabajos_grado_list_jurado' perfil.dni %}" class="btn btn-primary btn-lg btn-block">
+				Listar Trabajos de Grado</a>	
+		</div>
+
+		<div class="col-sm-4 item">
+			<h1><i class="fa fa-user"></i></h1>
+			<a href="{{ jurado.get_absolute_url }}" class="btn btn-primary btn-lg btn-block">Perfil</a>	
+		</div>
+		{% endif %}
+
 	</div>
 
 

@@ -10,9 +10,11 @@ urlpatterns = patterns('',
 
     url(r'^asesor/(\d+)/$', 'principal.views.asesor_detalle', name='asesor_detalle'),
     url(r'^coordinador/(\d+)/$', 'principal.views.coordinador_detalle', name='coordinador_detalle'),
+    url(r'^jurado/(\d+)/$', 'principal.views.jurado_detalle', name='jurado_detalle'),
 
     url(r'^trabajos/asesor/(\d+)/$','principal.views.trabajos_grado_list_asesor', name='trabajos_grado_list_asesor'),
     url(r'^trabajos/coordinador/(\d+)/$','principal.views.trabajos_grado_list_coordinador', name='trabajos_grado_list_coordinador'),
+    url(r'^trabajos/jurado/(\d+)/$','principal.views.trabajos_grado_list_jurado', name='trabajos_grado_list_jurado'),
 
 
     url(r'^trabajo/(\d+)/$', 'principal.views.trabajo_grado_detalle', name='trabajo_grado_detalle'),

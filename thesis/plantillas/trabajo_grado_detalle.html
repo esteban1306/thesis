@@ -16,11 +16,17 @@
 	{% if user.tipo == user.ESTUDIANTE%}
 		{% include "principal/widgets/nav_estudiante.html" %}
 	{% endif %}
+
 	{% if user.tipo == user.ASESOR %}
 		{% include "principal/widgets/nav_asesor.html" %}
 	{% endif %}
+
 	{% if user.tipo == user.COORDINADOR %}
 		{% include "principal/widgets/nav_coordinador.html" %}
+	{% endif %}
+
+	{% if user.tipo == user.JURADO %}
+		{% include "principal/widgets/nav_jurado.html" %}
 	{% endif %}
 {% endblock sidebar_left %}
 
